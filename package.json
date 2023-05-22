@@ -17,8 +17,10 @@
     "@mantine/notifications": "^6.0.11",
     "@tanstack/router": "0.0.1-beta.89",
     "@tanstack/router-devtools": "0.0.1-beta.89",
+    "axios": "^1.4.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",

@@ -1,7 +1,9 @@
 import { RouterProvider } from "@tanstack/router"
-import { ThemeProvider } from "./Provider"
 import { router } from "./Routes"
-import './index.css'
+
+// Style:
+import { ThemeProvider } from "./Provider"
+import "./index.css"
 
 function App() {
   return (

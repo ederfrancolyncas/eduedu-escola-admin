@@ -1,4 +1,6 @@
 import { Outlet, RootRoute, Route, Router } from "@tanstack/router";
+import { Home } from './pages/Home/Index'
+import { Login, EsqueciSenha } from './pages/Auth/components'
 
 const rootRoute = new RootRoute({
     component: () => (
@@ -8,19 +10,29 @@ const rootRoute = new RootRoute({
     )
 });
 
-const indexRoute = new Route({
+const loginRoute = new Route({
+    path: "/login",
+    component: () => <Login />,
+    getParentRoute: () => rootRoute
+});
+
+const homeRoute = new Route({
     path: "/",
-    component: () => <h1>Home</h1>,
+    component: () => <Home />,
     getParentRoute: () => rootRoute
 });
 
-const testRoute = new Route({
-    path: "/test",
-    component: () => <h1>Test page</h1>,
+const forgotPasswordRoute = new Route({
+    path: "/esqueci-a-senha",
+    component: () => <EsqueciSenha />,
     getParentRoute: () => rootRoute
 });
 
-const routeTree = rootRoute.addChildren([indexRoute, testRoute]);
+const routeTree = rootRoute.addChildren([
+    loginRoute,
+    forgotPasswordRoute,
+    homeRoute
+]);
 
 export const router = new Router({
     routeTree
