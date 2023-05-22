@@ -1,3 +1,6 @@
+@import url('./assets/css/typography.css');
+@import url('./assets/css/background.css');
+
 :root {
   width: 100%;
   min-height: 100vh;
@@ -5,6 +8,4 @@
 
 body {
   min-height: 100vh;
-  /* TODO: change this background when the route changes!!! */
-  background-image: url('./assets/backgrounds/login.svg');
 }

@@ -1,0 +1,13 @@
+:root {
+    --white: #ffffff;
+}
+
+/* Font colors */
+.font-white {
+    color: var(--white);
+}
+
+/* Links */
+.no-decoration {
+    text-decoration: none;
+}
