@@ -16,6 +16,9 @@ dependencies:
   '@mantine/notifications':
     specifier: ^6.0.11
     version: 6.0.11(@mantine/core@6.0.11)(@mantine/hooks@6.0.11)(react-dom@18.2.0)(react@18.2.0)
+  '@tabler/icons-react':
+    specifier: ^2.20.0
+    version: 2.20.0(react@18.2.0)
   '@tanstack/router':
     specifier: 0.0.1-beta.86
     version: 0.0.1-beta.86(react-dom@18.2.0)(react@18.2.0)
@@ -918,6 +921,20 @@ packages:
     dependencies:
       '@babel/runtime': 7.21.5
       react: 18.2.0
+    dev: false
+
+  /@tabler/icons-react@2.20.0(react@18.2.0):
+    resolution: {integrity: sha512-r2uC0Mi3ozHD2G+IYi0A0Iy2203dbQo5EAFxn055MyIhH7U2VNsvyopTqOj+AVedy7cqR86T9zhryRUGC78WZA==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tabler/icons': 2.20.0
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
+  /@tabler/icons@2.20.0:
+    resolution: {integrity: sha512-BsUEJoqREs8bqcrf5HfJBq6/rDvsRI3h+T+0X1o7i8LBHonsH0iAngcyL0I82YKoSy9NiVDvM3LV63zDP0nPYQ==}
     dev: false
 
   /@tanstack/react-store@0.0.1-beta.86(react-dom@18.2.0)(react@18.2.0):
