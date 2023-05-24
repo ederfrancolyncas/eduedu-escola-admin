@@ -1,17 +1,12 @@
 import { MantineProvider, MantineThemeOverride } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
+
+import { ButtonStyles, TextInputStyles } from "../styles";
 
 const theme: MantineThemeOverride = {
   components: {
-    TextInput: {
-      defaultProps: {
-        radius: '20px'
-      }
-    },
-    Button: {
-      defaultProps: {
-        radius: '20px'
-      }
-    }
+    TextInput: TextInputStyles,
+    Button: ButtonStyles,
   },
 };
 
@@ -22,6 +17,7 @@ interface ThemeProviderProps {
 export function ThemeProvider({ children }: ThemeProviderProps) {
   return (
     <MantineProvider withNormalizeCSS withGlobalStyles theme={theme}>
+      <Notifications position="top-center" />
       {children}
     </MantineProvider>
   );
