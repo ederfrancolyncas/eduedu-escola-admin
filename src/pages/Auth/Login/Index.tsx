@@ -59,7 +59,7 @@ export const Login = () => {
               {...form.getInputProps("password")}
             />
 
-            <Group position="right" mt="md" mb={50}>
+            <Group position="right" mt="md" mb={30}>
               <Link to="/esqueci-a-senha" style={{ color: 'white ', textDecoration: 'none' }}>
                 Esqueci a senha
               </Link>
