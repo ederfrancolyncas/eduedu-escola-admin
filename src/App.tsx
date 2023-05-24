@@ -1,15 +1,15 @@
-import { RouterProvider } from "@tanstack/router"
-import { router } from "./Routes"
+import { RouterProvider } from "@tanstack/router";
+import { router } from "./routes";
 
 // Style:
-import { ThemeProvider } from "./providers/ThemeProvider"
+import { ThemeProvider } from "./providers/ThemeProvider";
 
 function App() {
   return (
     <ThemeProvider>
       <RouterProvider router={router} />
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;
