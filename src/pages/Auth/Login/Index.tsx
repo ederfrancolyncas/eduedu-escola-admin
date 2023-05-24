@@ -13,8 +13,9 @@ import {
 } from "@mantine/core";
 
 // Style:
-import logo from "../../../assets/logos/eduedu-branca.svg";
-import bg from "../../../assets/backgrounds/login.svg";
+import logo from "~/assets/logos/eduedu-branca.svg";
+import bg from "~/assets/backgrounds/login.svg";
+import { showNotification } from "@mantine/notifications";
 
 export const Login = () => {
   const form = useForm({
@@ -31,7 +32,7 @@ export const Login = () => {
   return (
     <BackgroundImage src={bg} w="100vw" h="100vh">
       <Center maw={400} h={800} mx="auto">
-        <Box sx={{ minWidth: '100%' }}>
+        <Box sx={{ minWidth: "100%" }}>
           <Image
             maw={180}
             mb={50}
@@ -42,7 +43,7 @@ export const Login = () => {
           />
 
           <Group position="center" mt="md" mb={50}>
-            <span style={{ color: 'white ' }}>Portal Administrativo</span>
+            <span style={{ color: "white " }}>Portal Administrativo</span>
           </Group>
 
           <form onSubmit={form.onSubmit((values) => console.log(values))}>
@@ -60,7 +61,10 @@ export const Login = () => {
             />
 
             <Group position="right" mt="md" mb={30}>
-              <Link to="/esqueci-a-senha" style={{ color: 'white ', textDecoration: 'none' }}>
+              <Link
+                to="/esqueci-a-senha"
+                style={{ color: "white ", textDecoration: "none" }}
+              >
                 Esqueci a senha
               </Link>
             </Group>
@@ -68,6 +72,17 @@ export const Login = () => {
             <Group mt="md">
               <Button fullWidth type="submit">
                 Entrar
+              </Button>
+              <Button
+                fullWidth
+                onClick={() =>
+                  showNotification({
+                    title: "Teste",
+                    message: "Teste",
+                  })
+                }
+              >
+                teste
               </Button>
             </Group>
           </form>
