@@ -1,7 +1,18 @@
 import { MantineProvider, MantineThemeOverride } from "@mantine/core";
 
 const theme: MantineThemeOverride = {
-  components: {},
+  components: {
+    TextInput: {
+      defaultProps: {
+        radius: '20px'
+      }
+    },
+    Button: {
+      defaultProps: {
+        radius: '20px'
+      }
+    }
+  },
 };
 
 interface ThemeProviderProps {

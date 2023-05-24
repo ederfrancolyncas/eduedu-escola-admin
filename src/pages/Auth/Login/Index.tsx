@@ -31,9 +31,10 @@ export const Login = () => {
   return (
     <BackgroundImage src={bg} w="100vw" h="100vh">
       <Center maw={400} h={800} mx="auto">
-        <Box>
+        <Box sx={{ minWidth: '100%' }}>
           <Image
-            maw={240}
+            maw={180}
+            mb={50}
             mx="auto"
             radius="md"
             src={logo}
@@ -41,11 +42,12 @@ export const Login = () => {
           />
 
           <Group position="center" mt="md" mb={50}>
-            <span className="font-white">Portal Administrativo</span>
+            <span style={{ color: 'white ' }}>Portal Administrativo</span>
           </Group>
 
           <form onSubmit={form.onSubmit((values) => console.log(values))}>
             <TextInput
+              mb={20}
               label="Email"
               placeholder="Digite o email cadastrado"
               {...form.getInputProps("email")}
@@ -57,13 +59,13 @@ export const Login = () => {
               {...form.getInputProps("password")}
             />
 
-            <Group position="right" mt="md">
-              <Link className="font-white no-decoration" to="/esqueci-a-senha">
+            <Group position="right" mt="md" mb={50}>
+              <Link to="/esqueci-a-senha" style={{ color: 'white ', textDecoration: 'none' }}>
                 Esqueci a senha
               </Link>
             </Group>
 
-            <Group mt="md" mt={50}>
+            <Group mt="md">
               <Button fullWidth type="submit">
                 Entrar
               </Button>
