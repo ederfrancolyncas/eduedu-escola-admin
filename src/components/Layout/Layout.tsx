@@ -1,5 +1,6 @@
-import { AppShell } from "@mantine/core";
+import { AppShell, Container } from "@mantine/core";
 import { Navbar } from "../Navbar/Navbar";
+import { Footer } from "../Footer/Footer";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -10,6 +11,7 @@ export function Layout({ children }: LayoutProps) {
     <AppShell
       padding="md"
       header={<Navbar />}
+      footer={<Footer />}
       styles={(theme) => ({
         main: {
           backgroundColor:
@@ -19,7 +21,9 @@ export function Layout({ children }: LayoutProps) {
         },
       })}
     >
-      {children}
+      <Container size="xl">
+        {children}
+      </Container>
     </AppShell>
   );
 }

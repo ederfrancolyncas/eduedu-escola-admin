@@ -6,7 +6,7 @@ import { ButtonStyles, TextInputStyles } from "../styles";
 const theme: MantineThemeOverride = {
   components: {
     TextInput: TextInputStyles,
-    Button: ButtonStyles,
+    Button: ButtonStyles
   },
 };
 
