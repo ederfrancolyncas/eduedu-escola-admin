@@ -44,7 +44,7 @@ export function UsersPage() {
 
   return (
     <>
-      <Title title="Usuários">
+      <Title title="Usuários" description="60 registros">
         <Button>Novo usuário</Button>
       </Title>
 
