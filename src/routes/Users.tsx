@@ -1,7 +1,7 @@
 import { Outlet, Route } from "@tanstack/router";
 import { rootRoute } from ".";
 import { Layout } from "../components/Layout";
-import { UsersPage } from "../pages/Users/Users";
+import { UsersPage } from "../pages/Users/Users/Users";
 import { NewUserPage } from "../pages/Users/NewUser/NewUser";
 
 // TODO: validar caminho das rotas

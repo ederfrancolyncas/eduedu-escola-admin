@@ -1,5 +1,5 @@
 import { Button, Center, Checkbox, Flex, Pagination, Select, Table, TextInput } from "@mantine/core";
-import { Title } from "../../components/Title/Title";
+import { Title } from "../../../components/Title/Title";
 import { IconEdit, IconEye } from "@tabler/icons-react";
 
 export function UsersPage() {
