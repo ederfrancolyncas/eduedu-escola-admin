@@ -4,6 +4,9 @@ dependencies:
   '@emotion/react':
     specifier: ^11.11.0
     version: 11.11.0(@types/react@18.0.28)(react@18.2.0)
+  '@fontsource-variable/inter':
+    specifier: ^5.0.1
+    version: 5.0.1
   '@mantine/core':
     specifier: ^6.0.11
     version: 6.0.11(@emotion/react@11.11.0)(@mantine/hooks@6.0.11)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
@@ -657,6 +660,10 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       tabbable: 6.1.2
+    dev: false
+
+  /@fontsource-variable/inter@5.0.1:
+    resolution: {integrity: sha512-cqBEayOWZqERrWnwDUTyUsClZpN1Pv3w/1+NRxwKV4sRdy3RyyRL9DRIgauq8ySxNtJ5ZkNimxsZzCdoiR2Fcw==}
     dev: false
 
   /@humanwhocodes/config-array@0.11.8:

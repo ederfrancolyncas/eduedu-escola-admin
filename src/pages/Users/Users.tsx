@@ -1,33 +1,43 @@
-import { Button, Center, Checkbox, Flex, Pagination, Select, Table, TextInput } from "@mantine/core";
-import { Title } from "../../components/Title/Title";
+import {
+  Button,
+  Center,
+  Checkbox,
+  Flex,
+  Pagination,
+  Select,
+  Table,
+  TextInput,
+} from "@mantine/core";
 import { IconEdit, IconEye } from "@tabler/icons-react";
+import { PageHeader } from "~/components/PageHeader";
 
 export function UsersPage() {
-
   const profiles = [
-    { value: 'direcao/coordenacao', label: 'Direção/Coordenação' },
-    { value: 'professor', label: 'Professor' }
-  ]
+    { value: "direcao/coordenacao", label: "Direção/Coordenação" },
+    { value: "professor", label: "Professor" },
+  ];
 
   // TODO: change mocked data for real data when backend&&DB is ready
   const users = [
     {
-      name: 'Antônio Carlos Ribeiro',
-      email: 'antonio.c@escolaxyz.com.br',
+      name: "Antônio Carlos Ribeiro",
+      email: "antonio.c@escolaxyz.com.br",
       cpf: 12345678,
-      profile: 'Direção/Coordenação'
+      profile: "Direção/Coordenação",
     },
     {
-      name: 'Alice Dias',
-      email: 'alice.d@escolaxyz.com.br',
+      name: "Alice Dias",
+      email: "alice.d@escolaxyz.com.br",
       cpf: 12345678,
-      profile: 'Direção/Coordenação'
+      profile: "Direção/Coordenação",
     },
   ];
 
   const rows = users.map((user) => (
     <tr key={user.name}>
-      <td><Checkbox /></td>
+      <td>
+        <Checkbox />
+      </td>
       <td>{user.name}</td>
       <td>{user.email}</td>
       <td>{user.cpf}</td>
@@ -44,9 +54,9 @@ export function UsersPage() {
 
   return (
     <>
-      <Title title="Usuários" description="60 registros">
+      <PageHeader title="Usuários" description="60 registros">
         <Button>Novo usuário</Button>
-      </Title>
+      </PageHeader>
 
       <Table horizontalSpacing="xl" verticalSpacing="md">
         <thead>
@@ -80,10 +90,10 @@ export function UsersPage() {
           withControls={false}
           styles={() => ({
             control: {
-              '&[data-active]': {
+              "&[data-active]": {
                 background: "#fff",
                 color: "#000",
-                border: "0.0625rem solid #ced4da"
+                border: "0.0625rem solid #ced4da",
               },
             },
           })}

@@ -11,21 +11,14 @@ export function Layout({ children }: LayoutProps) {
     <AppShell
       padding="md"
       header={<Navbar />}
-      footer={<Footer />}
-      styles={(theme) => ({
-        main: {
-          backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
+      styles={() => ({
+        root: {
+          maxWidth: 1440,
+          marginBlock: "auto",
         },
       })}
     >
-      <Container size="xl">
-        {children}
-      </Container>
+      <Container size="xl">{children}</Container>
     </AppShell>
   );
 }
-
-//

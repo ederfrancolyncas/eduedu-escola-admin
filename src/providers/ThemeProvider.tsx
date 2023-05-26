@@ -1,12 +1,24 @@
 import { MantineProvider, MantineThemeOverride } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 
-import { ButtonStyles, TextInputStyles } from "../styles";
+import { ButtonStyles, TextInputStyles, TextStyles } from "../styles";
 
 const theme: MantineThemeOverride = {
+  fontFamily: "Inter, sans-serif",
+
   components: {
+    Button: ButtonStyles,
+    Text: TextStyles,
     TextInput: TextInputStyles,
-    Button: ButtonStyles
+  },
+
+  globalStyles() {
+    return {
+      body: {
+        maxWidth: 1440,
+        marginInline: "auto",
+      },
+    };
   },
 };
 

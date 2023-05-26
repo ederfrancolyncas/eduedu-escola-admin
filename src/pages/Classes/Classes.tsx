@@ -1,10 +1,10 @@
 import { Button } from "@mantine/core";
-import { Title } from "../../components/Title/Title";
+import { PageHeader } from "~/components/PageHeader";
 
 export function ClassesPage() {
   return (
-    <Title title="Turmas">
+    <PageHeader title="Turmas">
       <Button>Nova turma</Button>
-    </Title>
+    </PageHeader>
   );
 }
