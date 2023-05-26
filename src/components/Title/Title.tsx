@@ -8,9 +8,10 @@ type ComponentProps = {
 
 export function Title({ title, description, children }: ComponentProps) {
   return (
-    <Flex direction={{ base: 'column', sm: 'row' }}
+    <Flex
+      direction={{ base: 'column', sm: 'row' }}
       gap={{ base: 'sm', sm: 'sm' }}
-      justify={{ sm: 'space-between' }}>
+      justify={{ sm: 'center', md: 'space-between' }}>
 
       <Box>
         <MantineTitle
