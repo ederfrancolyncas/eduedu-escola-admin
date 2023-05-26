@@ -1,30 +1,33 @@
-import { Flex, Title as MantineTitle } from "@mantine/core";
+import { Box, Flex, Group, Title as MantineTitle } from "@mantine/core";
 
 type ComponentProps = {
   title: string;
+  description?: string;
   children?: any;
 };
 
-export function Title({ title, children }: ComponentProps) {
+export function Title({ title, description, children }: ComponentProps) {
   return (
     <Flex direction={{ base: 'column', sm: 'row' }}
       gap={{ base: 'sm', sm: 'sm' }}
       justify={{ sm: 'space-between' }}>
-      <MantineTitle
-        style={{
-          color: '#000',
-          fontWeight: 'bold',
-          textDecoration: 'none'
-        }}
-      >
-        {title}
-      </MantineTitle>
 
-      <Flex direction={{ base: 'column', sm: 'row' }}
-        gap={{ base: 'sm', sm: 'sm' }}
-        justify={{ sm: 'space-between' }}>
+      <Box>
+        <MantineTitle
+          style={{
+            color: '#000',
+            fontWeight: 'bold',
+            textDecoration: 'none'
+          }}
+        >
+          {title}
+        </MantineTitle>
+        <small>{description}</small>
+      </Box>
+
+      <Group>
         {children}
-      </Flex>
+      </Group>
     </Flex>
   )
 }
