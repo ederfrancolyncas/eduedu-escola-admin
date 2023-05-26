@@ -23,7 +23,7 @@ const usersSample = [
     },
 ];
 
-export default {
+export {
     profilesSample,
     statusSample,
     usersSample
