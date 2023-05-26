@@ -1,11 +1,12 @@
 import { MantineProvider, MantineThemeOverride } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 
-import { ButtonStyles } from "../styles";
+import { ButtonStyles, TextInputStyles } from "../styles";
 
 const theme: MantineThemeOverride = {
   components: {
-    Button: ButtonStyles,
+    TextInput: TextInputStyles,
+    Button: ButtonStyles
   },
 };
 

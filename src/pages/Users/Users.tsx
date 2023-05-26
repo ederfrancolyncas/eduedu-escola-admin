@@ -34,8 +34,9 @@ export function UsersPage() {
       <td>{user.profile}</td>
       <td>
         <Flex gap="md">
-          <IconEye />
-          <IconEdit />
+          {/* TODO: change the hex to blue.9 */}
+          <IconEye color="#1864AB" />
+          <IconEdit color="#1864AB" />
         </Flex>
       </td>
     </tr>
@@ -47,7 +48,7 @@ export function UsersPage() {
         <Button>Novo usuário</Button>
       </Title>
 
-      <Table>
+      <Table horizontalSpacing="xl" verticalSpacing="md">
         <thead>
           <tr>
             <th></th>
@@ -74,7 +75,19 @@ export function UsersPage() {
       </Table>
 
       <Center mt={30}>
-        <Pagination total={10} />
+        <Pagination
+          total={10}
+          withControls={false}
+          styles={() => ({
+            control: {
+              '&[data-active]': {
+                background: "#fff",
+                color: "#000",
+                border: "0.0625rem solid #ced4da"
+              },
+            },
+          })}
+        />
       </Center>
     </>
   );
