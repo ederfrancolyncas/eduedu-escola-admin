@@ -1,4 +1,4 @@
-import { AppShell } from "@mantine/core";
+import { AppShell, Container } from "@mantine/core";
 import { Navbar } from "../Navbar/Navbar";
 
 type LayoutProps = {
@@ -19,7 +19,9 @@ export function Layout({ children }: LayoutProps) {
         },
       })}
     >
-      {children}
+      <Container size="xl">
+        {children}
+      </Container>
     </AppShell>
   );
 }
