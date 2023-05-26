@@ -29,8 +29,8 @@ export function UsersPage() {
     <tr key={user.name}>
       <td><Checkbox /></td>
       <td>{user.name}</td>
-      <td>{user.cpf}</td>
       <td>{user.email}</td>
+      <td>{user.cpf}</td>
       <td>{user.profile}</td>
       <td>
         <Flex gap="md">
