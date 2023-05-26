@@ -1,9 +1,14 @@
-export const profilesSample = [
+const profilesSample = [
     { value: 'direcao/coordenacao', label: 'Direção/Coordenação' },
     { value: 'professor', label: 'Professor' }
 ]
 
-export const usersSample = [
+const statusSample = [
+    { value: 'ativo', label: 'Ativo' },
+    { value: 'inativo', label: 'Inativo' },
+]
+
+const usersSample = [
     {
         name: 'Antônio Carlos Ribeiro',
         email: 'antonio.c@escolaxyz.com.br',
@@ -17,3 +22,9 @@ export const usersSample = [
         profile: 'Direção/Coordenação'
     },
 ];
+
+export default {
+    profilesSample,
+    statusSample,
+    usersSample
+}
