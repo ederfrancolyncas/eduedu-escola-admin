@@ -5,7 +5,7 @@ type componentProps = {
   placeholder: string,
 }
 
-export function InputAuth({ label, placeholder }: componentProps) {
+export function RoundedInput({ label, placeholder }: componentProps) {
 
   return (
     <TextInput

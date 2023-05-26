@@ -14,7 +14,8 @@ import {
 // Style:
 import logo from "~/assets/logos/eduedu-branca.svg";
 import bg from "~/assets/backgrounds/login.svg";
-import { InputAuth } from "../../../components/InputAuth/InputAuth";
+import { RoundedInput } from "../../../components/RoundedInput/RoundedInput";
+import { RoundedButton } from "../../../components/RoundedButton/RoundedButton";
 
 export const Login = () => {
 
@@ -36,12 +37,12 @@ export const Login = () => {
           </Group>
 
           <form>
-            <InputAuth
+            <RoundedInput
               label="Email"
               placeholder="Digite o email cadastrado"
             />
 
-            <InputAuth
+            <RoundedInput
               label="Senha"
               placeholder="Digite sua senha"
             />
@@ -56,9 +57,7 @@ export const Login = () => {
             </Group>
 
             <Group mt="md">
-              <Button fullWidth type="submit">
-                Entrar
-              </Button>
+              <RoundedButton text="Entrar" fullWidth />
             </Group>
           </form>
         </Box>

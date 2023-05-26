@@ -32,3 +32,4 @@ export function Title({ title, description, children }: ComponentProps) {
     </Flex>
   )
 }
+
