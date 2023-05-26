@@ -1,12 +1,11 @@
+// General:
 import { Link } from "@tanstack/router";
 
 // Form:
-import { useForm } from "@mantine/form";
 import {
   Center,
   Box,
   Group,
-  TextInput,
   Button,
   Image,
   BackgroundImage,
@@ -15,19 +14,9 @@ import {
 // Style:
 import logo from "~/assets/logos/eduedu-branca.svg";
 import bg from "~/assets/backgrounds/login.svg";
-import { showNotification } from "@mantine/notifications";
+import { InputAuth } from "../../../components/InputAuth/InputAuth";
 
 export const Login = () => {
-  const form = useForm({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "E-mail inválido"),
-      password: (value) => (value ? null : "Senha inválida"),
-    },
-  });
 
   return (
     <BackgroundImage src={bg} w="100vw" h="100vh">
@@ -46,18 +35,15 @@ export const Login = () => {
             <span style={{ color: "white " }}>Portal Administrativo</span>
           </Group>
 
-          <form onSubmit={form.onSubmit((values) => console.log(values))}>
-            <TextInput
-              mb={20}
+          <form>
+            <InputAuth
               label="Email"
               placeholder="Digite o email cadastrado"
-              {...form.getInputProps("email")}
             />
 
-            <TextInput
+            <InputAuth
               label="Senha"
               placeholder="Digite sua senha"
-              {...form.getInputProps("password")}
             />
 
             <Group position="right" mt="md" mb={30}>
@@ -73,21 +59,10 @@ export const Login = () => {
               <Button fullWidth type="submit">
                 Entrar
               </Button>
-              <Button
-                fullWidth
-                onClick={() =>
-                  showNotification({
-                    title: "Teste",
-                    message: "Teste",
-                  })
-                }
-              >
-                teste
-              </Button>
             </Group>
           </form>
         </Box>
       </Center>
     </BackgroundImage>
-  );
-};
+  )
+}
