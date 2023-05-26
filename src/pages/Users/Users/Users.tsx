@@ -1,6 +1,7 @@
 import { Button, Center, Checkbox, Flex, Pagination, Select, Table, TextInput } from "@mantine/core";
 import { Title } from "../../../components/Title/Title";
 import { IconEdit, IconEye } from "@tabler/icons-react";
+import { Link } from "@tanstack/router";
 
 export function UsersPage() {
 
@@ -42,10 +43,13 @@ export function UsersPage() {
     </tr>
   ));
 
+
   return (
     <>
       <Title title="Usuários" description="60 registros">
-        <Button>Novo usuário</Button>
+        <Link to="/usuarios/novo-usuario" search="">
+          <Button>Novo usuário</Button>
+        </Link>
       </Title>
 
       <Table horizontalSpacing="xl" verticalSpacing="md">
