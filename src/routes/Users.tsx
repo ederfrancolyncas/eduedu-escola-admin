@@ -1,6 +1,9 @@
 import { Outlet, Route } from "@tanstack/router";
 import { rootRoute } from ".";
 import { Layout } from "../components/Layout";
+import { UsersPage } from "../pages/Users/Users";
+
+// TODO: validar caminho das rotas
 
 export const usersRoute = new Route({
   path: "/usuarios",
@@ -14,7 +17,7 @@ export const usersRoute = new Route({
 
 export const usersIndexRoute = new Route({
   path: "/",
-  component: () => <h1>Usuários</h1>,
+  component: () => <UsersPage />,
   getParentRoute: () => usersRoute,
 });
 
