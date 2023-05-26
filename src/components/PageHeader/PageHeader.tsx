@@ -1,4 +1,4 @@
-import { Box, Flex, Title as MantineTitle } from "@mantine/core";
+import { Box, Flex, Title as MantineTitle, Text } from "@mantine/core";
 
 type ComponentProps = {
   title: string;
@@ -14,10 +14,12 @@ export function PageHeader({ title, children, description }: ComponentProps) {
       justify={{ sm: "space-between" }}
     >
       <Box>
-        <MantineTitle color="black" weight={700} td="none">
+        <MantineTitle weight={700} order={3}>
           {title}
         </MantineTitle>
-        <small>{description}</small>
+        <Text size="sm" color="dark.4">
+          {description}
+        </Text>
       </Box>
 
       <Flex

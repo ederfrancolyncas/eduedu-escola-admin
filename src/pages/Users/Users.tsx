@@ -58,25 +58,26 @@ export function UsersPage() {
         <Button>Novo usuário</Button>
       </PageHeader>
 
+      {/* TODO: integrar @tanstack/table */}
       <Table horizontalSpacing="xl" verticalSpacing="md">
         <thead>
           <tr>
             <th></th>
             <th>
               Nome
-              <TextInput placeholder="Pesquisar" />
+              <TextInput size="sm" placeholder="Pesquisar" />
             </th>
             <th>
               Email
-              <TextInput placeholder="Pesquisar" />
+              <TextInput size="sm" placeholder="Pesquisar" />
             </th>
             <th>
               CPF
-              <TextInput placeholder="Pesquisar" />
+              <TextInput size="sm" placeholder="Pesquisar" />
             </th>
             <th>
               Perfil
-              <Select data={profiles} placeholder="Pesquisar" />
+              <Select size="sm" data={profiles} placeholder="Pesquisar" />
             </th>
             <th></th>
           </tr>

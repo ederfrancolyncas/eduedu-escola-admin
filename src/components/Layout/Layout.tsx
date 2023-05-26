@@ -1,4 +1,4 @@
-import { AppShell, Container } from "@mantine/core";
+import { AppShell, Box, Container, Stack } from "@mantine/core";
 import { Navbar } from "../Navbar/Navbar";
 import { Footer } from "../Footer/Footer";
 
@@ -11,6 +11,7 @@ export function Layout({ children }: LayoutProps) {
     <AppShell
       padding="md"
       header={<Navbar />}
+      footer={<Footer />}
       styles={() => ({
         root: {
           maxWidth: 1440,
@@ -18,7 +19,9 @@ export function Layout({ children }: LayoutProps) {
         },
       })}
     >
-      <Container size="xl">{children}</Container>
+      <Stack px={150} spacing={24} py={24}>
+        {children}
+      </Stack>
     </AppShell>
   );
 }

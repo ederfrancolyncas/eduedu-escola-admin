@@ -1,7 +1,12 @@
 import { MantineProvider, MantineThemeOverride } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 
-import { ButtonStyles, TextInputStyles, TextStyles } from "../styles";
+import {
+  ButtonStyles,
+  TextInputStyles,
+  TextStyles,
+  TitleStyles,
+} from "../styles";
 
 const theme: MantineThemeOverride = {
   fontFamily: "Inter, sans-serif",
@@ -10,6 +15,8 @@ const theme: MantineThemeOverride = {
     Button: ButtonStyles,
     Text: TextStyles,
     TextInput: TextInputStyles,
+    Select: TextInputStyles,
+    Title: TitleStyles,
   },
 
   globalStyles() {
