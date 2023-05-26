@@ -3,36 +3,19 @@ import { Title } from "../../../components/Title/Title";
 import { IconEdit, IconEye } from "@tabler/icons-react";
 import { Link } from "@tanstack/router";
 
+// TODO: change mocked data for real data when backend&&DB is ready
+import { usersSample, statusSample, profilesSample } from '../../../mocked-data/general'
+
 export function UsersPage() {
 
-  const profiles = [
-    { value: 'direcao/coordenacao', label: 'Direção/Coordenação' },
-    { value: 'professor', label: 'Professor' }
-  ]
-
-  // TODO: change mocked data for real data when backend&&DB is ready
-  const users = [
-    {
-      name: 'Antônio Carlos Ribeiro',
-      email: 'antonio.c@escolaxyz.com.br',
-      cpf: 12345678,
-      profile: 'Direção/Coordenação'
-    },
-    {
-      name: 'Alice Dias',
-      email: 'alice.d@escolaxyz.com.br',
-      cpf: 12345678,
-      profile: 'Direção/Coordenação'
-    },
-  ];
-
-  const rows = users.map((user) => (
+  const rows = usersSample.map((user) => (
     <tr key={user.name}>
       <td><Checkbox /></td>
       <td>{user.name}</td>
       <td>{user.email}</td>
       <td>{user.cpf}</td>
       <td>{user.profile}</td>
+      <td>{user.status}</td>
       <td>
         <Flex gap="md">
           {/* TODO: change the hex to blue.9 */}
@@ -70,7 +53,11 @@ export function UsersPage() {
             </th>
             <th>
               Perfil
-              <Select data={profiles} placeholder="Pesquisar" />
+              <Select data={profilesSample} placeholder="Pesquisar" />
+            </th>
+            <th>
+              Status
+              <Select data={statusSample} placeholder="Pesquisar" />
             </th>
             <th></th>
           </tr>
@@ -89,7 +76,7 @@ export function UsersPage() {
                 color: "#000",
                 border: "0.0625rem solid #ced4da"
               },
-            },
+            }
           })}
         />
       </Center>
