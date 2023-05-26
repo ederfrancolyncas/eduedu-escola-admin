@@ -1,5 +1,5 @@
 import { AppShell } from "@mantine/core";
-import { Header } from "../Header/Header";
+import { Navbar } from "../Navbar/Navbar";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -9,7 +9,7 @@ export function Layout({ children }: LayoutProps) {
   return (
     <AppShell
       padding="md"
-      header={<Header />}
+      header={<Navbar />}
       styles={(theme) => ({
         main: {
           backgroundColor:
