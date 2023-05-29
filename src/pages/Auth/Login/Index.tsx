@@ -20,7 +20,7 @@ import { RoundedButton } from "../../../components/RoundedButton/RoundedButton";
 export const Login = () => {
 
   return (
-    <BackgroundImage src={bg} w="100vw" h="100vh">
+    <BackgroundImage src={bg} h="100vh">
       <Center maw={400} h={800} mx="auto">
         <Box sx={{ minWidth: "100%" }}>
           <Image
