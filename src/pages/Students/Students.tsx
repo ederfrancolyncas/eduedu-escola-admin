@@ -1,14 +1,13 @@
 import { Button } from "@mantine/core";
-import { Title } from "../../components/Title/Title";
+import { PageHeader } from "~/components/PageHeader";
 
 export function StudentsPage() {
-
   return (
     <>
-      <Title title="Alunos">
+      <PageHeader title="Alunos">
         <Button>Upload aluno</Button>
         <Button>Novo aluno</Button>
-      </Title>
+      </PageHeader>
 
       {/* TODO: add table and pagination  */}
     </>

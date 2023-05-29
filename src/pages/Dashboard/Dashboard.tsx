@@ -1,7 +1,5 @@
-import { Title } from "../../components/Title/Title";
+import { PageHeader } from "~/components/PageHeader";
 
 export function DashboardPage() {
-  return (
-    <Title title="Dashboard" />
-  );
+  return <PageHeader title="Dashboard" />;
 }

@@ -1,6 +1,6 @@
 import { Button, Center, Checkbox, Flex, Pagination, Select, Table, TextInput } from "@mantine/core";
 import { Title } from "../../../components/Title/Title";
-import { IconEdit, IconEye } from "@tabler/icons-react";
+import { IconEdit } from "@tabler/icons-react";
 import { Link } from "@tanstack/router";
 
 // TODO: change mocked data for real data when backend&&DB is ready
@@ -10,7 +10,9 @@ export function UsersPage() {
 
   const rows = usersSample.map((user) => (
     <tr key={user.name}>
-      <td><Checkbox /></td>
+      <td>
+        <Checkbox />
+      </td>
       <td>{user.name}</td>
       <td>{user.email}</td>
       <td>{user.cpf}</td>
@@ -42,15 +44,15 @@ export function UsersPage() {
             <th></th>
             <th>
               Nome
-              <TextInput placeholder="Pesquisar" />
+              <TextInput size="sm" placeholder="Pesquisar" />
             </th>
             <th>
               Email
-              <TextInput placeholder="Pesquisar" />
+              <TextInput size="sm" placeholder="Pesquisar" />
             </th>
             <th>
               CPF
-              <TextInput placeholder="Pesquisar" />
+              <TextInput size="sm" placeholder="Pesquisar" />
             </th>
             <th>
               Perfil
@@ -72,10 +74,10 @@ export function UsersPage() {
           withControls={false}
           styles={() => ({
             control: {
-              '&[data-active]': {
+              "&[data-active]": {
                 background: "#fff",
                 color: "#000",
-                border: "0.0625rem solid #ced4da"
+                border: "0.0625rem solid #ced4da",
               },
             }
           })}
