@@ -1,4 +1,4 @@
-import { AppShell, Box, Container, Stack } from "@mantine/core";
+import { AppShell, Stack } from "@mantine/core";
 import { Navbar } from "../Navbar/Navbar";
 import { Footer } from "../Footer/Footer";
 
