@@ -3,12 +3,16 @@ import { Title } from "../../../components/Title/Title";
 
 // TODO: change mocked data for real data when backend&&DB is ready
 import { profilesSample } from '../../../mocked-data/general'
+import { useParams } from "@tanstack/router";
 
-export function NewUserPage() {
+export function UserPage() {
 
+    const params = useParams()
+    let newUser = params.id ? false : true
+    console.log('user:', newUser)
     return (
         <>
-            <Title title="Novo usuário" />
+            <Title title={newUser ? 'Novo usuário' : 'Fulano de Tal'} />
 
             <Grid>
                 <Grid.Col span={3}>

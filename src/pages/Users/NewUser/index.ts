@@ -1,1 +1,0 @@
-export { NewUserPage } from "./NewUser";
