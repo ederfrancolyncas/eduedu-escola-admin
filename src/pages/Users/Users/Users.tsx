@@ -1,39 +1,14 @@
-import {
-  Button,
-  Center,
-  Checkbox,
-  Flex,
-  Pagination,
-  Select,
-  Table,
-  TextInput,
-} from "@mantine/core";
-import { IconEdit, IconEye } from "@tabler/icons-react";
-import { PageHeader } from "~/components/PageHeader";
+import { Button, Center, Checkbox, Flex, Pagination, Select, Table, TextInput } from "@mantine/core";
+import { Title } from "../../../components/Title/Title";
+import { IconEdit } from "@tabler/icons-react";
+import { Link } from "@tanstack/router";
+
+// TODO: change mocked data for real data when backend&&DB is ready
+import { usersSample, statusSample, profilesSample } from '../../../mocked-data/general'
 
 export function UsersPage() {
-  const profiles = [
-    { value: "direcao/coordenacao", label: "Direção/Coordenação" },
-    { value: "professor", label: "Professor" },
-  ];
 
-  // TODO: change mocked data for real data when backend&&DB is ready
-  const users = [
-    {
-      name: "Antônio Carlos Ribeiro",
-      email: "antonio.c@escolaxyz.com.br",
-      cpf: 12345678,
-      profile: "Direção/Coordenação",
-    },
-    {
-      name: "Alice Dias",
-      email: "alice.d@escolaxyz.com.br",
-      cpf: 12345678,
-      profile: "Direção/Coordenação",
-    },
-  ];
-
-  const rows = users.map((user) => (
+  const rows = usersSample.map((user) => (
     <tr key={user.name}>
       <td>
         <Checkbox />
@@ -42,27 +17,33 @@ export function UsersPage() {
       <td>{user.email}</td>
       <td>{user.cpf}</td>
       <td>{user.profile}</td>
+      <td>{user.status}</td>
       <td>
         <Flex gap="md">
           {/* TODO: change the hex to blue.9 */}
-          <IconEye color="#1864AB" />
-          <IconEdit color="#1864AB" />
+          <Link to={`usuario/${1}`} search="">
+            <IconEdit color="#1864AB" />
+          </Link>
         </Flex>
       </td>
     </tr>
   ));
 
+
   return (
     <>
-      <PageHeader title="Usuários" description="60 registros">
-        <Button>Novo usuário</Button>
-      </PageHeader>
+      <Title title="Usuários" description="60 registros">
+        <Link to="/usuarios/novo-usuario" search="">
+          <Button>Novo usuário</Button>
+        </Link>
+      </Title>
 
-      {/* TODO: integrar @tanstack/table */}
       <Table horizontalSpacing="xl" verticalSpacing="md">
         <thead>
           <tr>
-            <th></th>
+            <th>
+              <Checkbox />
+            </th>
             <th>
               Nome
               <TextInput size="sm" placeholder="Pesquisar" />
@@ -77,7 +58,11 @@ export function UsersPage() {
             </th>
             <th>
               Perfil
-              <Select size="sm" data={profiles} placeholder="Pesquisar" />
+              <Select data={profilesSample} placeholder="Pesquisar" />
+            </th>
+            <th>
+              Status
+              <Select data={statusSample} placeholder="Pesquisar" />
             </th>
             <th></th>
           </tr>
@@ -96,7 +81,7 @@ export function UsersPage() {
                 color: "#000",
                 border: "0.0625rem solid #ced4da",
               },
-            },
+            }
           })}
         />
       </Center>
