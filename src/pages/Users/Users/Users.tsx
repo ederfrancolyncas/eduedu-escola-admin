@@ -41,7 +41,9 @@ export function UsersPage() {
       <Table horizontalSpacing="xl" verticalSpacing="md">
         <thead>
           <tr>
-            <th></th>
+            <th>
+              <Checkbox />
+            </th>
             <th>
               Nome
               <TextInput size="sm" placeholder="Pesquisar" />
