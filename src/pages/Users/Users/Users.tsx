@@ -20,9 +20,8 @@ export function UsersPage() {
         <Flex gap="md">
           {/* TODO: change the hex to blue.9 */}
           <Link to={`usuario/${1}`} search="">
-            <IconEye color="#1864AB" />
+            <IconEdit color="#1864AB" />
           </Link>
-          <IconEdit color="#1864AB" />
         </Flex>
       </td>
     </tr>
