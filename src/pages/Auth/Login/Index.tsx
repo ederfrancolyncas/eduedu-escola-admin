@@ -20,10 +20,28 @@ import { RoundedButton } from "../../../components/RoundedButton/RoundedButton";
 import logo from "~/assets/logos/eduedu-branca.svg";
 import bg from "~/assets/backgrounds/login.svg";
 
+import { showNotification } from "@mantine/notifications";
 export const Login = () => {
 
   const [openedForgotPass, { open, close }] = useDisclosure(false);
 
+  function sendPassRecovery() {
+
+    // TODO: question about which lib we'll use :D
+    // axios.get("https://yesno.wtf/api")
+    //   .then((res) => {
+    //     console.log('res', res)
+    //   })
+    //   .catch((err) => {
+    //     console.log('err', err)
+    //   }).finally(() => {
+    //     console.log('finish him')
+    //   })
+
+    return showNotification({
+      message: "Sua nova senha foi enviada para o email cadastrado.",
+    })
+  }
   return (
     <>
       <BackgroundImage src={bg} h="100vh">
@@ -70,9 +88,16 @@ export const Login = () => {
         </Center>
       </BackgroundImage>
 
-      <Modal opened={openedForgotPass} onClose={close} title="Esqueci a senha" centered>
-        <TextInput mb={20} label="Email de cadastro" placeholder="Email" />
-        <Button variant="outline" fullWidth>Enviar</Button>
+      <Modal
+        opened={openedForgotPass} onClose={close} title="Esqueci a senha" centered>
+        <TextInput mb={30} label="Email de cadastro" placeholder="Email" />
+        <Button
+          variant="outline"
+          fullWidth
+          onClick={sendPassRecovery}
+        >
+          Enviar
+        </Button>
       </Modal>
     </>
   )

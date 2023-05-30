@@ -15,7 +15,7 @@ export function Layout({ children }: LayoutProps) {
       styles={() => ({
         root: {
           maxWidth: 1440,
-          marginBlock: "auto",
+          marginInline: "auto !important",
         },
       })}
     >
