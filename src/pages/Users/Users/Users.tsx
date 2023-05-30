@@ -1,41 +1,39 @@
-import { Button, Center, Checkbox, Flex, Pagination, Select, Table, TextInput } from "@mantine/core";
-import { Title } from "../../../components/Title/Title";
+import {
+  Button,
+  Center,
+  Checkbox,
+  Pagination,
+  Select,
+  Table,
+  TextInput,
+  useMantineTheme,
+} from "@mantine/core";
 import { IconEdit } from "@tabler/icons-react";
 import { Link } from "@tanstack/router";
 
-// TODO: change mocked data for real data when backend&&DB is ready
-import { usersSample, statusSample, profilesSample } from '../../../mocked-data/general'
+import { statusSample, profilesSample } from "../../../mocked-data/general";
+import { useUserGetAll } from "~/api/user";
+import { PageHeader } from "~/components/PageHeader";
 
 export function UsersPage() {
-
-  const rows = usersSample.map((user) => (
-    <tr key={user.name}>
-      <td>
-        <Checkbox />
-      </td>
-      <td>{user.name}</td>
-      <td>{user.email}</td>
-      <td>{user.cpf}</td>
-      <td>{user.profile}</td>
-      <td>{user.status}</td>
-      <td>
-        <Flex gap="md">
-          {/* TODO: change the hex to blue.9 */}
-          <Link to={`usuario/${1}`} search="">
-            <IconEdit color="#1864AB" />
-          </Link>
-        </Flex>
-      </td>
-    </tr>
-  ));
+  const { data } = useUserGetAll({
+    onSuccess: (data) => console.log(data),
+    search: {
+      name: "Carina Larvor",
+    },
+  });
+  const theme = useMantineTheme();
 
   return (
     <>
-      <Title title="Usuários" description="60 registros">
-        <Link to="/usuarios/novo-usuario" search="">
+      <PageHeader
+        title="Usuários"
+        description={`${data?.pagination.totalItems} registros` ?? ""}
+      >
+        <Link to="/usuarios">
           <Button>Novo usuário</Button>
         </Link>
-      </Title>
+      </PageHeader>
 
       <Table horizontalSpacing="xl" verticalSpacing="md">
         <thead>
@@ -66,23 +64,31 @@ export function UsersPage() {
             <th></th>
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody>
+          {data?.items.map((user) => (
+            <tr key={user.id}>
+              <td>
+                <Checkbox />
+              </td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.document}</td>
+              <td>{user.profile}</td>
+              <td>{user.status}</td>
+              <td>
+                <Link to="/usuarios/$userId" params={{ userId: user.id }}>
+                  <IconEdit color={theme.colors.blue[9]} />
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </Table>
 
       <Center mt={30}>
-        <Pagination
-          total={10}
-          withControls={false}
-          styles={() => ({
-            control: {
-              "&[data-active]": {
-                background: "#fff",
-                color: "#000",
-                border: "0.0625rem solid #ced4da",
-              },
-            }
-          })}
-        />
+        {data && (
+          <Pagination total={data.pagination.totalPages} withControls={false} />
+        )}
       </Center>
     </>
   );

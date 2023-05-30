@@ -23,20 +23,19 @@ export const usersIndexRoute = new Route({
 });
 
 export const newUserIndexRoute = new Route({
-  path: "/novo-usuario",
+  path: "novo-usuario",
   component: () => <UserPage />,
   getParentRoute: () => usersRoute,
 });
 
 export const userProfileIndexRoute = new Route({
-  path: "/usuario/$id",
+  path: "$userId",
   component: () => <UserPage />,
   getParentRoute: () => usersRoute,
 });
 
-
 usersRoute.addChildren([
   usersIndexRoute,
   newUserIndexRoute,
-  userProfileIndexRoute
+  userProfileIndexRoute,
 ]);

@@ -8,17 +8,7 @@ type LayoutProps = {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <AppShell
-      padding="md"
-      header={<Navbar />}
-      footer={<Footer />}
-      styles={() => ({
-        root: {
-          maxWidth: 1440,
-          marginInline: "auto !important",
-        },
-      })}
-    >
+    <AppShell maw={1440} padding="md" header={<Navbar />} footer={<Footer />}>
       <Stack px={150} spacing={24} py={24}>
         {children}
       </Stack>
