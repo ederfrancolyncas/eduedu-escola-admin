@@ -35,9 +35,11 @@ export function Navbar() {
 
   return (
     <MantineHeader
+      maw={1440}
       height={78}
       styles={{
         root: {
+          margin: "auto",
           display: "flex",
           justifyContent: "center",
         },
