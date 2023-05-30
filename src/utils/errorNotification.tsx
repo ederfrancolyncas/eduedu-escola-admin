@@ -1,11 +1,11 @@
 import { showNotification } from "@mantine/notifications";
 import { IconAlertTriangle } from "@tabler/icons-react";
 
-// TODO: validar icone, cores e mensagem
+// TODO: validate icon, color and message
 
-export const errorNotification = (message: string) =>
+export const errorNotification = (title: string, message: string) =>
   showNotification({
-    title: "Error",
+    title,
     message,
     color: "red",
     icon: <IconAlertTriangle />,

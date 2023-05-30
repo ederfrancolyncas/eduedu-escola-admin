@@ -21,7 +21,7 @@ const theme: MantineThemeOverride = {
 
   globalStyles() {
     return {
-      body: {
+      "#root": {
         maxWidth: 1440,
         marginInline: "auto",
       },
