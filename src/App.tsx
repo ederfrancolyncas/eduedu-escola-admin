@@ -3,7 +3,6 @@ import { router } from "./routes";
 
 // Style:
 import { ThemeProvider } from "./providers/ThemeProvider";
-import './styles/global.css'
 
 function App() {
   return (
