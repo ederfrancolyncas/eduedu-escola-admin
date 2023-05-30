@@ -29,7 +29,6 @@ export function UsersPage() {
     </tr>
   ));
 
-
   return (
     <>
       <Title title="Usuários" description="60 registros">

@@ -27,17 +27,6 @@ export const Login = () => {
 
   function sendPassRecovery() {
 
-    // TODO: question about which lib we'll use :D
-    // axios.get("https://yesno.wtf/api")
-    //   .then((res) => {
-    //     console.log('res', res)
-    //   })
-    //   .catch((err) => {
-    //     console.log('err', err)
-    //   }).finally(() => {
-    //     console.log('finish him')
-    //   })
-
     return showNotification({
       message: "Sua nova senha foi enviada para o email cadastrado.",
     })
