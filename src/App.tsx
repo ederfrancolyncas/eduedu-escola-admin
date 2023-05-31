@@ -6,7 +6,14 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // Style:
 import { ThemeProvider } from "./providers/ThemeProvider";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 2,
+    },
+  },
+});
 
 function App() {
   return (

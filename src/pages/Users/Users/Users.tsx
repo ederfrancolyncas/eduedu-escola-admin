@@ -18,9 +18,6 @@ import { PageHeader } from "~/components/PageHeader";
 export function UsersPage() {
   const { data } = useUserGetAll({
     onSuccess: (data) => console.log(data),
-    search: {
-      name: "Carina Larvor",
-    },
   });
   const theme = useMantineTheme();
 
