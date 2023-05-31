@@ -3,6 +3,7 @@ import { Notifications } from "@mantine/notifications";
 
 import {
   ButtonStyles,
+  TableStyles,
   TextInputStyles,
   TextStyles,
   TitleStyles,
@@ -17,6 +18,7 @@ const theme: MantineThemeOverride = {
     TextInput: TextInputStyles,
     Select: TextInputStyles,
     Title: TitleStyles,
+    Table: TableStyles,
   },
 
   globalStyles() {
