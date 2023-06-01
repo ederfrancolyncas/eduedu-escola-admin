@@ -1,23 +1,26 @@
+import { paginationOptions, profilesSample, statusSample } from "../../../mocked-data/general";
+import { useUserGetAll } from "~/api/user";
+import { Link } from "@tanstack/router";
+
+// Components:
 import {
   Button,
-  Center,
   Checkbox,
+  Flex,
+  Grid,
   Pagination,
   Select,
+  Space,
   Table,
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
 import { IconEdit } from "@tabler/icons-react";
-import { Link } from "@tanstack/router";
-
-import { statusSample, profilesSample } from "../../../mocked-data/general";
-import { useUserGetAll } from "~/api/user";
 import { PageHeader } from "~/components/PageHeader";
 
 export function UsersPage() {
   const { data } = useUserGetAll({
-    onSuccess: (data) => console.log(data),
+    onSuccess: (data) => console.log('users:', data),
   });
   const theme = useMantineTheme();
 
@@ -27,7 +30,7 @@ export function UsersPage() {
         title="Usuários"
         description={`${data?.pagination.totalItems} registros` ?? ""}
       >
-        <Link to="/usuarios">
+        <Link to="/usuarios/novo-usuario">
           <Button>Novo usuário</Button>
         </Link>
       </PageHeader>
@@ -82,11 +85,24 @@ export function UsersPage() {
         </tbody>
       </Table>
 
-      <Center mt={30}>
-        {data && (
-          <Pagination total={data.pagination.totalPages} withControls={false} />
-        )}
-      </Center>
+      <Grid mt={30}>
+        <Grid.Col span={10}>
+          <Flex align="center" justify="center">
+            {data && (
+              <Pagination total={data.pagination.totalPages} withControls={false} />
+            )}
+          </Flex>
+        </Grid.Col>
+        <Grid.Col span={2}>
+          <Flex align="center" justify="space-between">
+            <small>Exibir</small>
+            <Space w="xs" />
+            <Select data={paginationOptions} size="xs" style={{ maxWidth: '60px' }} />
+            <Space w="xs" />
+            <small>registros por página</small>
+          </Flex>
+        </Grid.Col>
+      </Grid>
     </>
   );
 }

@@ -41,6 +41,12 @@ class UserAPI extends API {
     });
     return data;
   }
+
+  static async createUser(form?: User) {
+    const { data } = await this.api.post<User>("/users", { form });
+    console.log('userapi', form)
+    return data;
+  }
 }
 
 export function useUserGetAll(
@@ -54,4 +60,13 @@ export function useUserGetAll(
   );
 
   return useQuery([KEY.ALL], handler, options);
+}
+
+export function saveUser(form?: User) {
+  const handler = useCallback(
+    function () {
+      return UserAPI.createUser(form)
+    },
+    [form]
+  )
 }
