@@ -1,25 +1,32 @@
 import { useCallback } from "react";
 import { API } from "./base";
-import { useQuery } from "@tanstack/react-query";
-import { Paginated, QueryOptions } from "./api-types";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { MutationOptions, Paginated, QueryOptions } from "./api-types";
+import { UserProfile, UserStatus } from "~/constants";
 
-export type UserStatus = "ACTIVE" | "INACTIVE";
 export type UserRole = "MASTER" | "ADMIN" | "USER";
 
+type School = {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type User = {
-  accessToken: string | null;
   id: string;
   status: UserStatus;
-  password: string;
   name: string;
   email: string;
   document: string;
-  profile: string;
+  profile: UserProfile;
   role: UserRole;
-  schoolId: string;
-  created_at: Date;
-  updated_at: Date;
+  school: School;
+  createdAt: string;
+  updatedAt: string;
 };
+
+export type UserInput = Pick<User, "name" | "email" | "document" | "profile">;
 
 type UserSearch = {
   "page-number"?: number;
@@ -34,17 +41,27 @@ const KEY = {
   ALL: "USER_ALL",
 };
 
+const URL = {
+  ALL: "/user/all",
+  CREATE: "/user",
+  UPDATE: (id: string) => "/user/" + id,
+};
+
 class UserAPI extends API {
   static async getAll(params?: UserSearch) {
-    const { data } = await this.api.get<Paginated<User>>("/users", {
+    const { data } = await this.api.get<Paginated<User>>(URL.ALL, {
       params,
     });
     return data;
   }
 
-  static async createUser(form?: User) {
-    const { data } = await this.api.post<User>("/users", { form });
-    console.log('userapi', form)
+  static async create(input?: UserInput) {
+    const { data } = await this.api.post<User>(URL.CREATE, input);
+    return data;
+  }
+
+  static async update(userId: string, input?: Partial<UserInput>) {
+    const { data } = await this.api.patch<User>(URL.UPDATE(userId), input);
     return data;
   }
 }
@@ -62,11 +79,24 @@ export function useUserGetAll(
   return useQuery([KEY.ALL], handler, options);
 }
 
-export function saveUser(form?: User) {
-  const handler = useCallback(
-    function () {
-      return UserAPI.createUser(form)
-    },
-    [form]
-  )
+export function useUserCreate(options?: MutationOptions<UserInput, User>) {
+  const handler = useCallback(function (input: UserInput) {
+    return UserAPI.create(input);
+  }, []);
+
+  return useMutation(handler, options);
+}
+
+export function useUserUpdate(
+  options?: MutationOptions<{ input: UserInput; userId: string }, User>
+) {
+  const handler = useCallback(function (data: {
+    userId: string;
+    input: UserInput;
+  }) {
+    return UserAPI.update(data.userId, data.input);
+  },
+  []);
+
+  return useMutation(handler, options);
 }

@@ -6,7 +6,10 @@ export type BaseResponse<T> = {
   errors?: ApiError;
 };
 
-type ApiError = string[];
+type ApiError = {
+  code: string;
+  message: string;
+};
 
 export type BaseError = Required<Omit<BaseResponse<void>, "data">>;
 

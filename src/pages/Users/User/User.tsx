@@ -1,102 +1,160 @@
-// Utils & Aux stuff:
-import { useState } from 'react';
 // TODO: change mocked data for real data when backend&&DB is ready!
-import { profilesSample } from '../../../mocked-data/general'
-import { Link, useParams } from "@tanstack/router";
+import { Link, useNavigate } from "@tanstack/router";
 // import { createUser } from "~/api/user";
 
 // Components:
 import { Button, Grid, Group, Select, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { useForm, zodResolver } from "@mantine/form";
 import { Title } from "../../../components/Title/Title";
+import { UserInput, useUserCreate, useUserUpdate } from "~/api/user";
+import { PROFILE_SELECT } from "~/constants";
+import { errorNotification } from "~/utils/errorNotification";
+import { successNotification } from "~/utils/successNotification";
+import { z } from "zod";
+import { useEditingUser } from "~/stores/editing-user-store";
+import { STATUS_SELECT } from "~/constants";
+
+const userInputValidation = z.object({
+  name: z
+    .string()
+    .min(3, { message: "Nome deve ter no mínimo 3 caracteres" })
+    .max(255, { message: "Nome deve ter no máximo 255 caracteres" }),
+
+  document: z
+    .string()
+    .length(11, { message: "CPF deve ter 11 caracteres" })
+    .regex(/^\d+$/, { message: "CPF deve conter apenas números" }),
+
+  email: z.string().email({ message: "Insira um e-mail válido" }),
+
+  profile: z.enum(["DIRECTOR", "TEACHER"]),
+});
 
 export function UserPage() {
+  const navigate = useNavigate();
+  const editingUser = useEditingUser();
 
-    // Verify if user is to create a new user or edit:
-    const params = useParams()
-    let newUser = params.id ? false : true
+  const { mutate: createUser, isLoading: isCreateLoading } = useUserCreate({
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    },
 
-    // Then abled/disabled the save btn:
-    const [saveBtn, setSaveBtn] = useState(false)
-    const handleChange = (wtf: any) => {
-        console.log(wtf.target.name)
-        // const { value } = event.target
-        // setSaveBtn(value !== '')
-    }
+    onSuccess: () => {
+      successNotification("Sucesso", "Usuário criado com sucesso!");
+      navigate({ to: "/usuarios" });
+    },
+  });
 
-    // To validate form:
-    const form = useForm({
-        initialValues: {
-            name: '',
-            document: '',
-            email: '',
-            profile: '',
-        },
-        validate: {
-            name: (value) => (value ? null : "Insira um nome"),
-            document: (value) => (value ? null : "Insira um CPF"),
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : "Insira um e-mail válido"),
-            profile: (value) => (value ? null : "Selecione um perfil"),
-        }
-    })
+  const { mutate: updateUser, isLoading: isUpdateLoading } = useUserUpdate({
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    },
 
-    // To save an user:
-    function saveUser(values: Object) {
-        console.log('saveUser', values)
+    onSuccess: () => {
+      successNotification("Sucesso", "Usuário atualizado com sucesso!");
+      useEditingUser.setState(form.values);
+    },
+  });
 
-        // const result = createUser(values)
-        // console.log(result)
-    }
+  const form = useForm<UserInput>({
+    initialValues: {
+      name: editingUser?.name ?? "",
+      document: editingUser?.document ?? "",
+      email: editingUser?.email ?? "",
+      profile: editingUser?.profile ?? ("" as "DIRECTOR" | "TEACHER"),
+    },
+    validate: zodResolver(userInputValidation),
+  });
 
-    return (
-        <>
-            <Title title={newUser ? 'Novo usuário' : 'Fulano de Tal'} />
+  return (
+    <>
+      <Title title={editingUser ? editingUser.name : "Fulano de Tal"} />
 
-            <form onChange={handleChange} onSubmit={form.onSubmit((values) => saveUser(values))}>
-                <Grid>
-                    <Grid.Col span={3}>
-                        <TextInput
-                            name="name"
-                            label="Nome"
-                            placeholder="Nome"
-                            {...form.getInputProps("name")}
-                        />
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                        <TextInput
-                            label="CPF"
-                            placeholder="CPF"
-                            {...form.getInputProps("document")}
-                        />
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                        <TextInput
-                            label="Email"
-                            placeholder="Email"
-                            {...form.getInputProps("email")}
-                        />
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                        <Select
-                            data={profilesSample}
-                            label="Perfil"
-                            placeholder="Selecione"
-                            {...form.getInputProps("profile")}
-                        />
-                    </Grid.Col>
-                </Grid>
-                <Group position="right" mt={30}>
-                    <Link to="/usuarios">
-                        <Button variant="outline">Cancelar</Button>
-                    </Link>
-                    {/* TODO: disabled while form is empty */}
-                    <Button
-                        type="submit"
-                        disabled={!saveBtn}>
-                        Salvar
-                    </Button>
-                </Group>
-            </form>
-        </>
-    )
+      <form
+        onSubmit={form.onSubmit((values) => {
+          if (editingUser) {
+            updateUser({ userId: editingUser.id, input: values });
+          } else {
+            createUser(values);
+          }
+        })}
+      >
+        <Grid columns={4}>
+          <Grid.Col span={1}>
+            <TextInput
+              label="Nome"
+              placeholder="Nome"
+              {...form.getInputProps("name")}
+            />
+          </Grid.Col>
+
+          <Grid.Col span={1}>
+            <TextInput
+              label="CPF"
+              placeholder="CPF"
+              {...form.getInputProps("document")}
+            />
+          </Grid.Col>
+
+          <Grid.Col span={1}>
+            <TextInput
+              label="Email"
+              placeholder="Email"
+              {...form.getInputProps("email")}
+            />
+          </Grid.Col>
+
+          <Grid.Col span={1}>
+            <Select
+              data={PROFILE_SELECT}
+              label="Perfil"
+              placeholder="Selecione"
+              {...form.getInputProps("profile")}
+            />
+          </Grid.Col>
+
+          {/* --- Editing user inputs --- */}
+          {editingUser && (
+            <>
+              <Grid.Col span={1}>
+                <Select
+                  data={STATUS_SELECT}
+                  label="Status"
+                  placeholder="Selecione"
+                  value={editingUser?.status}
+                  disabled
+                />
+              </Grid.Col>
+              {editingUser.profile === "TEACHER" && (
+                <Grid.Col span={2}>
+                  <TextInput
+                    label="Salas Associadas"
+                    value="1º A - 2023, 1º B - 2023, 1º C - 2023"
+                    disabled
+                  />
+                </Grid.Col>
+              )}
+              <Grid.Col span={1}>
+                <TextInput label="Código de Acesso" value="AHDE2874" disabled />
+              </Grid.Col>
+            </>
+          )}
+        </Grid>
+        <Group position="right" mt={30}>
+          <Link to="/usuarios">
+            <Button variant="outline">Cancelar</Button>
+          </Link>
+          <Button
+            type="submit"
+            disabled={
+              Object.values(form.values).includes("") || !form.isDirty()
+            }
+            loading={isUpdateLoading || isCreateLoading}
+          >
+            Salvar
+          </Button>
+        </Group>
+      </form>
+    </>
+  );
 }
