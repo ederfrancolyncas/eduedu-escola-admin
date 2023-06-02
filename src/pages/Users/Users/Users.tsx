@@ -7,6 +7,7 @@ import {
   STATUS_SELECT,
   USER_PROFILE,
 } from "~/constants";
+import { modals } from '@mantine/modals';
 
 // Components:
 import { PageHeader } from "~/components/PageHeader";
@@ -17,6 +18,7 @@ import {
   Group,
   Select,
   Table,
+  Text,
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
@@ -32,6 +34,29 @@ export function UsersPage() {
 
   const theme = useMantineTheme();
 
+  const deleteUser = () => modals.openConfirmModal({
+    title: 'Excluir',
+    children: (
+      <Text>
+        Deseja excluir o(s) usuários(s) selecionado(s)?
+      </Text>
+    ),
+    labels: { confirm: 'Sim', cancel: 'Não' },
+    onCancel: () => console.log('Cancel'),
+    onConfirm: () => console.log('Confirmed'),
+  });
+
+  const deactivateUser = () => modals.openConfirmModal({
+    title: 'Inativar',
+    children: (
+      <Text>
+        Deseja Inativar o(s) usuários(s) selecionado(s)?
+      </Text>
+    ),
+    labels: { confirm: 'Sim', cancel: 'Não' },
+    onCancel: () => console.log('Cancel'),
+    onConfirm: () => console.log('Confirmed'),
+  })
   return (
     <>
       <PageHeader
@@ -44,8 +69,8 @@ export function UsersPage() {
       </PageHeader>
 
       <Group>
-        <Button color="red" variant="outline">Excluir</Button>
-        <Button color="blue.6" variant="outline">Inativar</Button>
+        <Button onClick={deleteUser} color="red" variant="outline">Excluir</Button>
+        <Button onClick={deactivateUser} color="blue.6" variant="outline">Inativar</Button>
       </Group>
 
       <Table horizontalSpacing="xl" verticalSpacing="md">
