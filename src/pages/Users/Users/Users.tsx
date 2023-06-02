@@ -14,6 +14,7 @@ import { Pagination } from "~/components/Pagination";
 import {
   Button,
   Checkbox,
+  Group,
   Select,
   Table,
   TextInput,
@@ -41,6 +42,11 @@ export function UsersPage() {
           <Button>Novo usuário</Button>
         </Link>
       </PageHeader>
+
+      <Group>
+        <Button color="red" variant="outline">Excluir</Button>
+        <Button color="blue.6" variant="outline">Inativar</Button>
+      </Group>
 
       <Table horizontalSpacing="xl" verticalSpacing="md">
         <thead>
