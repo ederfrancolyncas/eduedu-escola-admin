@@ -31,6 +31,8 @@ const userInputValidation = z.object({
 });
 
 export function UserPage() {
+  const theme = useMantineTheme();
+
   const navigate = useNavigate();
   const editingUser = useEditingUser();
 
@@ -135,7 +137,13 @@ export function UserPage() {
                 </Grid.Col>
               )}
               <Grid.Col span={1}>
-                <TextInput label="Código de Acesso" value="AHDE2874" disabled />
+                <div style={{ position: 'relative' }}>
+                  <TextInput label="Código de Acesso" value="AHDE2874" disabled />
+                  <IconRefresh
+                    style={{ position: 'absolute', top: '50%', right: '3%', width: '20px' }} color={theme.colors.blue[9]}
+                    onClick={() => { console.log('novo código de acesso! :D') }}
+                  />
+                </div>
               </Grid.Col>
             </>
           )}
