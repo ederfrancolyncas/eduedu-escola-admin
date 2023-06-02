@@ -6,20 +6,16 @@ import {
   PROFILE_SELECT,
   STATUS_SELECT,
   USER_PROFILE,
-  paginationOptions,
 } from "~/constants";
 
 // Components:
 import { PageHeader } from "~/components/PageHeader";
+import { Pagination } from "~/components/Pagination";
 import {
   Button,
   Checkbox,
-  Flex,
-  Group,
-  Pagination,
   Select,
   Table,
-  Text,
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
@@ -100,27 +96,7 @@ export function UsersPage() {
         </tbody>
       </Table>
 
-      <Group position="apart">
-        <div></div>
-        <Flex align="center" justify="center">
-          {data && (
-            <Pagination
-              total={data.pagination.totalPages}
-              withControls={false}
-            />
-          )}
-        </Flex>
-
-        <Group align="center" spacing={24} noWrap>
-          <Text>Exibir</Text>
-          <Select
-            data={paginationOptions}
-            size="xs"
-            style={{ maxWidth: "60px" }}
-          />
-          <Text>registros por página</Text>
-        </Group>
-      </Group>
+      <Pagination totalPages={data ? data.pagination.totalPages : ''} />
     </>
   );
 }
