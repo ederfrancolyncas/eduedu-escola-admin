@@ -1,6 +1,6 @@
 import { AppShell, Stack } from "@mantine/core";
-import { Navbar } from "../Navbar/Navbar";
-import { Footer } from "../Footer/Footer";
+import { Navbar } from "~/components/Navbar/Navbar";
+import { Footer } from "~/components/Footer/Footer";
 
 type LayoutProps = {
   children: React.ReactNode;
