@@ -6,8 +6,6 @@ import { classesRoute } from "./Classes";
 import { studentsRoute } from "./Students";
 import { settingsRoute } from "./Settings";
 
-// TODO: validate route paths
-
 export const rootRoute = new RootRoute({
   component: () => <Outlet />,
 });

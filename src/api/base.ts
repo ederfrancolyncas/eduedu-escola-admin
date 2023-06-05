@@ -21,13 +21,13 @@ export class API {
   );
 
   private static appendToken(req: InternalAxiosRequestConfig<unknown>) {
-    const { accessToken } = useUserStore.getState();
+    // const { accessToken } = useUserStore.getState();
 
     return {
       ...req,
       headers: {
         ...req.headers,
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${""}`,
       },
     } as InternalAxiosRequestConfig<unknown>;
   }
@@ -35,7 +35,7 @@ export class API {
   private static async transformError(err: AxiosError<BaseError>) {
     if (err.response) {
       if (err.response?.status === 401) {
-        return await API.checkToken();
+        // return await API.checkToken();
       }
 
       if (err.response?.status === 403) {
@@ -55,23 +55,23 @@ export class API {
       // showErrorNotification(err.response.data.errors);
 
       // eslint-disable-next-line @typescript-eslint/no-throw-literal
-      throw err.response.data.errors;
+      throw err.response.data;
     } else throw err;
   }
 
-  private static async checkToken() {
-    try {
-      const { accessToken } = useUserStore.getState();
-      if (!accessToken) throw Error();
+  // private static async checkToken() {
+  //   try {
+  //     const { accessToken } = useUserStore.getState();
+  //     if (!accessToken) throw Error();
 
-      const { data } = await this.api.get<{ valido: boolean }>(
-        "login/token-valido"
-      );
+  //     const { data } = await this.api.get<{ valido: boolean }>(
+  //       "login/token-valido"
+  //     );
 
-      if (!data.valido) throw Error();
-    } catch {
-      useUserStore.setState({ accessToken: "" });
-      window.location.pathname = "/login";
-    }
-  }
+  //     if (!data.valido) throw Error();
+  //   } catch {
+  //     useUserStore.setState({ accessToken: "" });
+  //     window.location.pathname = "/login";
+  //   }
+  // }
 }

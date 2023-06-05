@@ -1,5 +1,6 @@
 import { MantineProvider, MantineThemeOverride } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from '@mantine/modals';
 
 import {
   ButtonStyles,
@@ -38,8 +39,10 @@ interface ThemeProviderProps {
 export function ThemeProvider({ children }: ThemeProviderProps) {
   return (
     <MantineProvider withNormalizeCSS withGlobalStyles theme={theme}>
-      <Notifications position="top-center" />
-      {children}
+      <ModalsProvider>
+        <Notifications position="top-center" />
+        {children}
+      </ModalsProvider>
     </MantineProvider>
   );
 }
