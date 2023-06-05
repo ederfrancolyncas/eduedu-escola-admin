@@ -70,7 +70,7 @@ export function UserPage() {
 
   return (
     <>
-      <Title title={editingUser ? editingUser.name : "Fulano de Tal"} />
+      <Title title={editingUser ? editingUser.name : "Novo usuário"} />
 
       <form
         onSubmit={form.onSubmit((values) => {
