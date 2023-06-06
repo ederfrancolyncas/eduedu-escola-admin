@@ -1,5 +1,9 @@
-import { PageHeader } from "~/components/PageHeader";
+import { CardDashboard } from "~/components/CardDashboard";
 
 export function DashboardPage() {
-  return <PageHeader title="Dashboard" />;
+  return (
+    <>
+      <CardDashboard />
+    </>
+  );
 }

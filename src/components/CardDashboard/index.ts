@@ -1,0 +1,1 @@
+export { Dashboard as CardDashboard } from './Dashboard'
