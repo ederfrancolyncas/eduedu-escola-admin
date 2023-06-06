@@ -31,11 +31,14 @@ const userInputValidation = z.object({
 });
 
 export function UserPage() {
+  // Theme:
   const theme = useMantineTheme();
 
+  // Navigation:
   const navigate = useNavigate();
-  const editingUser = useEditingUser();
 
+  // Mutations:
+  const editingUser = useEditingUser();
   const { mutate: createUser, isLoading: isCreateLoading } = useUserCreate({
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
@@ -45,7 +48,6 @@ export function UserPage() {
       navigate({ to: "/usuarios" });
     },
   });
-
   const { mutate: updateUser, isLoading: isUpdateLoading } = useUserUpdate({
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
@@ -55,7 +57,6 @@ export function UserPage() {
       useEditingUser.setState(form.values);
     },
   });
-
   const form = useForm<UserInput>({
     initialValues: {
       name: editingUser?.name ?? "",

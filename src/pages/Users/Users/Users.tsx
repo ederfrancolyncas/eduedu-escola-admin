@@ -1,6 +1,6 @@
 import { useUserGetAll } from "~/api/user";
 import { useEditingUser } from "~/stores/editing-user-store";
-import { Link } from "@tanstack/router";
+import { Link, useNavigate } from "@tanstack/router";
 import {
   PROFILE_SELECT,
   STATUS_SELECT,
@@ -29,7 +29,16 @@ import {
 import { IconEdit } from "@tabler/icons-react";
 
 export function UsersPage() {
+  // Theme:
   const theme = useMantineTheme();
+
+  // Navigation:
+  const navigate = useNavigate();
+  const navigateNewUser = () => { navigate({ to: "/usuarios/novo-usuario" }); }
+
+  // Checkbox stuff:
+  const allChecked = false;
+  var usersChecked = []
 
   // CRUD:
   const { data } = useUserGetAll({
@@ -78,10 +87,6 @@ export function UsersPage() {
     onConfirm: () => deactiveUser(usersChecked),
   })
 
-  // Checkbox stuff:
-  const allChecked = false;
-  var usersChecked = []
-
   return (
     <>
       <PageHeader
@@ -89,12 +94,7 @@ export function UsersPage() {
         description={`${data?.pagination.totalItems} registros` ?? ""}
         mbDescription="0"
       >
-        <Link
-          to="/usuarios/novo-usuario"
-        // onClick={() => { useEditingUser.setState(null) }
-        >
-          <Button>Novo usuário</Button>
-        </Link>
+        <Button onClick={navigateNewUser}>Novo usuário</Button>
       </PageHeader>
 
       {usersChecked.length > 0 &&

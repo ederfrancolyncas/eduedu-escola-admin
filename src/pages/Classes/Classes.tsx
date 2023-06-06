@@ -1,3 +1,5 @@
+import { useNavigate } from "@tanstack/router";
+
 // Components:
 import { PageHeader } from "~/components/PageHeader";
 import { Button, Checkbox, Group, Select, Table, Text, TextInput, useMantineTheme } from "@mantine/core";
@@ -27,6 +29,12 @@ export function ClassesPage() {
     },
   }
 
+  // Navigation:
+  const navigate = useNavigate();
+  const navigateNewClass = () => { navigate({ to: "/turmas/nova-turma" }); }
+  const navigateEditClass = (id) => { navigate({ to: '/turmas/editar/$classId', params: { classId: id } }); }
+  const navigateSeeClass = (id) => { navigate({ to: "/turmas/visualizar/$classId", params: { classId: id } }); }
+
   // Modals
   const openModalDeleteClass = () => modals.openConfirmModal({
     title: 'Excluir',
@@ -43,7 +51,7 @@ export function ClassesPage() {
   return (
     <>
       <PageHeader title="Turmas">
-        <Button>Nova turma</Button>
+        <Button onClick={navigateNewClass}>Nova turma</Button>
       </PageHeader>
 
       <Group>
@@ -62,7 +70,7 @@ export function ClassesPage() {
             </th>
             <th>
               Ano Letivo
-              <Select data={[]} placeholder="Pesquisar" />
+              <Select data={[]} placeholder="Pesquisar" searchable />
             </th>
             <th>
               Série
@@ -70,11 +78,11 @@ export function ClassesPage() {
             </th>
             <th>
               Período
-              <Select data={[]} placeholder="Pesquisar" />
+              <Select data={[]} placeholder="Pesquisar" searchable />
             </th>
             <th>
               Professores
-              <Select data={[]} placeholder="Pesquisar" />
+              <Select data={[]} placeholder="Pesquisar" searchable />
             </th>
             <th></th>
           </tr>
@@ -90,8 +98,8 @@ export function ClassesPage() {
               <td>{item.schoolYear}</td>
               <td>{item.name}</td>
               <td>
-                <IconEdit color={theme.colors.blue[9]} />
-                <IconEye color={theme.colors.blue[9]} />
+                <IconEdit onClick={() => navigateEditClass('1')} color={theme.colors.blue[9]} />
+                <IconEye onClick={() => navigateSeeClass('1')} color={theme.colors.blue[9]} />
               </td>
             </tr>
           ))}
