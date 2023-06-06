@@ -49,8 +49,13 @@ export function UsersPage() {
 
   // Checkbox stuff:
   const [usersChecked, setUsersChecked] = useState([])
-  const addUserChecked = (user) => { usersChecked.push(user.id) }
+  const addUserChecked = (user) => {
+    user.checked = true
+    usersChecked.push(user.id)
+  }
   const removeUserChecked = (user) => {
+    user.checked = false
+    // TODO: something is broking here:
     let t = usersChecked
     t = t.filter((item) => { item != user.id })
     setUsersChecked(t)
@@ -58,6 +63,14 @@ export function UsersPage() {
   const checkUncheckUser = (checked, user) => {
     checked ? addUserChecked(user) : removeUserChecked(user)
     updateShowBtns()
+  }
+  const checkUncheckAll = (checked) => {
+    // TODO: fix this
+    if (checked) {
+      data.items.forEach(element => { element.checked = true });
+    } else {
+      data.items.forEach(element => { element.checked = false });
+    }
   }
 
   // CRUD:
@@ -128,7 +141,9 @@ export function UsersPage() {
         <thead>
           <tr>
             <th>
-              <Checkbox />
+              <Checkbox
+                onChange={(e) => checkUncheckAll(e.target.checked)}
+              />
             </th>
             <th>
               Nome
@@ -158,6 +173,7 @@ export function UsersPage() {
             <tr key={user.id}>
               <td>
                 <Checkbox
+                  checked={user.checked}
                   onChange={(e) => checkUncheckUser(e.target.checked, user)}
                 />
               </td>
