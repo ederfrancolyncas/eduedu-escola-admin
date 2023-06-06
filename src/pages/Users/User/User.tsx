@@ -70,7 +70,9 @@ export function UserPage() {
 
   return (
     <>
-      <Title title={editingUser ? editingUser.name : "Novo usuário"} />
+      <Title title={editingUser ? editingUser.name : "Novo usuário"}>
+        <Link to="/usuarios" style={{ textDecoration: 'none' }} >Retornar a página de Usuários</Link>
+      </Title>
 
       <form
         onSubmit={form.onSubmit((values) => {
