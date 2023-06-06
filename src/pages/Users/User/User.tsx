@@ -8,7 +8,7 @@ import { errorNotification } from "~/utils/errorNotification";
 import { successNotification } from "~/utils/successNotification";
 
 // Components:
-import { Title } from "~/components/Title/Title";
+import { PageHeader } from "~/components/PageHeader";
 import { Button, Grid, Group, Select, TextInput, useMantineTheme } from "@mantine/core";
 
 // Icons:
@@ -68,9 +68,9 @@ export function UserPage() {
 
   return (
     <>
-      <Title title={editingUser ? editingUser.name : "Novo usuário"}>
+      <PageHeader title={editingUser ? editingUser.name : "Novo usuário"}>
         <Link to="/usuarios" style={{ textDecoration: 'none' }} >Retornar a página de Usuários</Link>
-      </Title>
+      </PageHeader>
 
       <form
         onSubmit={form.onSubmit((values) => {

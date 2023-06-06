@@ -87,6 +87,7 @@ export function UsersPage() {
       <PageHeader
         title="Usuários"
         description={`${data?.pagination.totalItems} registros` ?? ""}
+        mbDescription="0"
       >
         <Link
           to="/usuarios/novo-usuario"
