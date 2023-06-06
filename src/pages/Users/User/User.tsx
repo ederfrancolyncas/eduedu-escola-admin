@@ -40,7 +40,6 @@ export function UserPage() {
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
     },
-
     onSuccess: () => {
       successNotification("Sucesso", "Usuário criado com sucesso!");
       navigate({ to: "/usuarios" });
@@ -51,7 +50,6 @@ export function UserPage() {
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
     },
-
     onSuccess: () => {
       successNotification("Sucesso", "Usuário atualizado com sucesso!");
       useEditingUser.setState(form.values);

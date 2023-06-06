@@ -1,15 +1,17 @@
 import { useUserGetAll } from "~/api/user";
 import { useEditingUser } from "~/stores/editing-user-store";
-import { errorNotification } from "~/utils/errorNotification";
 import { Link } from "@tanstack/router";
 import {
   PROFILE_SELECT,
   STATUS_SELECT,
   USER_PROFILE,
 } from "~/constants";
-import { modals } from '@mantine/modals';
+import { useUserDelete, useUserDeactive } from "~/api/user";
+import { errorNotification } from "~/utils/errorNotification";
+import { successNotification } from "~/utils/successNotification";
 
 // Components:
+import { modals } from '@mantine/modals';
 import { PageHeader } from "~/components/PageHeader";
 import { Pagination } from "~/components/Pagination";
 import {
@@ -26,15 +28,36 @@ import {
 // Icons:
 import { IconEdit } from "@tabler/icons-react";
 
-
 export function UsersPage() {
-  const { data } = useUserGetAll({
-    onError: (error) => errorNotification("Erro", error.message),
-  });
-
   const theme = useMantineTheme();
 
-  const deleteUser = () => modals.openConfirmModal({
+  // CRUD:
+  const { data } = useUserGetAll({
+    onSuccess: (data) => {
+      data.items.forEach(element => { element.checked = false });
+    },
+    onError: (error) => errorNotification("Erro", error.message),
+  });
+  const { mutate: deleteUser, isLoading: isDeleteLoading } = useUserDelete({
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    },
+    onSuccess: () => {
+      successNotification("Sucesso", "Usuário deletado com sucesso!");
+    }
+  });
+  // TODO: implement when endpoint is ready
+  const { mutate: deactiveUser, isLoading: isDeactiveLoading } = useUserDeactive({
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    },
+    onSuccess: () => {
+      successNotification("Sucesso", "Usuário deletado com sucesso!");
+    }
+  });
+
+  // Modals:
+  const openModalDeleteUser = () => modals.openConfirmModal({
     title: 'Excluir',
     children: (
       <Text>
@@ -42,11 +65,9 @@ export function UsersPage() {
       </Text>
     ),
     labels: { confirm: 'Sim', cancel: 'Não' },
-    onCancel: () => console.log('Cancel'),
-    onConfirm: () => console.log('Confirmed'),
+    onConfirm: () => { deleteUser(usersChecked) },
   });
-
-  const deactivateUser = () => modals.openConfirmModal({
+  const openModalDeactivateUser = () => modals.openConfirmModal({
     title: 'Inativar',
     children: (
       <Text>
@@ -54,30 +75,43 @@ export function UsersPage() {
       </Text>
     ),
     labels: { confirm: 'Sim', cancel: 'Não' },
-    onCancel: () => console.log('Cancel'),
-    onConfirm: () => console.log('Confirmed'),
+    onConfirm: () => deactiveUser(usersChecked),
   })
+
+  // Checkbox stuff:
+  const allChecked = false;
+  var usersChecked = []
+
   return (
     <>
       <PageHeader
         title="Usuários"
         description={`${data?.pagination.totalItems} registros` ?? ""}
       >
-        <Link to="/usuarios/novo-usuario">
+        <Link
+          to="/usuarios/novo-usuario"
+          onClick={() => useEditingUser.setState(null)}
+        >
           <Button>Novo usuário</Button>
         </Link>
       </PageHeader>
 
-      <Group>
-        <Button onClick={deleteUser} color="red" variant="outline">Excluir</Button>
-        <Button onClick={deactivateUser} color="blue.6" variant="outline">Inativar</Button>
-      </Group>
+      {/* {usersChecked.length > 0 && */}
+      < Group >
+        <Button onClick={openModalDeleteUser} color="red" variant="outline">Excluir</Button>
+        <Button onClick={openModalDeactivateUser} color="blue.6" variant="outline">Inativar</Button>
+      </Group >
+      {/* } */}
+      {/* {usersChecked.length} */}
 
       <Table horizontalSpacing="xl" verticalSpacing="md">
         <thead>
           <tr>
             <th>
-              <Checkbox />
+              <Checkbox
+              // checked={allChecked}
+              // TODO: check or uncheck all the checkboxes at the table on click
+              />
             </th>
             <th>
               Nome
@@ -106,7 +140,12 @@ export function UsersPage() {
           {data?.items.map((user) => (
             <tr key={user.id}>
               <td>
-                <Checkbox />
+                <Checkbox
+                  // checked={user.checked}
+                  onChange={() => {
+                    usersChecked.push(user.id)
+                  }}
+                />
               </td>
               <td>{user.name}</td>
               <td>{user.email}</td>
