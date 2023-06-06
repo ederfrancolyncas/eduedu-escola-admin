@@ -1,10 +1,11 @@
 import { Grid, Group, Card, Select, TextInput, Title } from "@mantine/core";
 
-export function Dashboard() {
+export function CardDashboard() {
     return (
         <Card
             shadow="sm"
             padding="lg"
+            mb={20}
             radius="md"
             style={{ height: '100%', padding: '40px' }}
         >
