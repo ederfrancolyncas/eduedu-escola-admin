@@ -1,8 +1,9 @@
 import { Outlet, RootRoute, Route, Router } from "@tanstack/router";
 import { Login } from "../pages/Auth/components";
+import { classesRoute } from "./Classes";
 import { dashboardRoute } from "./Dashboard";
 import { usersRoute } from "./Users";
-import { classesRoute } from "./Classes";
+import { schoolYearRoute } from "./SchoolYear";
 import { studentsRoute } from "./Students";
 import { settingsRoute } from "./Settings";
 
@@ -18,9 +19,10 @@ const loginRoute = new Route({
 
 const routeTree = rootRoute.addChildren([
   loginRoute,
+  classesRoute,
   dashboardRoute,
   usersRoute,
-  classesRoute,
+  schoolYearRoute,
   studentsRoute,
   settingsRoute,
 ]);
