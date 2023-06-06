@@ -11,8 +11,9 @@ export function Title({ title, description, children }: ComponentProps) {
         <Flex
             direction={{ base: 'column', sm: 'row' }}
             gap={{ base: 'sm', sm: 'sm' }}
-            justify={{ sm: 'center', md: 'space-between' }}>
-
+            justify={{ sm: 'center', md: 'space-between' }}
+            style={{ marginBottom: '50px' }}
+        >
             <Box>
                 <MantineTitle
                     style={{
