@@ -17,10 +17,8 @@ export function PageHeader({ title, description, children, mbDescription }: Comp
     >
       <Box>
         <MantineTitle
+          order={2}
           style={{
-            color: '#000',
-            fontWeight: 'bold',
-            textDecoration: 'none',
             marginBottom: mbDescription ? mbDescription : '25px'
           }}
         >
