@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { useUserGetAll } from "~/api/user";
 import { useEditingUser } from "~/stores/editing-user-store";
-import { Link, useNavigate } from "@tanstack/router";
+import { useNavigate } from "@tanstack/router";
 import {
   PROFILE_SELECT,
   STATUS_SELECT,
@@ -35,10 +36,29 @@ export function UsersPage() {
   // Navigation:
   const navigate = useNavigate();
   const navigateNewUser = () => { navigate({ to: "/usuarios/novo-usuario" }); }
+  const navigateSeeUser = (user) => {
+    useEditingUser.setState(user)
+    navigate({ to: "/usuarios/$userId", params: { userId: user.id } });
+  }
+
+  // Show/Hide sensible btns(Delete&&Inactivate):
+  const [showBtns, setShowBtns] = useState(false);
+  const updateShowBtns = () => {
+    usersChecked.length ? setShowBtns(true) : setShowBtns(false)
+  };
 
   // Checkbox stuff:
-  const allChecked = false;
-  var usersChecked = []
+  const [usersChecked, setUsersChecked] = useState([])
+  const addUserChecked = (user) => { usersChecked.push(user.id) }
+  const removeUserChecked = (user) => {
+    let t = usersChecked
+    t = t.filter((item) => { item != user.id })
+    setUsersChecked(t)
+  }
+  const checkUncheckUser = (checked, user) => {
+    checked ? addUserChecked(user) : removeUserChecked(user)
+    updateShowBtns()
+  }
 
   // CRUD:
   const { data } = useUserGetAll({
@@ -97,21 +117,18 @@ export function UsersPage() {
         <Button onClick={navigateNewUser}>Novo usuário</Button>
       </PageHeader>
 
-      {usersChecked.length > 0 &&
-        < Group >
+      {showBtns &&
+        <Group>
           <Button onClick={openModalDeleteUser} color="red" variant="outline">Excluir</Button>
           <Button onClick={openModalDeactivateUser} color="blue.6" variant="outline">Inativar</Button>
-        </Group >
+        </Group>
       }
 
       <Table horizontalSpacing="xl" verticalSpacing="md">
         <thead>
           <tr>
             <th>
-              <Checkbox
-              // checked={allChecked}
-              // TODO: check or uncheck all the checkboxes at the table on click
-              />
+              <Checkbox />
             </th>
             <th>
               Nome
@@ -141,10 +158,7 @@ export function UsersPage() {
             <tr key={user.id}>
               <td>
                 <Checkbox
-                  // checked={user.checked}
-                  onChange={() => {
-                    usersChecked.push(user.id)
-                  }}
+                  onChange={(e) => checkUncheckUser(e.target.checked, user)}
                 />
               </td>
               <td>{user.name}</td>
@@ -153,13 +167,7 @@ export function UsersPage() {
               <td>{USER_PROFILE[user.profile]}</td>
               <td>{user.status === "ACTIVE" ? "Ativo" : "Inativo"}</td>
               <td>
-                <Link
-                  to="/usuarios/$userId"
-                  params={{ userId: user.id }}
-                  onClick={() => useEditingUser.setState(user)}
-                >
-                  <IconEdit color={theme.colors.blue[9]} />
-                </Link>
+                <IconEdit onClick={() => navigateSeeUser(user)} color={theme.colors.blue[9]} />
               </td>
             </tr>
           ))}
