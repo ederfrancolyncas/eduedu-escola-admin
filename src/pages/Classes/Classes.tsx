@@ -1,7 +1,11 @@
-import { Button, Checkbox, Select, Table, TextInput, useMantineTheme } from "@mantine/core";
-import { IconEdit, IconEye } from "@tabler/icons-react";
+// Components:
 import { PageHeader } from "~/components/PageHeader";
+import { Button, Checkbox, Group, Select, Table, Text, TextInput, useMantineTheme } from "@mantine/core";
 import { Pagination } from "~/components/Pagination";
+import { modals } from '@mantine/modals';
+
+// Icons:
+import { IconEdit, IconEye } from "@tabler/icons-react";
 
 export function ClassesPage() {
   const theme = useMantineTheme();
@@ -23,11 +27,28 @@ export function ClassesPage() {
     },
   }
 
+  // Modals
+  const openModalDeleteClass = () => modals.openConfirmModal({
+    title: 'Excluir',
+    children: (
+      <Text size="sm">
+        Deseja excluir a(s) turmas(s) selecionada(s)?
+      </Text>
+    ),
+    labels: { confirm: 'Sim', cancel: 'Não' },
+    onCancel: () => console.log('Noooo'),
+    onConfirm: () => console.log('Yasss :D'),
+  })
+
   return (
     <>
       <PageHeader title="Turmas">
         <Button>Nova turma</Button>
       </PageHeader>
+
+      <Group>
+        <Button variant="outline" color="red" onClick={openModalDeleteClass}>Excluir</Button>
+      </Group>
 
       <Table horizontalSpacing="xl" verticalSpacing="md">
         <thead>
