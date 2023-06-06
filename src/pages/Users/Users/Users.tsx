@@ -90,19 +90,18 @@ export function UsersPage() {
       >
         <Link
           to="/usuarios/novo-usuario"
-          onClick={() => useEditingUser.setState(null)}
+        // onClick={() => { useEditingUser.setState(null) }
         >
           <Button>Novo usuário</Button>
         </Link>
       </PageHeader>
 
-      {/* {usersChecked.length > 0 && */}
-      < Group >
-        <Button onClick={openModalDeleteUser} color="red" variant="outline">Excluir</Button>
-        <Button onClick={openModalDeactivateUser} color="blue.6" variant="outline">Inativar</Button>
-      </Group >
-      {/* } */}
-      {/* {usersChecked.length} */}
+      {usersChecked.length > 0 &&
+        < Group >
+          <Button onClick={openModalDeleteUser} color="red" variant="outline">Excluir</Button>
+          <Button onClick={openModalDeactivateUser} color="blue.6" variant="outline">Inativar</Button>
+        </Group >
+      }
 
       <Table horizontalSpacing="xl" verticalSpacing="md">
         <thead>
