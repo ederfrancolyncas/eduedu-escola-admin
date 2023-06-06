@@ -1,9 +1,9 @@
 import { Card } from '@mantine/core'
-import { BaseCard, HeaderCard, ContentCard } from './commons/index'
+import { HeaderCard, ContentCard } from './commons/index'
 
 export function Active() {
     return (
-        <BaseCard>
+        <Card>
             <Card.Section>
                 <HeaderCard year="2024" status="Ativo" />
                 <ContentCard
@@ -12,6 +12,6 @@ export function Active() {
                     teachersQuantity='58'
                 />
             </Card.Section>
-        </BaseCard>
+        </Card>
     )
 }

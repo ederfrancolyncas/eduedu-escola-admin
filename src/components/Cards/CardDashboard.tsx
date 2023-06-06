@@ -2,13 +2,7 @@ import { Grid, Group, Card, Select, TextInput, Title } from "@mantine/core";
 
 export function CardDashboard() {
     return (
-        <Card
-            shadow="sm"
-            padding="lg"
-            mb={20}
-            radius="md"
-            style={{ height: '100%', padding: '40px' }}
-        >
+        <Card mb={20}>
             <Card.Section>
                 <Grid columns={4}>
                     <Grid.Col span={1}>

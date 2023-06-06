@@ -4,6 +4,7 @@ import { ModalsProvider } from '@mantine/modals';
 
 import {
   ButtonStyles,
+  CardStyles,
   TableStyles,
   TextInputStyles,
   TextStyles,
@@ -15,6 +16,7 @@ const theme: MantineThemeOverride = {
 
   components: {
     Button: ButtonStyles,
+    Card: CardStyles,
     Text: TextStyles,
     TextInput: TextInputStyles,
     Select: TextInputStyles,

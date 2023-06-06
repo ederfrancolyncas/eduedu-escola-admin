@@ -11,12 +11,7 @@ export function CardDashboardClass({ className, classesQuantity, studentsQuantit
     const theme = useMantineTheme();
 
     return (
-        <Card
-            shadow="sm"
-            padding="lg"
-            radius="md"
-            style={{ height: '100%', padding: '40px' }}
-        >
+        <Card>
             <Card.Section>
                 <Title
                     order={4}

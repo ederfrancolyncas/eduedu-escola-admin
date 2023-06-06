@@ -1,6 +1,6 @@
 import { modals } from '@mantine/modals';
 import { Card, Group, Text, Button } from '@mantine/core'
-import { BaseCard, ContentCard, HeaderCard } from './commons';
+import { ContentCard, HeaderCard } from './commons';
 
 export function Inactive() {
     // Modals
@@ -33,7 +33,7 @@ export function Inactive() {
     });
 
     return (
-        <BaseCard>
+        <Card>
             <Card.Section>
                 <HeaderCard year="2024" status="Inativo">
                     <Group position="apart">
@@ -58,6 +58,6 @@ export function Inactive() {
                     teachersQuantity='58'
                 />
             </Card.Section>
-        </BaseCard>
+        </Card>
     )
 }
