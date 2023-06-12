@@ -1,4 +1,5 @@
-import { Button, Grid, Group, Select, Text, Title } from "@mantine/core";
+import { Accordion, Button, Grid, Group, Flex, Select, Text, Title } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 
 export function DetailsPage() {
     return (
@@ -43,6 +44,50 @@ export function DetailsPage() {
                     <Button>Gerar relatório</Button>
                 </Grid.Col>
             </Grid>
+
+            <Accordion
+                chevron={<IconPlus size="1rem" />}
+                chevronPosition="left"
+                styles={{
+                    chevron: {
+                        '&[data-rotate]': {
+                            transform: 'rotate(45deg)',
+                        },
+                    },
+                }}
+            >
+                <Accordion.Item value="customization">
+                    <Accordion.Control>
+                        Desempenho em Provas
+                    </Accordion.Control>
+                    <Accordion.Panel>
+                        Lorem ipsum
+                    </Accordion.Panel>
+                </Accordion.Item>
+
+                <Accordion.Item value="customization">
+                    <Accordion.Control>
+                        Desempenho em Planetas
+                    </Accordion.Control>
+                    <Accordion.Panel>
+                        Lorem ipsum
+                    </Accordion.Panel>
+                </Accordion.Item>
+
+                <Accordion.Item value="customization">
+                    <Accordion.Control>
+                        <Flex>
+                            Desempenho de Alunos por
+                            <Select
+                                style={{ width: '50px' }}
+                                data={[]} />
+                        </Flex>
+                    </Accordion.Control>
+                    <Accordion.Panel>
+                        Lorem ipsum
+                    </Accordion.Panel>
+                </Accordion.Item>
+            </Accordion>
         </>
     )
 }
