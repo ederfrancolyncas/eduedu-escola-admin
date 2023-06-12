@@ -8,10 +8,8 @@ export function Inactive() {
         title: 'Ativar Ano Letivo',
         children: (
             <Text size="sm">
-                Mussum Ipsum, cacilds vidis litro abertis.
-                Viva Forevis aptent taciti sociosqu ad litora torquent.
-                Paisis, filhis, espiritis santis.
-                Mais vale um bebadis conhecidiss, que um alcoolatra anonimis.
+                Deseja ativar o ano letivo selecionado?
+                Deseja continuar?
             </Text>
         ),
         labels: { confirm: 'Sim', cancel: 'Não' },
