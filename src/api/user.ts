@@ -45,7 +45,7 @@ const URL = {
   ALL: "/user/all",
   CREATE: "/user",
   UPDATE: (id: string) => `/user/${id}`,
-  DELETE: (ids: string) => "/user",
+  DELETE: "/user",
 };
 
 class UserAPI extends API {
@@ -72,8 +72,11 @@ class UserAPI extends API {
     return data;
   }
 
-  static async delete(ids: any) {
-    const { data } = await this.api.patch<User>(URL.DELETE(ids));
+  static async delete(userIds: string[]) {
+    const { data } = await this.api.delete<{ success: boolean }>(URL.DELETE, {
+      data: { ids: userIds },
+    });
+
     return data;
   }
 }
@@ -108,16 +111,19 @@ export function useUserUpdate(
   }) {
     return UserAPI.update(data.userId, data.input);
   },
-    []);
+  []);
 
   return useMutation(handler, options);
 }
 
-export function useUserDelete(ids: any) {
-  const handler = useCallback(function (ids: any) {
+export function useUserDelete(
+  options?: MutationOptions<string[], { success: boolean }>
+) {
+  const handler = useCallback(function (ids: string[]) {
     return UserAPI.delete(ids);
   }, []);
-  return useMutation(handler, ids);
+
+  return useMutation(handler, options);
 }
 
 // TODO: implement when endpoint is ready
