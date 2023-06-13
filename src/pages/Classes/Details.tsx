@@ -46,6 +46,7 @@ export function DetailsPage() {
             </Grid>
 
             <Accordion
+                variant="separated"
                 chevron={<IconPlus size="1rem" />}
                 chevronPosition="left"
                 styles={{
@@ -53,7 +54,7 @@ export function DetailsPage() {
                         '&[data-rotate]': {
                             transform: 'rotate(45deg)',
                         },
-                    },
+                    }
                 }}
             >
                 <Accordion.Item value="customization">
