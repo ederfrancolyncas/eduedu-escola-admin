@@ -1,7 +1,8 @@
-import { Pagination, Table, Button, Checkbox, TextInput, Select, useMantineTheme } from "@mantine/core";
-import { IconEdit, IconEye } from "@tabler/icons-react";
+import { Pagination, Table, Button, Checkbox, Text, TextInput, Select, useMantineTheme, Group, FileInput, rem } from "@mantine/core";
+import { IconEdit, IconEye, IconPaperclip } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/router";
 import { PageHeader } from "~/components/PageHeader";
+import { modals } from '@mantine/modals';
 
 export function StudentsPage() {
   // Theme:
@@ -12,6 +13,34 @@ export function StudentsPage() {
   const navigateSeeStudent = (user: any) => {
     navigate({ to: "/usuarios/$userId", params: { userId: user.id } });
   }
+
+  // Modals
+  const openModalUploadStudent = () => modals.openConfirmModal({
+    title: 'Upload de Aluno',
+    children: (
+      <>
+        <Group>
+          <Text size="sm">
+            Para fazer upload de aluno em lote é necessário seguir o template de cadastro de aluno.
+          </Text>
+          <Text c="blue.6">Fazer download do template</Text>
+        </Group>
+
+        <Group>
+          <Text size="sm">Selecione o arquivo do template de Cadastro de Aluno.</Text>
+          <FileInput placeholder="Selecione o arquivo" icon={<IconPaperclip size={rem(14)} />} />
+        </Group>
+
+        <Group>
+          <Text size="sm">Selecione a turma que deseja adicionar os alunos do template.</Text>
+          <Select placeholder="Selecione a turma" data={[]} style={{ width: '100%' }} />
+        </Group>
+      </>
+    ),
+    labels: { confirm: 'Sim', cancel: 'Não' },
+    onCancel: () => console.log('Noooo'),
+    onConfirm: () => console.log('Yasss :D'),
+  })
 
   // TODO: get real data:
   const students = {
@@ -36,7 +65,7 @@ export function StudentsPage() {
   return (
     <>
       <PageHeader title="Alunos">
-        <Button variant="outline">Upload aluno</Button>
+        <Button onClick={openModalUploadStudent} variant="outline">Upload aluno</Button>
         <Button>Novo aluno</Button>
       </PageHeader>
 
