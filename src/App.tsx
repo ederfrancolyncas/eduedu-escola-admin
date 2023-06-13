@@ -1,10 +1,7 @@
-import { RouterProvider } from "@tanstack/router";
-import { router } from "./routes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
-// Style:
 import { ThemeProvider } from "./providers/ThemeProvider";
+import { AppRoutes } from "./routes";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,7 +16,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <RouterProvider router={router} />
+        <AppRoutes />
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

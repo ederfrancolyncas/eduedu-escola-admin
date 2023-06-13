@@ -1,41 +1,15 @@
-import { Outlet, Route } from "@tanstack/router";
-import { rootRoute } from ".";
-import { Layout } from "../components/Layout";
-import { UsersPage } from "../pages/Users/Users/Users";
-import { UserPage } from "../pages/Users/User/User";
+import { Outlet, Route, Routes } from "react-router-dom";
+import { UsersListPage } from "../pages/Users/List";
+import { UserPage } from "../pages/Users/User";
 
-// TODO: validate routes
-
-export const usersRoute = new Route({
-  path: "/usuarios",
-  component: () => (
-    <Layout>
-      <Outlet />
-    </Layout>
-  ),
-  getParentRoute: () => rootRoute,
-});
-
-export const usersIndexRoute = new Route({
-  path: "/",
-  component: () => <UsersPage />,
-  getParentRoute: () => usersRoute,
-});
-
-export const newUserIndexRoute = new Route({
-  path: "novo-usuario",
-  component: () => <UserPage />,
-  getParentRoute: () => usersRoute,
-});
-
-export const userProfileIndexRoute = new Route({
-  path: "$userId",
-  component: () => <UserPage />,
-  getParentRoute: () => usersRoute,
-});
-
-usersRoute.addChildren([
-  usersIndexRoute,
-  newUserIndexRoute,
-  userProfileIndexRoute,
-]);
+export function UsersRoutes() {
+  return (
+    <Routes>
+      <Route path="/" Component={Outlet}>
+        <Route index Component={UsersListPage} />
+        <Route path=":userId" Component={UserPage} />
+        <Route path="novo-usuario" Component={UserPage} />
+      </Route>
+    </Routes>
+  );
+}

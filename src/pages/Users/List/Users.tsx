@@ -4,14 +4,16 @@ import {
   Checkbox,
   Group,
   Select,
+  Space,
   Table,
   Text,
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { Link } from "@tanstack/router";
+import { IconEdit } from "@tabler/icons-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useUserDelete, useUserGetAll, useUserInactivate } from "~/api/user";
 import { PageHeader } from "~/components/PageHeader";
 import { Pagination } from "~/components/Pagination";
@@ -19,11 +21,7 @@ import { PROFILE_SELECT, STATUS_SELECT, USER_PROFILE } from "~/constants";
 import { errorNotification } from "~/utils/errorNotification";
 import { successNotification } from "~/utils/successNotification";
 
-// Icons:
-import { IconEdit } from "@tabler/icons-react";
-import { useEditingUser } from "~/stores/editing-user-store";
-
-export function UsersPage() {
+export function UsersListPage() {
   const [selected, setSelected] = useState<string[]>([]);
   const theme = useMantineTheme();
 
@@ -96,9 +94,10 @@ export function UsersPage() {
         </Button>
       </PageHeader>
 
-      {selected.length > 0 && (
+      {selected.length > 0 ? (
         <Group>
           <Button
+            size="xs"
             color="red"
             variant="outline"
             onClick={openModalDeleteUser}
@@ -107,6 +106,7 @@ export function UsersPage() {
             Excluir
           </Button>
           <Button
+            size="xs"
             color="blue.6"
             variant="outline"
             onClick={openModalInactivateteUser}
@@ -115,6 +115,8 @@ export function UsersPage() {
             Inativar
           </Button>
         </Group>
+      ) : (
+        <Space h="xs" />
       )}
 
       <Table horizontalSpacing="xl" verticalSpacing="md">
@@ -165,16 +167,12 @@ export function UsersPage() {
               <td>{USER_PROFILE[user.profile]}</td>
               <td>{user.status === "ACTIVE" ? "Ativo" : "Inativo"}</td>
               <td>
-                {/* TODO: limpar editingUser após navegar */}
                 <ActionIcon
                   component={Link}
-                  to="/usuarios/$userId"
-                  params={{ userId: user.id }}
+                  to={`/usuarios/${user.id}`}
+                  state={{ user }}
                 >
-                  <IconEdit
-                    color={theme.colors.blue[9]}
-                    onClick={() => useEditingUser.setState(user)}
-                  />
+                  <IconEdit color={theme.colors.blue[9]} />
                 </ActionIcon>
               </td>
             </tr>

@@ -1,71 +1,89 @@
-import { Pagination, Table, Button, Checkbox, Text, TextInput, Select, useMantineTheme, Group, FileInput, rem } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Checkbox,
+  FileInput,
+  Group,
+  Pagination,
+  Select,
+  Table,
+  Text,
+  TextInput,
+  rem,
+} from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconEdit, IconEye, IconPaperclip } from "@tabler/icons-react";
-import { useNavigate } from "@tanstack/router";
+import { Link } from "react-router-dom";
 import { PageHeader } from "~/components/PageHeader";
-import { modals } from '@mantine/modals';
+import { PATH } from "~/constants/path";
 
 export function StudentsPage() {
-  // Theme:
-  const theme = useMantineTheme();
+  const openModalUploadStudent = () =>
+    modals.openConfirmModal({
+      title: "Upload de Aluno",
+      children: (
+        <>
+          <Group>
+            <Text size="sm">
+              Para fazer upload de aluno em lote é necessário seguir o template
+              de cadastro de aluno.
+            </Text>
+            <Text c="blue.6">Fazer download do template</Text>
+          </Group>
 
-  // Navigation:
-  const navigate = useNavigate();
-  const navigateSeeStudent = (user: any) => {
-    navigate({ to: "/usuarios/$userId", params: { userId: user.id } });
-  }
+          <Group>
+            <Text size="sm">
+              Selecione o arquivo do template de Cadastro de Aluno.
+            </Text>
+            <FileInput
+              placeholder="Selecione o arquivo"
+              icon={<IconPaperclip size={rem(14)} />}
+            />
+          </Group>
 
-  // Modals
-  const openModalUploadStudent = () => modals.openConfirmModal({
-    title: 'Upload de Aluno',
-    children: (
-      <>
-        <Group>
-          <Text size="sm">
-            Para fazer upload de aluno em lote é necessário seguir o template de cadastro de aluno.
-          </Text>
-          <Text c="blue.6">Fazer download do template</Text>
-        </Group>
-
-        <Group>
-          <Text size="sm">Selecione o arquivo do template de Cadastro de Aluno.</Text>
-          <FileInput placeholder="Selecione o arquivo" icon={<IconPaperclip size={rem(14)} />} />
-        </Group>
-
-        <Group>
-          <Text size="sm">Selecione a turma que deseja adicionar os alunos do template.</Text>
-          <Select placeholder="Selecione a turma" data={[]} style={{ width: '100%' }} />
-        </Group>
-      </>
-    ),
-    labels: { confirm: 'Sim', cancel: 'Não' },
-    onCancel: () => console.log('Noooo'),
-    onConfirm: () => console.log('Yasss :D'),
-  })
+          <Group>
+            <Text size="sm">
+              Selecione a turma que deseja adicionar os alunos do template.
+            </Text>
+            <Select
+              placeholder="Selecione a turma"
+              data={[]}
+              style={{ width: "100%" }}
+            />
+          </Group>
+        </>
+      ),
+      labels: { confirm: "Sim", cancel: "Não" },
+      onCancel: () => console.log("Noooo"),
+      onConfirm: () => console.log("Yasss :D"),
+    });
 
   // TODO: get real data:
   const students = {
     items: [
       {
-        id: '1',
-        name: 'Amanda Freitas Dias',
-        status: 'ACTIVE',
-        class: '1º A',
-        period: 'Manhã',
-        serie: 'Infantil',
-        cfo: '30%',
-        sea: '30%',
-        lct: '30%',
-      }
+        id: "1",
+        name: "Amanda Freitas Dias",
+        status: "ACTIVE",
+        class: "1º A",
+        period: "Manhã",
+        serie: "Infantil",
+        cfo: "30%",
+        sea: "30%",
+        lct: "30%",
+      },
     ],
     pagination: {
-      totalPages: 1
-    }
-  }
+      totalPages: 1,
+    },
+  };
 
   return (
     <>
       <PageHeader title="Alunos">
-        <Button onClick={openModalUploadStudent} variant="outline">Upload aluno</Button>
+        <Button onClick={openModalUploadStudent} variant="outline">
+          Upload aluno
+        </Button>
         <Button>Novo aluno</Button>
       </PageHeader>
 
@@ -125,15 +143,30 @@ export function StudentsPage() {
               <td>{student.lct}</td>
               <td>{student.status === "ACTIVE" ? "Ativo" : "Inativo"}</td>
               <td>
-                <IconEye onClick={() => navigateSeeStudent(student)} color={theme.colors.blue[9]} />
-                <IconEdit onClick={() => navigateSeeStudent(student)} color={theme.colors.blue[9]} />
+                <Group noWrap spacing="xs">
+                  <ActionIcon
+                    component={Link}
+                    to={`${PATH.STUDENTS}/${student.id}`}
+                    color="blue.9"
+                  >
+                    <IconEye />
+                  </ActionIcon>
+                  <ActionIcon
+                    component={Link}
+                    to={`${PATH.STUDENTS}/${student.id}`}
+                    state={{ student }}
+                    color="blue.9"
+                  >
+                    <IconEdit />
+                  </ActionIcon>
+                </Group>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
 
-      <Pagination totalPages={students ? students.pagination.totalPages : ''} />
+      <Pagination total={students.pagination.totalPages ?? 0} />
     </>
   );
 }
