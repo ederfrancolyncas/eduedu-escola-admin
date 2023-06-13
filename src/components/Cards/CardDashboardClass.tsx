@@ -66,18 +66,40 @@ export function CardDashboardClass({ classNumber, className, classesQuantity, st
                         </Accordion.Control>
                         <Accordion.Panel>
                             <Group>
-                                <Text>Desempenho em Provas (%)</Text>
-                                <Text>Consc. Fonológica 85%</Text>
-                                <Text>Sistema de Escrita Alfab. 90%</Text>
-                                <Text>Leitura e Comp. de Texto 63%</Text>
+                                <Text fz="sm" fw={700}>Desempenho em Provas (%)</Text>
+                                <Text fz="sm" c="dimmed">
+                                    Consc. Fonológica
+                                    <span style={{ color: theme.colors.orange[4] }}> 85%</span>
+                                </Text>
+                                <Text fz="sm" c="dimmed">
+                                    Sistema de Escrita Alfab.
+                                    <span style={{ color: theme.colors.green[9] }}> 90%</span>
+                                </Text>
+                                <Text fz="sm" c="dimmed">
+                                    Leitura e Comp. de Texto
+                                    <span style={{ color: theme.colors.red[9] }}> 63%</span>
+                                </Text>
                             </Group>
 
-                            <Group>
-                                <Text>Desempenho em Planetas (%)</Text>
+                            <Group style={{ marginTop: '20px' }}>
+                                <Text fz="sm" fw={700}>Desempenho em Planetas (%)</Text>
+                                <Text fz="sm" c="dimmed">
+                                    Consc. Fonológica
+                                    <span style={{ color: theme.colors.orange[4] }}>  85%</span>
+                                </Text>
+                                <Text fz="sm" c="dimmed">
+                                    Sistema de Escrita Alfab.
+                                    <span style={{ color: theme.colors.green[9] }}> 90%</span>
+                                </Text>
+                                <Text fz="sm" c="dimmed">
+                                    Leitura e Comp. de Texto
+                                    <span style={{ color: theme.colors.red[9] }}> 63%</span>
+                                </Text>
                             </Group>
 
                             <Flex style={{ marginTop: '20px' }}>
-                                <Text>Mais Detalhes da Turma</Text> <IconFileDescription />
+                                <Text c="blue.6">Mais Detalhes da Turma</Text>
+                                <IconFileDescription style={{ color: theme.colors.blue[6] }} />
                             </Flex>
                         </Accordion.Panel>
                     </Accordion.Item>
