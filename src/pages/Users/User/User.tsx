@@ -9,10 +9,18 @@ import { successNotification } from "~/utils/successNotification";
 
 // Components:
 import { PageHeader } from "~/components/PageHeader";
-import { Button, Grid, Group, Select, TextInput, useMantineTheme } from "@mantine/core";
+import {
+  Button,
+  Grid,
+  Group,
+  Select,
+  TextInput,
+  useMantineTheme,
+} from "@mantine/core";
 
 // Icons:
 import { IconRefresh } from "@tabler/icons-react";
+import { useEffect } from "react";
 
 const userInputValidation = z.object({
   name: z
@@ -70,7 +78,9 @@ export function UserPage() {
   return (
     <>
       <PageHeader title={editingUser ? editingUser.name : "Novo usuário"}>
-        <Link to="/usuarios" style={{ textDecoration: 'none' }} >Retornar a página de Usuários</Link>
+        <Link to="/usuarios" style={{ textDecoration: "none" }}>
+          Retornar a página de Usuários
+        </Link>
       </PageHeader>
 
       <form
@@ -138,11 +148,23 @@ export function UserPage() {
                 </Grid.Col>
               )}
               <Grid.Col span={1}>
-                <div style={{ position: 'relative' }}>
-                  <TextInput label="Código de Acesso" value="AHDE2874" disabled />
+                <div style={{ position: "relative" }}>
+                  <TextInput
+                    label="Código de Acesso"
+                    value="AHDE2874"
+                    disabled
+                  />
                   <IconRefresh
-                    style={{ position: 'absolute', top: '50%', right: '3%', width: '20px' }} color={theme.colors.blue[9]}
-                    onClick={() => { console.log('novo código de acesso! :D') }}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      right: "3%",
+                      width: "20px",
+                    }}
+                    color={theme.colors.blue[9]}
+                    onClick={() => {
+                      console.log("novo código de acesso! :D");
+                    }}
                   />
                 </div>
               </Grid.Col>

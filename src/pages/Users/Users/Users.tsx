@@ -1,16 +1,3 @@
-import { useState } from "react";
-import { useUserGetAll } from "~/api/user";
-import { useEditingUser } from "~/stores/editing-user-store";
-import { Link, useNavigate } from "@tanstack/router";
-import { PROFILE_SELECT, STATUS_SELECT, USER_PROFILE } from "~/constants";
-import { useUserDelete, useUserDeactive } from "~/api/user";
-import { errorNotification } from "~/utils/errorNotification";
-import { successNotification } from "~/utils/successNotification";
-
-// Components:
-import { modals } from "@mantine/modals";
-import { PageHeader } from "~/components/PageHeader";
-import { Pagination } from "~/components/Pagination";
 import {
   ActionIcon,
   Button,
@@ -22,9 +9,19 @@ import {
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { Link } from "@tanstack/router";
+import { useState } from "react";
+import { useUserDelete, useUserGetAll, useUserInactivate } from "~/api/user";
+import { PageHeader } from "~/components/PageHeader";
+import { Pagination } from "~/components/Pagination";
+import { PROFILE_SELECT, STATUS_SELECT, USER_PROFILE } from "~/constants";
+import { errorNotification } from "~/utils/errorNotification";
+import { successNotification } from "~/utils/successNotification";
 
 // Icons:
 import { IconEdit } from "@tabler/icons-react";
+import { useEditingUser } from "~/stores/editing-user-store";
 
 export function UsersPage() {
   const [selected, setSelected] = useState<string[]>([]);
@@ -42,26 +39,33 @@ export function UsersPage() {
     onError: (error) => errorNotification("Erro", error.message),
   });
 
-  const { mutate: deleteUser, isLoading: isDeleteLoading } = useUserDelete({
+  const { mutate: deleteUser, isLoading: isDeleting } = useUserDelete({
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
     },
     onSuccess: () => {
-      successNotification("Sucesso", "Usuário(s) deletado(s) com sucesso!");
+      successNotification(
+        "Sucesso",
+        `${selected.length} Usuário(s) inativado(s) com sucesso!`
+      );
       setSelected([]);
     },
   });
 
-  // const { mutate: deactiveUser } = useUserDeactive({
-  //   onError: (error: Error) => {
-  //     errorNotification("Erro", `${error.message} (cod: ${error.code})`);
-  //   },
-  //   onSuccess: () => {
-  //     successNotification("Sucesso", "Usuário deletado com sucesso!");
-  //   },
-  // });
+  const { mutate: inactivateUser, isLoading: isInactivating } =
+    useUserInactivate({
+      onError: (error) => {
+        errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+      },
+      onSuccess: () => {
+        successNotification(
+          "Sucesso",
+          `${selected.length} Usuário(s) inativado(s) com sucesso!`
+        );
+        setSelected([]);
+      },
+    });
 
-  // Modals:
   const openModalDeleteUser = () =>
     modals.openConfirmModal({
       title: "Excluir",
@@ -72,13 +76,13 @@ export function UsersPage() {
       },
     });
 
-  // const openModalDeactivateUser = () =>
-  //   modals.openConfirmModal({
-  //     title: "Inativar",
-  //     children: <Text>Deseja Inativar o(s) usuários(s) selecionado(s)?</Text>,
-  //     labels: { confirm: "Sim", cancel: "Não" },
-  //     onConfirm: () => deactiveUser(usersChecked),
-  //   });
+  const openModalInactivateteUser = () =>
+    modals.openConfirmModal({
+      title: "Inativar",
+      children: <Text>Deseja Inativar o(s) usuários(s) selecionado(s)?</Text>,
+      labels: { confirm: "Sim", cancel: "Não" },
+      onConfirm: () => inactivateUser(selected),
+    });
 
   return (
     <>
@@ -94,10 +98,20 @@ export function UsersPage() {
 
       {selected.length > 0 && (
         <Group>
-          <Button color="red" variant="outline" onClick={openModalDeleteUser}>
+          <Button
+            color="red"
+            variant="outline"
+            onClick={openModalDeleteUser}
+            loading={isDeleting}
+          >
             Excluir
           </Button>
-          <Button color="blue.6" variant="outline">
+          <Button
+            color="blue.6"
+            variant="outline"
+            onClick={openModalInactivateteUser}
+            loading={isInactivating}
+          >
             Inativar
           </Button>
         </Group>
@@ -151,12 +165,16 @@ export function UsersPage() {
               <td>{USER_PROFILE[user.profile]}</td>
               <td>{user.status === "ACTIVE" ? "Ativo" : "Inativo"}</td>
               <td>
+                {/* TODO: limpar editingUser após navegar */}
                 <ActionIcon
                   component={Link}
                   to="/usuarios/$userId"
                   params={{ userId: user.id }}
                 >
-                  <IconEdit color={theme.colors.blue[9]} />
+                  <IconEdit
+                    color={theme.colors.blue[9]}
+                    onClick={() => useEditingUser.setState(user)}
+                  />
                 </ActionIcon>
               </td>
             </tr>
