@@ -1,5 +1,4 @@
 import { Card, Button } from '@mantine/core'
-import { BaseCard } from './commons/Base'
 
 type componentProps = {
     disabled?: boolean
@@ -7,7 +6,7 @@ type componentProps = {
 
 export function NewSchoolYear({ disabled }: componentProps) {
     return (
-        <BaseCard>
+        <Card>
             <Card.Section>
                 <Button
                     size={'sm'}
@@ -17,6 +16,6 @@ export function NewSchoolYear({ disabled }: componentProps) {
                     Adicionar Novo Ano Letivo +
                 </Button>
             </Card.Section>
-        </BaseCard>
+        </Card>
     )
 }

@@ -8,7 +8,7 @@ import { errorNotification } from "~/utils/errorNotification";
 import { successNotification } from "~/utils/successNotification";
 
 // Components:
-import { Title } from "~/components/Title/Title";
+import { PageHeader } from "~/components/PageHeader";
 import { Button, Grid, Group, Select, TextInput, useMantineTheme } from "@mantine/core";
 
 // Icons:
@@ -31,33 +31,32 @@ const userInputValidation = z.object({
 });
 
 export function UserPage() {
+  // Theme:
   const theme = useMantineTheme();
 
+  // Navigation:
   const navigate = useNavigate();
-  const editingUser = useEditingUser();
 
+  // Mutations:
+  const editingUser = useEditingUser();
   const { mutate: createUser, isLoading: isCreateLoading } = useUserCreate({
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
     },
-
     onSuccess: () => {
       successNotification("Sucesso", "Usuário criado com sucesso!");
       navigate({ to: "/usuarios" });
     },
   });
-
   const { mutate: updateUser, isLoading: isUpdateLoading } = useUserUpdate({
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
     },
-
     onSuccess: () => {
       successNotification("Sucesso", "Usuário atualizado com sucesso!");
       useEditingUser.setState(form.values);
     },
   });
-
   const form = useForm<UserInput>({
     initialValues: {
       name: editingUser?.name ?? "",
@@ -70,7 +69,9 @@ export function UserPage() {
 
   return (
     <>
-      <Title title={editingUser ? editingUser.name : "Novo usuário"} />
+      <PageHeader title={editingUser ? editingUser.name : "Novo usuário"}>
+        <Link to="/usuarios" style={{ textDecoration: 'none' }} >Retornar a página de Usuários</Link>
+      </PageHeader>
 
       <form
         onSubmit={form.onSubmit((values) => {

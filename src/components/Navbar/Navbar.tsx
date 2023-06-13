@@ -25,6 +25,7 @@ const useStyles = createStyles({
 const links = [
   { label: "Dashboard", to: "/dashboard" },
   { label: "Usuários", to: "/usuarios" },
+  { label: "Ano Letivo", to: "/ano-letivo" },
   { label: "Turmas", to: "/turmas" },
   { label: "Alunos", to: "/alunos" },
   { label: "Configurações", to: "/configuracoes" },

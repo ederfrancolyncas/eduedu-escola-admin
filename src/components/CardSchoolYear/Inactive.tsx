@@ -1,6 +1,6 @@
 import { modals } from '@mantine/modals';
 import { Card, Group, Text, Button } from '@mantine/core'
-import { BaseCard, ContentCard, HeaderCard } from './commons';
+import { ContentCard, HeaderCard } from './commons';
 
 export function Inactive() {
     // Modals
@@ -8,10 +8,8 @@ export function Inactive() {
         title: 'Ativar Ano Letivo',
         children: (
             <Text size="sm">
-                Mussum Ipsum, cacilds vidis litro abertis.
-                Viva Forevis aptent taciti sociosqu ad litora torquent.
-                Paisis, filhis, espiritis santis.
-                Mais vale um bebadis conhecidiss, que um alcoolatra anonimis.
+                Deseja ativar o ano letivo selecionado?
+                Deseja continuar?
             </Text>
         ),
         labels: { confirm: 'Sim', cancel: 'Não' },
@@ -33,7 +31,7 @@ export function Inactive() {
     });
 
     return (
-        <BaseCard>
+        <Card>
             <Card.Section>
                 <HeaderCard year="2024" status="Inativo">
                     <Group position="apart">
@@ -58,6 +56,6 @@ export function Inactive() {
                     teachersQuantity='58'
                 />
             </Card.Section>
-        </BaseCard>
+        </Card>
     )
 }

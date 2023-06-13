@@ -44,7 +44,8 @@ const KEY = {
 const URL = {
   ALL: "/user/all",
   CREATE: "/user",
-  UPDATE: (id: string) => "/user/" + id,
+  UPDATE: (id: string) => `/user/${id}`,
+  DELETE: "/user",
 };
 
 class UserAPI extends API {
@@ -62,6 +63,20 @@ class UserAPI extends API {
 
   static async update(userId: string, input?: Partial<UserInput>) {
     const { data } = await this.api.patch<User>(URL.UPDATE(userId), input);
+    return data;
+  }
+
+  // TODO: implement when endpoint is ready
+  static async deactive(ids: any) {
+    const { data } = await this.api.patch<User>(URL.UPDATE(ids));
+    return data;
+  }
+
+  static async delete(userIds: string[]) {
+    const { data } = await this.api.delete<{ success: boolean }>(URL.DELETE, {
+      data: { ids: userIds },
+    });
+
     return data;
   }
 }
@@ -99,4 +114,22 @@ export function useUserUpdate(
   []);
 
   return useMutation(handler, options);
+}
+
+export function useUserDelete(
+  options?: MutationOptions<string[], { success: boolean }>
+) {
+  const handler = useCallback(function (ids: string[]) {
+    return UserAPI.delete(ids);
+  }, []);
+
+  return useMutation(handler, options);
+}
+
+// TODO: implement when endpoint is ready
+export function useUserDeactive(ids: any) {
+  const handler = useCallback(function (ids: any) {
+    return UserAPI.deactive(ids);
+  }, []);
+  return useMutation(handler, ids);
 }
