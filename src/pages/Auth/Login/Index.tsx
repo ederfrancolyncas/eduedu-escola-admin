@@ -1,7 +1,10 @@
 // Utils & Aux:
-import { useDisclosure } from '@mantine/hooks';
-import { Link, useNavigate } from "@tanstack/router";
+import { PATH } from "~/constants/path";
+import { errorNotification } from '~/utils/errorNotification';
+import { successNotification } from '~/utils/successNotification';
 import { useUserAuth, useUserPasswordRecovery, UserLogin, UserRecoveryPass } from '~/api/auth'
+import { useDisclosure } from '@mantine/hooks';
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
 
@@ -22,8 +25,6 @@ import {
 import logo from "~/assets/logos/eduedu-branca.svg";
 import bg from "~/assets/backgrounds/login.svg";
 
-import { errorNotification } from '~/utils/errorNotification';
-import { successNotification } from '~/utils/successNotification';
 export const Login = () => {
 
   // Navigation:
@@ -50,7 +51,7 @@ export const Login = () => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
     },
     onSuccess: () => {
-      navigate({ to: "/dashboard" });
+      navigate(PATH.DASHBOARD);
     },
   });
 
@@ -71,7 +72,6 @@ export const Login = () => {
     },
     onSuccess: () => {
       successNotification("Sucesso", "Sua nova senha foi enviada para o email cadastrado.");
-      navigate({ to: "/dashboard" });
     },
   });
 
