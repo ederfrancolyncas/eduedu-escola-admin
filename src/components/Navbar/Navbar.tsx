@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/router";
+import { Link } from "react-router-dom";
 import {
   Header as MantineHeader,
   Image,

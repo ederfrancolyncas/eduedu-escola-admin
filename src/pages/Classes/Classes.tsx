@@ -1,61 +1,65 @@
-import { useNavigate } from "@tanstack/router";
-
 // Components:
+import {
+  ActionIcon,
+  Button,
+  Checkbox,
+  Group,
+  Select,
+  Table,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { PageHeader } from "~/components/PageHeader";
-import { Button, Checkbox, Group, Select, Table, Text, TextInput, useMantineTheme } from "@mantine/core";
 import { Pagination } from "~/components/Pagination";
-import { modals } from '@mantine/modals';
 
 // Icons:
 import { IconEdit, IconEye } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
+import { PATH } from "~/constants/path";
 
 export function ClassesPage() {
-  const theme = useMantineTheme();
-
   // TODO: get real data here :)
   const data = {
     items: [
       {
-        id: '1',
-        schoolPeriod: 'Manhã',
-        class: 'Infantil',
-        schoolYear: '2023',
-        name: '1º A',
-        teachers: 'Alice, Carlos, Fernanda'
-      }
+        id: "1",
+        schoolPeriod: "Manhã",
+        class: "Infantil",
+        schoolYear: "2023",
+        name: "1º A",
+        teachers: "Alice, Carlos, Fernanda",
+      },
     ],
     pagination: {
-      totalPages: '1'
+      totalPages: "1",
     },
-  }
-
-  // Navigation:
-  const navigate = useNavigate();
-  const navigateNewClass = () => { navigate({ to: "/turmas/nova-turma" }); }
-  const navigateEditClass = (id) => { navigate({ to: '/turmas/editar/$classId', params: { classId: id } }); }
-  const navigateSeeClass = (id) => { navigate({ to: "/turmas/visualizar/$classId", params: { classId: id } }); }
+  };
 
   // Modals
-  const openModalDeleteClass = () => modals.openConfirmModal({
-    title: 'Excluir',
-    children: (
-      <Text size="sm">
-        Deseja excluir a(s) turmas(s) selecionada(s)?
-      </Text>
-    ),
-    labels: { confirm: 'Sim', cancel: 'Não' },
-    onCancel: () => console.log('Noooo'),
-    onConfirm: () => console.log('Yasss :D'),
-  })
+  const openModalDeleteClass = () =>
+    modals.openConfirmModal({
+      title: "Excluir",
+      children: (
+        <Text size="sm">Deseja excluir a(s) turmas(s) selecionada(s)?</Text>
+      ),
+      labels: { confirm: "Sim", cancel: "Não" },
+      onCancel: () => console.log("Noooo"),
+      onConfirm: () => console.log("Yasss :D"),
+    });
 
   return (
     <>
       <PageHeader title="Turmas">
-        <Button onClick={navigateNewClass}>Nova turma</Button>
+        <Button component={Link} to={PATH.NEW_CLASS}>
+          Nova turma
+        </Button>
       </PageHeader>
 
       <Group>
-        <Button variant="outline" color="red" onClick={openModalDeleteClass}>Excluir</Button>
+        <Button variant="outline" color="red" onClick={openModalDeleteClass}>
+          Excluir
+        </Button>
       </Group>
 
       <Table horizontalSpacing="xl" verticalSpacing="md">
@@ -98,15 +102,26 @@ export function ClassesPage() {
               <td>{item.schoolYear}</td>
               <td>{item.name}</td>
               <td>
-                <IconEdit onClick={() => navigateEditClass('1')} color={theme.colors.blue[9]} />
-                <IconEye onClick={() => navigateSeeClass('1')} color={theme.colors.blue[9]} />
+                <Group noWrap spacing="xs">
+                  <ActionIcon
+                    color="blue.9"
+                    component={Link}
+                    to={`${PATH.EDIT_CLASS}/${item.id}`}
+                  >
+                    <IconEdit />
+                  </ActionIcon>
+
+                  <ActionIcon color="blue.9" component={Link} to={item.id}>
+                    <IconEye />
+                  </ActionIcon>
+                </Group>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
 
-      <Pagination totalPages={data ? data.pagination.totalPages : ''} />
+      <Pagination totalPages={data ? data.pagination.totalPages : ""} />
     </>
   );
 }

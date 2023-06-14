@@ -1,22 +1,10 @@
-import { Outlet, Route } from "@tanstack/router";
-import { rootRoute } from ".";
+import { Route, Routes } from "react-router-dom";
 import { DashboardPage } from "../pages/Dashboard";
-import { Layout } from "../components/Layout";
 
-export const dashboardRoute = new Route({
-  path: "/dashboard",
-  component: () => (
-    <Layout>
-      <Outlet />
-    </Layout>
-  ),
-  getParentRoute: () => rootRoute,
-});
-
-const dashboardIndexRoute = new Route({
-  path: "/",
-  component: () => <DashboardPage />,
-  getParentRoute: () => dashboardRoute,
-});
-
-dashboardRoute.addChildren([dashboardIndexRoute]);
+export function DashboardRoutes() {
+  return (
+    <Routes>
+      <Route index Component={DashboardPage} />
+    </Routes>
+  );
+}

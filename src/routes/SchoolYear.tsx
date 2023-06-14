@@ -1,24 +1,10 @@
-import { Outlet, Route } from "@tanstack/router";
-import { rootRoute } from ".";
-import { Layout } from "../components/Layout";
+import { Route, Routes } from "react-router-dom";
 import { SchoolYearPage } from "../pages/SchoolYear/SchoolYear";
 
-// TODO: validar caminho das rotas
-
-export const schoolYearRoute = new Route({
-    path: "/ano-letivo",
-    component: () => (
-        <Layout>
-            <Outlet />
-        </Layout>
-    ),
-    getParentRoute: () => rootRoute,
-});
-
-export const schoolYearIndexRoute = new Route({
-    path: "/",
-    component: () => <SchoolYearPage />,
-    getParentRoute: () => schoolYearRoute,
-});
-
-schoolYearRoute.addChildren([schoolYearIndexRoute]);
+export function SchoolYearRoutes() {
+  return (
+    <Routes>
+      <Route index Component={SchoolYearPage} />
+    </Routes>
+  );
+}

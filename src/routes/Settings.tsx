@@ -1,24 +1,10 @@
-import { Outlet, Route } from "@tanstack/router";
-import { rootRoute } from ".";
-import { Layout } from "../components/Layout";
-import { SettingsPage } from "../pages/Settings/Settings";
+import { Route, Routes } from "react-router-dom";
+import { SettingsPage } from "../pages/Settings";
 
-// TODO: validar caminho das rotas
-
-export const settingsRoute = new Route({
-    path: "/configuracoes",
-    component: () => (
-        <Layout>
-            <Outlet />
-        </Layout>
-    ),
-    getParentRoute: () => rootRoute,
-});
-
-export const settingsIndexRoute = new Route({
-    path: "/",
-    component: () => <SettingsPage />,
-    getParentRoute: () => settingsRoute,
-});
-
-settingsRoute.addChildren([settingsIndexRoute]);
+export function SettingsRoutes() {
+  return (
+    <Routes>
+      <Route index Component={SettingsPage} />
+    </Routes>
+  );
+}

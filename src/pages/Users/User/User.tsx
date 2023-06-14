@@ -1,18 +1,21 @@
-import { UserInput, useUserCreate, useUserUpdate } from "~/api/user";
-import { Link, useNavigate } from "@tanstack/router";
-import { PROFILE_SELECT, STATUS_SELECT } from "~/constants";
-import { useEditingUser } from "~/stores/editing-user-store";
-import { z } from "zod";
+import {
+  Button,
+  Grid,
+  Group,
+  Select,
+  TextInput,
+  useMantineTheme,
+} from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import { IconRefresh } from "@tabler/icons-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { User, UserInput, useUserCreate, useUserUpdate } from "~/api/user";
+import { PageHeader } from "~/components/PageHeader";
+import { PROFILE_SELECT, STATUS_SELECT } from "~/constants";
+import { PATH } from "~/constants/path";
 import { errorNotification } from "~/utils/errorNotification";
 import { successNotification } from "~/utils/successNotification";
-
-// Components:
-import { PageHeader } from "~/components/PageHeader";
-import { Button, Grid, Group, Select, TextInput, useMantineTheme } from "@mantine/core";
-
-// Icons:
-import { IconRefresh } from "@tabler/icons-react";
 
 const userInputValidation = z.object({
   name: z
@@ -31,32 +34,29 @@ const userInputValidation = z.object({
 });
 
 export function UserPage() {
-  // Theme:
   const theme = useMantineTheme();
-
-  // Navigation:
   const navigate = useNavigate();
+  const editingUser = useLocation().state?.user as User | undefined;
 
-  // Mutations:
-  const editingUser = useEditingUser();
   const { mutate: createUser, isLoading: isCreateLoading } = useUserCreate({
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
     },
     onSuccess: () => {
       successNotification("Sucesso", "Usuário criado com sucesso!");
-      navigate({ to: "/usuarios" });
+      navigate(PATH.USERS);
     },
   });
+
   const { mutate: updateUser, isLoading: isUpdateLoading } = useUserUpdate({
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
     },
     onSuccess: () => {
       successNotification("Sucesso", "Usuário atualizado com sucesso!");
-      useEditingUser.setState(form.values);
     },
   });
+
   const form = useForm<UserInput>({
     initialValues: {
       name: editingUser?.name ?? "",
@@ -70,7 +70,9 @@ export function UserPage() {
   return (
     <>
       <PageHeader title={editingUser ? editingUser.name : "Novo usuário"}>
-        <Link to="/usuarios" style={{ textDecoration: 'none' }} >Retornar a página de Usuários</Link>
+        <Link to="/usuarios" style={{ textDecoration: "none" }}>
+          Retornar a página de Usuários
+        </Link>
       </PageHeader>
 
       <form
@@ -116,7 +118,7 @@ export function UserPage() {
             />
           </Grid.Col>
 
-          {/* --- Editing user inputs --- */}
+          {/* --- Editing user exclusive inputs --- */}
           {editingUser && (
             <>
               <Grid.Col span={1}>
@@ -138,11 +140,23 @@ export function UserPage() {
                 </Grid.Col>
               )}
               <Grid.Col span={1}>
-                <div style={{ position: 'relative' }}>
-                  <TextInput label="Código de Acesso" value="AHDE2874" disabled />
+                <div style={{ position: "relative" }}>
+                  <TextInput
+                    label="Código de Acesso"
+                    value="AHDE2874"
+                    disabled
+                  />
                   <IconRefresh
-                    style={{ position: 'absolute', top: '50%', right: '3%', width: '20px' }} color={theme.colors.blue[9]}
-                    onClick={() => { console.log('novo código de acesso! :D') }}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      right: "3%",
+                      width: "20px",
+                    }}
+                    color={theme.colors.blue[9]}
+                    onClick={() => {
+                      console.log("novo código de acesso! :D");
+                    }}
                   />
                 </div>
               </Grid.Col>

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { API } from "./base";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MutationOptions, Paginated, QueryOptions } from "./api-types";
 import { UserProfile, UserStatus } from "~/constants";
 
@@ -45,7 +45,8 @@ const URL = {
   ALL: "/user/all",
   CREATE: "/user",
   UPDATE: (id: string) => `/user/${id}`,
-  DELETE: (ids: string) => "/user",
+  DELETE: "/user",
+  INACTIVATE: "/user/inactivate",
 };
 
 class UserAPI extends API {
@@ -66,14 +67,18 @@ class UserAPI extends API {
     return data;
   }
 
-  // TODO: implement when endpoint is ready
-  static async deactive(ids: any) {
-    const { data } = await this.api.patch<User>(URL.UPDATE(ids));
+  static async inactivate(userIds: string[]) {
+    const { data } = await this.api.post<{ success: boolean }>(URL.INACTIVATE, {
+      ids: userIds,
+    });
     return data;
   }
 
-  static async delete(ids: any) {
-    const { data } = await this.api.patch<User>(URL.DELETE(ids));
+  static async delete(userIds: string[]) {
+    const { data } = await this.api.delete<{ success: boolean }>(URL.DELETE, {
+      data: { ids: userIds },
+    });
+
     return data;
   }
 }
@@ -108,22 +113,43 @@ export function useUserUpdate(
   }) {
     return UserAPI.update(data.userId, data.input);
   },
-    []);
+  []);
 
   return useMutation(handler, options);
 }
 
-export function useUserDelete(ids: any) {
-  const handler = useCallback(function (ids: any) {
+export function useUserDelete(
+  options?: MutationOptions<string[], { success: boolean }>
+) {
+  const queryClient = useQueryClient();
+
+  const handler = useCallback(function (ids: string[]) {
     return UserAPI.delete(ids);
   }, []);
-  return useMutation(handler, ids);
+
+  return useMutation(handler, {
+    ...options,
+    onSuccess: async (data, vars, ctx) => {
+      await queryClient.invalidateQueries([KEY.ALL]);
+      options?.onSuccess?.(data, vars, ctx);
+    },
+  });
 }
 
-// TODO: implement when endpoint is ready
-export function useUserDeactive(ids: any) {
-  const handler = useCallback(function (ids: any) {
-    return UserAPI.deactive(ids);
+export function useUserInactivate(
+  options?: MutationOptions<string[], { success: boolean }>
+) {
+  const queryClient = useQueryClient();
+
+  const handler = useCallback(function (ids: string[]) {
+    return UserAPI.inactivate(ids);
   }, []);
-  return useMutation(handler, ids);
+
+  return useMutation(handler, {
+    ...options,
+    onSuccess: async (data, vars, ctx) => {
+      await queryClient.invalidateQueries([KEY.ALL]);
+      options?.onSuccess?.(data, vars, ctx);
+    },
+  });
 }
