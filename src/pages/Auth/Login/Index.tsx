@@ -1,7 +1,7 @@
 // Utils & Aux:
 import { useDisclosure } from '@mantine/hooks';
 import { Link, useNavigate } from "@tanstack/router";
-import { useUserAuth, useUserPasswordRecovery, UserInput } from '~/api/auth'
+import { useUserAuth, useUserPasswordRecovery, UserLogin, UserRecoveryPass } from '~/api/auth'
 import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
 
@@ -38,7 +38,7 @@ export const Login = () => {
       .string()
       .min(1, { message: "Insira uma senha" }),
   });
-  const form = useForm<UserInput>({
+  const form = useForm<UserLogin>({
     initialValues: {
       email: "",
       password: ""
@@ -58,7 +58,7 @@ export const Login = () => {
   const formRecoveryValidation = z.object({
     email: z.string().email({ message: "Insira um e-mail válido" })
   });
-  const formRecovery = useForm<UserInput>({
+  const formRecovery = useForm<UserRecoveryPass>({
     initialValues: {
       email: "",
       password: ""
@@ -93,10 +93,7 @@ export const Login = () => {
               <Text color="white">Portal Administrativo</Text>
             </Group>
 
-            <form onSubmit={form.onSubmit((values) => {
-              console.log('VALUES AQUI', values)
-              login(values)
-            })}>
+            <form onSubmit={form.onSubmit((values) => { login(values) })}>
               <TextInput
                 label="Email"
                 placeholder="Digite o email cadastrado"
@@ -131,10 +128,7 @@ export const Login = () => {
       <Modal
         opened={openedForgotPass} onClose={close} title="Esqueci a senha" centered>
 
-        <form onSubmit={formRecovery.onSubmit((values) => {
-          console.log('recovery', values)
-          sendPasswordRecovery(values)
-        })}>
+        <form onSubmit={formRecovery.onSubmit((values) => { sendPasswordRecovery(values) })}>
           <TextInput
             label="Email de cadastro"
             placeholder="Email"
