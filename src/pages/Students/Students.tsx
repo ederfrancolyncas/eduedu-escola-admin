@@ -32,7 +32,7 @@ export function StudentsPage() {
         </Group>
 
         <Group>
-          <Text size="sm">Selecione a turma que deseja adicionar os alunos do template.</Text>
+          <Text>Selecione a turma que deseja adicionar os alunos do template.</Text>
           <Select placeholder="Selecione a turma" data={[]} style={{ width: '100%' }} />
         </Group>
       </>
