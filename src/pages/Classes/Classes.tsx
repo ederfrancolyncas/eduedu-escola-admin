@@ -1,3 +1,9 @@
+// Os brabo:
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { PATH } from "~/constants/path";
+import { successNotification } from "~/utils/successNotification";
+
 // Components:
 import {
   ActionIcon,
@@ -5,6 +11,7 @@ import {
   Checkbox,
   Group,
   Select,
+  Space,
   Table,
   Text,
   TextInput,
@@ -15,10 +22,18 @@ import { Pagination } from "~/components/Pagination";
 
 // Icons:
 import { IconEdit, IconEye } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
-import { PATH } from "~/constants/path";
 
 export function ClassesPage() {
+  // checkbox stuff:
+  const [selected, setSelected] = useState<string[]>([]);
+  function toggleSelected(id: string) {
+    if (selected.includes(id)) {
+      setSelected(selected.filter((item) => item !== id));
+    } else {
+      setSelected([...selected, id]);
+    }
+  }
+
   // TODO: get real data here :)
   const data = {
     items: [
@@ -45,7 +60,12 @@ export function ClassesPage() {
       ),
       labels: { confirm: "Sim", cancel: "Não" },
       onCancel: () => console.log("Noooo"),
-      onConfirm: () => console.log("Yasss :D"),
+      onConfirm: () => {
+        successNotification(
+          "Operação realizada com sucesso",
+          "Turma(s) excluída(s) com sucesso!"
+        );
+      },
     });
 
   return (
@@ -56,17 +76,25 @@ export function ClassesPage() {
         </Button>
       </PageHeader>
 
-      <Group>
-        <Button variant="outline" color="red" onClick={openModalDeleteClass}>
-          Excluir
-        </Button>
-      </Group>
+      {selected.length > 0 ? (
+        <Group>
+          <Button size="xs" variant="outline" color="red" onClick={openModalDeleteClass}>
+            Excluir
+          </Button>
+        </Group>
+      ) : (
+        <Space h="xs" />
+      )}
 
       <Table horizontalSpacing="xl" verticalSpacing="md">
         <thead>
           <tr>
             <th>
-              <Checkbox />
+              <Checkbox
+                onChange={() =>
+                  setSelected(data?.items.map((u) => u.id) ?? [])
+                }
+              />
             </th>
             <th>
               Nome
@@ -95,7 +123,10 @@ export function ClassesPage() {
           {data?.items.map((item) => (
             <tr key={item.id}>
               <td>
-                <Checkbox />
+                <Checkbox
+                  checked={selected.includes(item.id)}
+                  onChange={() => toggleSelected(item.id)}
+                />
               </td>
               <td>{item.schoolPeriod}</td>
               <td>{item.class}</td>
