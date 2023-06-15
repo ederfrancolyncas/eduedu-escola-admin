@@ -22,35 +22,26 @@ const URL = {
 
 class AuthAPI extends API {
   static async authUser(params?: UserLogin) {
-    const { data } = await this.api.post(URL.AUTH, {
-      params,
-    });
+    const { data } = await this.api.post(URL.AUTH, params);
     return data;
   }
 
   static async recoveryPassword(input?: UserAuth) {
-    const { data } = await this.api.post(URL.RESET_PASSWORD, {
-      input,
-    });
+    const { data } = await this.api.post(URL.RESET_PASSWORD, input);
     return data;
   }
 
   static async changePassword(params?: UserAuth) {
-    const { data } = await this.api.post(URL.CHANGE_PASSWORD, {
-      params,
-    });
+    const { data } = await this.api.post(URL.CHANGE_PASSWORD, params);
     return data;
   }
 }
 
 export function useUserAuth(
-  options?: MutationOptions<{ input: UserLogin }, UserAuth>
+  options?: MutationOptions<UserLogin, UserAuth>
 ) {
-  const handler = useCallback(function (data: {
-    input: UserLogin;
-  }) {
-
-    return AuthAPI.authUser(data.input);
+  const handler = useCallback(function (data: UserLogin) {
+    return AuthAPI.authUser(data);
   },
     []);
 
@@ -58,13 +49,11 @@ export function useUserAuth(
 }
 
 export function useUserPasswordRecovery(
-  options?: MutationOptions<{ input: UserRecoveryPass }, UserAuth>
+  options?: MutationOptions<UserRecoveryPass, UserAuth>
 ) {
-  const handler = useCallback(function (data: {
-    input: UserRecoveryPass;
-  }) {
+  const handler = useCallback(function (data: UserRecoveryPass) {
 
-    return AuthAPI.recoveryPassword(data.input);
+    return AuthAPI.recoveryPassword(data);
   },
     []);
 
@@ -72,13 +61,11 @@ export function useUserPasswordRecovery(
 }
 
 export function useUserChangePassword(
-  options?: MutationOptions<{ input: UserChangePassword }, UserAuth>
+  options?: MutationOptions<UserChangePassword, UserAuth>
 ) {
-  const handler = useCallback(function (data: {
-    input: UserChangePassword;
-  }) {
+  const handler = useCallback(function (data: UserChangePassword) {
 
-    return AuthAPI.changePassword(data.input);
+    return AuthAPI.changePassword(data);
   },
     []);
 
