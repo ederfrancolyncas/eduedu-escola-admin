@@ -1,7 +1,7 @@
 // os brabo:
 import { errorNotification } from '~/utils/errorNotification';
 import { successNotification } from '~/utils/successNotification';
-import { useSchoolYearDelete } from '~/api/school-year';
+import { useSchoolYearActivate, useSchoolYearDelete } from '~/api/school-year';
 // Components:
 import { modals } from '@mantine/modals';
 import { Card, Group, Text, Button } from '@mantine/core'
@@ -12,6 +12,15 @@ type componentProps = {
 }
 
 export function Draft({ item }: componentProps) {
+    const { mutate: activeSchoolYear, isLoading: isActiveLoading } = useSchoolYearActivate({
+        onError: (error) => {
+            errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+        },
+        onSuccess: () => {
+            successNotification("Sucesso", "Ano letivo ativado com sucesso!");
+        },
+    });
+
     const { mutate: deleteSchoolYear, isLoading: isDeleteLoading } = useSchoolYearDelete({
         onError: (error) => {
             errorNotification("Erro", `${error.message} (cod: ${error.code})`);
@@ -22,7 +31,7 @@ export function Draft({ item }: componentProps) {
     });
 
     // Modals
-    const openModalAtivarAnoLetivo = () => modals.openConfirmModal({
+    const openModalAtivarAnoLetivo = (itemId: string) => modals.openConfirmModal({
         title: 'Ativar Ano Letivo',
         children: (
             <Text size="sm">
@@ -31,7 +40,7 @@ export function Draft({ item }: componentProps) {
             </Text>
         ),
         labels: { confirm: 'Sim', cancel: 'Não' },
-        onConfirm: () => console.log('Yasss :D'),
+        onConfirm: () => activeSchoolYear((itemId)),
     })
     const openModalDeleteAnoLetivo = () => modals.openConfirmModal({
         title: 'Excluir',
@@ -61,15 +70,15 @@ export function Draft({ item }: componentProps) {
                         <Button
                             size={'xs'}
                             variant="light"
-                            onClick={openModalAtivarAnoLetivo}>
+                            onClick={() => openModalAtivarAnoLetivo(item?.id)}>
                             Ativar
                         </Button>
                     </Group>
                 </HeaderCard>
                 <ContentCard
-                    classesQuantity='35'
-                    studentsQuantity='175'
-                    teachersQuantity='58'
+                    classesQuantity={item?.summary.totalSchoolClasses}
+                    studentsQuantity={item?.summary.totalStudents}
+                    teachersQuantity={item?.summary.totalTeachers}
                 />
             </Card.Section>
         </Card>

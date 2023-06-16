@@ -35,9 +35,9 @@ class SchoolYearAPI extends API {
     return data;
   }
 
-  static async activate(itemIds: string[]) {
-    const { data } = await this.api.post<{ success: boolean }>(URL.ACTIVATE, {
-      ids: itemIds,
+  static async activate(itemId: string[]) {
+    const { data } = await this.api.put<{ success: boolean }>(URL.ACTIVATE, {
+      id: itemId,
     });
     return data;
   }
@@ -93,8 +93,8 @@ export function useSchoolYearActivate(
 ) {
   const queryClient = useQueryClient();
 
-  const handler = useCallback(function (ids: string[]) {
-    return SchoolYearAPI.activate(ids);
+  const handler = useCallback(function (id: string[]) {
+    return SchoolYearAPI.activate(id);
   }, []);
 
   return useMutation(handler, {

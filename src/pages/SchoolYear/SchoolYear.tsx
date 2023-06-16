@@ -9,8 +9,18 @@ import { CardActive, CardFinished, CardDraft, CardNewSchoolYear } from "~/compon
 export function SchoolYearPage() {
 
     const { data: schoolYears } = useSchoolYearGetAll({
+        onSuccess: (data) => { console.log('upeaa', data) },
         onError: (error) => errorNotification("Erro", error),
     });
+    var disabledNewSchoolYear
+
+    if (schoolYears) {
+        schoolYears.forEach(element => {
+            if (element.status == 'ACTIVE') {
+                return disabledNewSchoolYear = true
+            }
+        });
+    }
 
     return (
         <>
@@ -25,7 +35,7 @@ export function SchoolYearPage() {
 
             <Grid columns={4}>
                 <Grid.Col span={1}>
-                    <CardNewSchoolYear />
+                    <CardNewSchoolYear disabled={disabledNewSchoolYear} />
                 </Grid.Col>
 
                 {schoolYears?.map((item) => (

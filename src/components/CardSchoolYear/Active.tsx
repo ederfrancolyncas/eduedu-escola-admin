@@ -11,9 +11,9 @@ export function Active({ item }: componentProps) {
             <Card.Section>
                 <HeaderCard year={item?.name} status="Ativo" />
                 <ContentCard
-                    classesQuantity='35'
-                    studentsQuantity='175'
-                    teachersQuantity='58'
+                    classesQuantity={item?.summary.totalSchoolClasses}
+                    studentsQuantity={item?.summary.totalStudents}
+                    teachersQuantity={item?.summary.totalTeachers}
                 />
             </Card.Section>
         </Card>

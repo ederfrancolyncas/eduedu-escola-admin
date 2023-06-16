@@ -1,4 +1,4 @@
-import { Card } from '@mantine/core'
+import { Button, Card } from '@mantine/core'
 import { HeaderCard, ContentCard } from './commons'
 
 type componentProps = {
@@ -11,10 +11,11 @@ export function Finished({ item }: componentProps) {
             <Card.Section>
                 <HeaderCard year={item?.name} status="Finalizado" />
                 <ContentCard
-                    classesQuantity='35'
-                    studentsQuantity='175'
-                    teachersQuantity='58'
+                    classesQuantity={item?.summary.totalSchoolClasses}
+                    studentsQuantity={item?.summary.totalStudents}
+                    teachersQuantity={item?.summary.totalTeachers}
                 />
+                <Button color="orange.0" fullWidth style={{ color: 'orange' }}>Ver Histórico</Button>
             </Card.Section>
         </Card>
     )
