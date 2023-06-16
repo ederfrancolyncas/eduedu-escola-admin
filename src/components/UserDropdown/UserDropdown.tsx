@@ -14,10 +14,11 @@ import {
 } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
+import { useUserStore } from "~/stores/user";
+import { PROFILE_SELECT, USER_PROFILE } from "~/constants";
 
 export function UserDropdown() {
-  const USER_NAME = "Usuário";
-  const USER_ROLE = "Professor";
+  const { name: userName, profile } = useUserStore();
 
   const { mutate: changePassword } = useUserChangePassword({
     onError: (error) => {
@@ -70,10 +71,10 @@ export function UserDropdown() {
           <Group noWrap>
             <Group spacing={2} noWrap>
               <Text size="sm" weight={600}>
-                {USER_NAME}&nbsp;
+                {userName}&nbsp;
               </Text>
               <Text size="xs" weight={500}>
-                ({USER_ROLE})
+                ({USER_PROFILE[profile]})
               </Text>
             </Group>
             <IconChevronDown width={20} height={20} />
@@ -82,7 +83,7 @@ export function UserDropdown() {
       </Menu.Target>
       <Menu.Dropdown p="md">
         <Stack spacing="md">
-          <Text weight={700}>{USER_NAME}</Text>
+          <Text weight={700}>{userName}</Text>
           <TextInput label="Código de acesso" value="AHDE29813" readOnly />
           <Group style={{ marginTop: "10px" }}>
             <Button

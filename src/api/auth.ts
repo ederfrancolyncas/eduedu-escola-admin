@@ -2,6 +2,9 @@ import { useCallback } from "react";
 import { API } from "./base";
 import { useMutation } from "@tanstack/react-query";
 import { MutationOptions } from "./api-types";
+import { useUserStore } from "~/stores/user";
+import { decodeJwt } from "~/utils/decodeJwt";
+import { z } from "zod";
 
 export type UserLogin = Pick<UserAuth, "email" | "password">;
 export type RequestPasswordResetInput = Pick<UserAuth, "email">;
@@ -17,6 +20,14 @@ type UserAuth = {
   token?: string;
 };
 
+export type LoginResponse = {
+  id: string;
+  name: string;
+  email: string;
+  document: string;
+  accessToken: string;
+};
+
 const URL = {
   AUTH: "/auth",
   RESET_PASSWORD: "/auth/reset-password",
@@ -25,7 +36,7 @@ const URL = {
 
 class AuthAPI extends API {
   static async login(input?: UserLogin) {
-    const { data } = await this.api.post(URL.AUTH, input);
+    const { data } = await this.api.post<LoginResponse>(URL.AUTH, input);
     return data;
   }
 
@@ -40,12 +51,33 @@ class AuthAPI extends API {
   }
 }
 
-export function useAuthLogin(options?: MutationOptions<UserLogin, UserAuth>) {
+export function useAuthLogin(
+  options?: MutationOptions<UserLogin, LoginResponse>
+) {
   const handler = useCallback(function (data: UserLogin) {
     return AuthAPI.login(data);
   }, []);
 
-  return useMutation(handler, options);
+  return useMutation(handler, {
+    ...options,
+
+    onSuccess: (data, vars, ctx) => {
+      const tokenValidation = z.object({
+        email: z.string().email(),
+        profile: z.enum(["DIRECTOR", "TEACHER"]),
+        iat: z.number(),
+      });
+
+      const token = decodeJwt(data.accessToken) as z.infer<
+        typeof tokenValidation
+      >;
+
+      tokenValidation.parse(token);
+
+      useUserStore.setState({ ...data, profile: token.profile });
+      options?.onSuccess?.(data, vars, ctx);
+    },
+  });
 }
 
 export function useRequestPasswordReset(

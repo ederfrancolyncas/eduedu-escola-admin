@@ -7,6 +7,8 @@ import {
   Group,
   Image,
   Modal,
+  PasswordInput,
+  Stack,
   Text,
   TextInput,
 } from "@mantine/core";
@@ -20,7 +22,7 @@ import {
   useAuthLogin,
   useRequestPasswordReset,
 } from "~/api/auth";
-import bg from "~/assets/backgrounds/login.svg";
+import bg from "~/assets/backgrounds/login-1920w.png";
 import logo from "~/assets/logos/eduedu-branca.svg";
 import { PATH } from "~/constants/path";
 import { errorNotification } from "~/utils/errorNotification";
@@ -34,6 +36,7 @@ export function LoginPage() {
     email: z.string().email({ message: "Insira um e-mail válido" }),
     password: z.string().min(1, { message: "Insira uma senha" }),
   });
+
   const form = useForm<UserLogin>({
     initialValues: {
       email: "",
@@ -41,7 +44,8 @@ export function LoginPage() {
     },
     validate: zodResolver(formInputValidation),
   });
-  const { mutate: login } = useAuthLogin({
+
+  const { mutate: login, isLoading: isAuthenticating } = useAuthLogin({
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
     },
@@ -53,12 +57,14 @@ export function LoginPage() {
   const formRecoveryValidation = z.object({
     email: z.string().email({ message: "Insira um e-mail válido" }),
   });
+
   const formRecovery = useForm<RequestPasswordResetInput>({
     initialValues: {
       email: "",
     },
     validate: zodResolver(formRecoveryValidation),
   });
+
   const { mutate: sendPasswordRecovery } = useRequestPasswordReset({
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
@@ -70,6 +76,8 @@ export function LoginPage() {
       );
     },
   });
+
+  const disableActions = [isAuthenticating].includes(true);
 
   return (
     <BackgroundImage src={bg} h="100vh">
@@ -93,34 +101,45 @@ export function LoginPage() {
               login(values);
             })}
           >
-            <TextInput
-              label="Email"
-              placeholder="Digite o email cadastrado"
-              styles={{
-                input: { marginBottom: "20px" },
-                label: { color: "#fff" },
-              }}
-              {...form.getInputProps("email")}
-            />
+            <Stack spacing={10}>
+              <TextInput
+                size="md"
+                label="Email"
+                placeholder="Digite o email cadastrado"
+                styles={{
+                  label: { color: "#fff", marginBottom: 6 },
+                }}
+                {...form.getInputProps("email")}
+              />
 
-            <TextInput
-              label="Senha"
-              placeholder="Digite sua senha"
-              styles={{ label: { color: "#fff" } }}
-              {...form.getInputProps("password")}
-            />
+              <PasswordInput
+                size="md"
+                label="Senha"
+                placeholder="Digite sua senha"
+                styles={{ label: { color: "#fff", marginBottom: 6 } }}
+                {...form.getInputProps("password")}
+              />
 
-            <Group position="right" mt="md" mb={30}>
-              <Anchor component="button" onClick={open} c="white">
-                Esqueci a senha
-              </Anchor>
-            </Group>
+              <Group position="right">
+                <Anchor
+                  component="button"
+                  onClick={open}
+                  c="white"
+                  disabled={disableActions}
+                >
+                  Esqueci a senha
+                </Anchor>
+              </Group>
 
-            <Group mt="md">
-              <Button type="submit" fullWidth>
+              <Button
+                type="submit"
+                fullWidth
+                loading={isAuthenticating}
+                mt={20}
+              >
                 Entrar
               </Button>
-            </Group>
+            </Stack>
           </form>
         </Box>
       </Center>

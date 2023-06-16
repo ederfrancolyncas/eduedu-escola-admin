@@ -7,7 +7,7 @@ import { SettingsRoutes } from "./Settings";
 import { StudentsRoutes } from "./Students";
 import { UsersRoutes } from "./Users";
 import { ClassesRoutes } from "./Classes";
-import { LoginPage } from "~/pages/Login";
+import { AuthRoutes } from "./Auth";
 
 export function AppRoutes() {
   function nested(route: string) {
@@ -26,7 +26,7 @@ export function AppRoutes() {
           <Route path={nested(PATH.SCHOOL_YEAR)} Component={SchoolYearRoutes} />
           <Route path={nested(PATH.CLASSES)} Component={ClassesRoutes} />
         </Route>
-        <Route path={PATH.LOGIN} Component={LoginPage} />
+        <Route path={PATH.LOGIN} Component={AuthRoutes} />
       </Routes>
     </BrowserRouter>
   );

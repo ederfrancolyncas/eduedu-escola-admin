@@ -1,10 +1,11 @@
 import { MantineProvider, MantineThemeOverride } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
-import { ModalsProvider } from '@mantine/modals';
+import { ModalsProvider } from "@mantine/modals";
 
 import {
   ButtonStyles,
   CardStyles,
+  PasswordInputStyles,
   TableStyles,
   TextInputStyles,
   TextStyles,
@@ -19,12 +20,15 @@ const theme: MantineThemeOverride = {
     Card: CardStyles,
     Text: TextStyles,
     TextInput: TextInputStyles,
+    PasswordInput: PasswordInputStyles,
     Select: TextInputStyles,
     Title: TitleStyles,
     Table: TableStyles,
   },
 
   globalStyles() {
+    if (window.location.pathname === "/login") return {};
+
     return {
       "#root": {
         maxWidth: 1440,

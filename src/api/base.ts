@@ -21,13 +21,13 @@ export class API {
   );
 
   private static appendToken(req: InternalAxiosRequestConfig<unknown>) {
-    // const { accessToken } = useUserStore.getState();
+    const { accessToken } = useUserStore.getState();
 
     return {
       ...req,
       headers: {
         ...req.headers,
-        Authorization: `Bearer ${""}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     } as InternalAxiosRequestConfig<unknown>;
   }
