@@ -11,7 +11,6 @@ export function SchoolYearPage() {
     const { data: schoolYears } = useSchoolYearGetAll({
         onError: (error) => errorNotification("Erro", error),
     });
-    console.log('schoolYears', schoolYears)
 
     return (
         <>
@@ -30,20 +29,22 @@ export function SchoolYearPage() {
                     <CardNewSchoolYear />
                 </Grid.Col>
 
-                {/* Example Card: Inactive */}
-                <Grid.Col span={1}>
-                    <CardInactive />
-                </Grid.Col>
+                {schoolYears?.map((item) => (
 
-                {/* Example Card: Active */}
-                <Grid.Col span={1}>
-                    <CardActive />
-                </Grid.Col>
+                    <Grid.Col span={1} key={item.id}>
+                        {item.status === "DRAFT" &&
+                            <CardInactive item={item} />
+                        }
 
-                {/* Example Card: Finished */}
-                <Grid.Col span={1}>
-                    <CardFinished />
-                </Grid.Col>
+                        {item.status === "ACTIVE" &&
+                            <CardActive item={item} />
+                        }
+
+                        {item.status === "INACTIVE" &&
+                            <CardFinished item={item} />
+                        }
+                    </Grid.Col>
+                ))}
             </Grid>
         </>
     );

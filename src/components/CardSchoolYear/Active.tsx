@@ -1,11 +1,15 @@
 import { Card } from '@mantine/core'
 import { HeaderCard, ContentCard } from './commons/index'
 
-export function Active() {
+type componentProps = {
+    item?: any
+}
+
+export function Active({ item }: componentProps) {
     return (
         <Card>
             <Card.Section>
-                <HeaderCard year="2024" status="Ativo" />
+                <HeaderCard year={item?.name} status="Ativo" />
                 <ContentCard
                     classesQuantity='35'
                     studentsQuantity='175'

@@ -2,7 +2,11 @@ import { modals } from '@mantine/modals';
 import { Card, Group, Text, Button } from '@mantine/core'
 import { ContentCard, HeaderCard } from './commons';
 
-export function Inactive() {
+type componentProps = {
+    item?: any
+}
+
+export function Inactive({ item }: componentProps) {
     // Modals
     const openModalAtivarAnoLetivo = () => modals.openConfirmModal({
         title: 'Ativar Ano Letivo',
@@ -33,7 +37,7 @@ export function Inactive() {
     return (
         <Card>
             <Card.Section>
-                <HeaderCard year="2024" status="Inativo">
+                <HeaderCard year={item?.name} status="Inativo">
                     <Group position="apart">
                         <Button
                             size={'xs'}
