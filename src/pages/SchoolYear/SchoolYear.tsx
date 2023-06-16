@@ -24,13 +24,11 @@ export function SchoolYearPage() {
             </PageHeader>
 
             <Grid columns={4}>
-                {/* Card New School Year */}
                 <Grid.Col span={1}>
                     <CardNewSchoolYear />
                 </Grid.Col>
 
                 {schoolYears?.map((item) => (
-
                     <Grid.Col span={1} key={item.id}>
                         {item.status === "DRAFT" &&
                             <CardDraft item={item} />
