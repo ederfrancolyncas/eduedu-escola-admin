@@ -4,7 +4,7 @@ import { useSchoolYearGetAll } from "~/api/school-year";
 // Components:
 import { PageHeader } from "~/components/PageHeader";
 import { Grid, Button } from "@mantine/core";
-import { CardActive, CardFinished, CardInactive, CardNewSchoolYear } from "~/components/CardSchoolYear";
+import { CardActive, CardFinished, CardDraft, CardNewSchoolYear } from "~/components/CardSchoolYear";
 
 export function SchoolYearPage() {
 
@@ -33,7 +33,7 @@ export function SchoolYearPage() {
 
                     <Grid.Col span={1} key={item.id}>
                         {item.status === "DRAFT" &&
-                            <CardInactive item={item} />
+                            <CardDraft item={item} />
                         }
 
                         {item.status === "ACTIVE" &&

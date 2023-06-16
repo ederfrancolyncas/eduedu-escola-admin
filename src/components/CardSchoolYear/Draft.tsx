@@ -6,7 +6,7 @@ type componentProps = {
     item?: any
 }
 
-export function Inactive({ item }: componentProps) {
+export function Draft({ item }: componentProps) {
     // Modals
     const openModalAtivarAnoLetivo = () => modals.openConfirmModal({
         title: 'Ativar Ano Letivo',
