@@ -1,3 +1,6 @@
+// os brabo:
+import { errorNotification } from "~/utils/errorNotification";
+import { useSchoolYearGetAll } from "~/api/school-year";
 // Components:
 import { PageHeader } from "~/components/PageHeader";
 import { Grid, Text, Button } from "@mantine/core";
@@ -5,6 +8,12 @@ import { CardActive, CardFinished, CardInactive, CardNewSchoolYear } from "~/com
 import { modals } from '@mantine/modals';
 
 export function SchoolYearPage() {
+
+    const { data: schoolYears } = useSchoolYearGetAll({
+        onError: (error) => errorNotification("Erro", error),
+    });
+    console.log('schoolYears', schoolYears)
+
     // Modals
     const openModalPromoverAlunos = () => modals.openConfirmModal({
         title: 'Novo Ano Letivo',
