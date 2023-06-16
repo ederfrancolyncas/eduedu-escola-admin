@@ -63,8 +63,8 @@ export function useSchoolYearGetAll() {
 }
 
 export function useSchoolYearCreate(options?: MutationOptions<SchoolYearInput, SchoolYear>) {
-  const handler = useCallback(function (input: SchoolYearInput) {
-    return SchoolYearAPI.create(input);
+  const handler = useCallback(function () {
+    return SchoolYearAPI.create();
   }, []);
 
   return useMutation(handler, options);
