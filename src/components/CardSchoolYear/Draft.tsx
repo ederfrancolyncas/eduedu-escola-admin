@@ -1,3 +1,8 @@
+// os brabo:
+import { errorNotification } from '~/utils/errorNotification';
+import { successNotification } from '~/utils/successNotification';
+import { useSchoolYearDelete } from '~/api/school-year';
+// Components:
 import { modals } from '@mantine/modals';
 import { Card, Group, Text, Button } from '@mantine/core'
 import { ContentCard, HeaderCard } from './commons';
@@ -7,6 +12,15 @@ type componentProps = {
 }
 
 export function Draft({ item }: componentProps) {
+    const { mutate: deleteSchoolYear, isLoading: isDeleteLoading } = useSchoolYearDelete({
+        onError: (error) => {
+            errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+        },
+        onSuccess: () => {
+            successNotification("Sucesso", "Ano letivo deletado com sucesso!");
+        },
+    });
+
     // Modals
     const openModalAtivarAnoLetivo = () => modals.openConfirmModal({
         title: 'Ativar Ano Letivo',
@@ -17,7 +31,6 @@ export function Draft({ item }: componentProps) {
             </Text>
         ),
         labels: { confirm: 'Sim', cancel: 'Não' },
-        onCancel: () => console.log('Noooo'),
         onConfirm: () => console.log('Yasss :D'),
     })
     const openModalDeleteAnoLetivo = () => modals.openConfirmModal({
@@ -30,8 +43,7 @@ export function Draft({ item }: componentProps) {
             </Text>
         ),
         labels: { confirm: 'Sim', cancel: 'Não' },
-        onCancel: () => console.log('Noooo'),
-        onConfirm: () => console.log('Yasss :D'),
+        onConfirm: () => deleteSchoolYear(),
     });
 
     return (
