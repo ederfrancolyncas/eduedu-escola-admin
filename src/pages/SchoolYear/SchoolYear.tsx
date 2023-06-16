@@ -9,14 +9,13 @@ import { CardActive, CardFinished, CardDraft, CardNewSchoolYear } from "~/compon
 export function SchoolYearPage() {
 
     const { data: schoolYears } = useSchoolYearGetAll({
-        onSuccess: (data) => { console.log('upeaa', data) },
         onError: (error) => errorNotification("Erro", error),
     });
     var disabledNewSchoolYear
 
     if (schoolYears) {
         schoolYears.forEach(element => {
-            if (element.status == 'ACTIVE') {
+            if (element.status == 'DRAFT') {
                 return disabledNewSchoolYear = true
             }
         });
