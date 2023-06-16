@@ -1,23 +1,26 @@
+// os brabo:
+import { errorNotification } from "~/utils/errorNotification";
+import { useSchoolYearGetAll } from "~/api/school-year";
 // Components:
 import { PageHeader } from "~/components/PageHeader";
-import { Grid, Text, Button } from "@mantine/core";
-import { CardActive, CardFinished, CardInactive, CardNewSchoolYear } from "~/components/CardSchoolYear";
-import { modals } from '@mantine/modals';
+import { Grid, Button } from "@mantine/core";
+import { CardActive, CardFinished, CardDraft, CardNewSchoolYear } from "~/components/CardSchoolYear";
 
 export function SchoolYearPage() {
-    // Modals
-    const openModalPromoverAlunos = () => modals.openConfirmModal({
-        title: 'Novo Ano Letivo',
-        children: (
-            <Text size="sm">
-                Ao adicionar um novo ano letivo, o ano letivo atual terá todas as turmas clonadas.
-                Caso seu novo ano letivo tenha mais ou menos turmas, edite-as no menu turmas.
-            </Text>
-        ),
-        labels: { confirm: 'Sim', cancel: 'Não' },
-        onCancel: () => console.log('Noooo'),
-        onConfirm: () => console.log('Yasss :D'),
+
+    const { data: schoolYears } = useSchoolYearGetAll({
+        onSuccess: (data) => { console.log('upeaa', data) },
+        onError: (error) => errorNotification("Erro", error),
     });
+    var disabledNewSchoolYear
+
+    if (schoolYears) {
+        schoolYears.forEach(element => {
+            if (element.status == 'ACTIVE') {
+                return disabledNewSchoolYear = true
+            }
+        });
+    }
 
     return (
         <>
@@ -27,29 +30,29 @@ export function SchoolYearPage() {
                     Só é possível existir o ano letivo atual e um ano letivo futuro, porém apenas um ano letivo pode estar ativo por vez.
                     Durante o final do ano letivo (31 de dezembro) o ano que estava vigente automáticamente se torna finalizado."
             >
-                <Button size="sm" onClick={openModalPromoverAlunos}>Promover Alunos</Button>
+                <Button size="sm">Promover Alunos</Button>
             </PageHeader>
 
             <Grid columns={4}>
-                {/* Card New School Year */}
                 <Grid.Col span={1}>
-                    <CardNewSchoolYear />
+                    <CardNewSchoolYear disabled={disabledNewSchoolYear} />
                 </Grid.Col>
 
-                {/* Example Card: Inactive */}
-                <Grid.Col span={1}>
-                    <CardInactive />
-                </Grid.Col>
+                {schoolYears?.map((item) => (
+                    <Grid.Col span={1} key={item.id}>
+                        {item.status === "DRAFT" &&
+                            <CardDraft item={item} />
+                        }
 
-                {/* Example Card: Active */}
-                <Grid.Col span={1}>
-                    <CardActive />
-                </Grid.Col>
+                        {item.status === "ACTIVE" &&
+                            <CardActive item={item} />
+                        }
 
-                {/* Example Card: Finished */}
-                <Grid.Col span={1}>
-                    <CardFinished />
-                </Grid.Col>
+                        {item.status === "INACTIVE" &&
+                            <CardFinished item={item} />
+                        }
+                    </Grid.Col>
+                ))}
             </Grid>
         </>
     );

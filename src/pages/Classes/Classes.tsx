@@ -59,7 +59,6 @@ export function ClassesPage() {
         <Text size="sm">Deseja excluir a(s) turmas(s) selecionada(s)?</Text>
       ),
       labels: { confirm: "Sim", cancel: "Não" },
-      onCancel: () => console.log("Noooo"),
       onConfirm: () => {
         successNotification(
           "Operação realizada com sucesso",
