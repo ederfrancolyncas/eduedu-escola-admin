@@ -1,4 +1,5 @@
 export const PATH = {
+  AUTH: "/login",
   DASHBOARD: "/dashboard",
   USERS: "/usuarios",
   NEW_USER: "/usuarios/novo-usuario",

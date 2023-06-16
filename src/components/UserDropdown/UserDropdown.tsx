@@ -1,3 +1,8 @@
+import { useUserChangePassword, UserChangePassword } from "~/api/auth";
+import { errorNotification } from "~/utils/errorNotification";
+import { successNotification } from "~/utils/successNotification";
+import { z } from "zod";
+import { useForm, zodResolver } from "@mantine/form";
 import { Button, Stack, Box, Group, Menu, Text, TextInput } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons-react";
 import { modals } from '@mantine/modals';
@@ -6,24 +11,49 @@ export function UserDropdown() {
   const USER_NAME = "Usuário";
   const USER_ROLE = "Professor";
 
-  const changePassword = () => modals.openConfirmModal({
+  // Change password stuff:
+  const { mutate: changePassword, isLoading: isDeactiveLoading } = useUserChangePassword({
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    },
+    onSuccess: () => {
+      successNotification("Sucesso", "Usuário deletado com sucesso!");
+    }
+  });
+  const formChangePasswordValidation = z.object({
+    passwordConfirmation: z
+      .string()
+      .min(1, { message: "Insira uma senha" }),
+    password: z
+      .string()
+      .min(1, { message: "Insira uma senha" }),
+  });
+  const formChangePassword = useForm<UserChangePassword>({
+    initialValues: {
+      password: "",
+      passwordConfirmation: ""
+    },
+    validate: zodResolver(formChangePasswordValidation),
+  });
+  const openModalChangePassword = () => modals.openConfirmModal({
     title: 'Redefinir Senha',
     children: (
       <Box>
         <TextInput
           label="Senha Atual"
           placeholder="Senha"
+          {...formChangePassword.getInputProps("password")}
           style={{ marginBottom: "20px" }}
         />
         <TextInput
           label="Nova Senha"
           placeholder="Senha"
+          {...formChangePassword.getInputProps("passwordConfirmation")}
         />
       </Box>
     ),
     labels: { confirm: 'Sim', cancel: 'Cancelar' },
-    onCancel: () => console.log('Noooo'),
-    onConfirm: () => console.log('Yasss :D'),
+    onConfirm: () => changePassword(),
   })
 
   return (
@@ -50,8 +80,9 @@ export function UserDropdown() {
           <Group style={{ marginTop: '10px' }}>
             <Button
               size="xs"
-              style={{ width: '100%' }} variant="outline"
-              onClick={changePassword}
+              variant="outline"
+              style={{ width: '100%' }}
+              onClick={openModalChangePassword}
             >
               Alterar senha
             </Button>
