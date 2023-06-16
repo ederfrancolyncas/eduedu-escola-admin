@@ -1,6 +1,12 @@
 // Utils & Aux:
+import { PATH } from "~/constants/path";
+import { errorNotification } from '~/utils/errorNotification';
+import { successNotification } from '~/utils/successNotification';
+import { useUserAuth, useUserPasswordRecovery, UserLogin, UserRecoveryPass } from '~/api/auth'
 import { useDisclosure } from '@mantine/hooks';
-import { Link } from "@tanstack/router";
+import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { useForm, zodResolver } from "@mantine/form";
 
 // Components:
 import {
@@ -12,25 +18,63 @@ import {
   Image,
   BackgroundImage,
   TextInput,
+  Text,
 } from "@mantine/core";
-import { RoundedInput } from "../../../components/RoundedInput/RoundedInput";
-import { RoundedButton } from "../../../components/RoundedButton/RoundedButton";
 
 // Assets:
 import logo from "~/assets/logos/eduedu-branca.svg";
 import bg from "~/assets/backgrounds/login.svg";
 
-import { showNotification } from "@mantine/notifications";
 export const Login = () => {
+
+  // Navigation:
+  const navigate = useNavigate();
 
   const [openedForgotPass, { open, close }] = useDisclosure(false);
 
-  function sendPassRecovery() {
+  // Login password stuff:
+  const formInputValidation = z.object({
+    email: z.string().email({ message: "Insira um e-mail válido" }),
+    password: z
+      .string()
+      .min(1, { message: "Insira uma senha" }),
+  });
+  const form = useForm<UserLogin>({
+    initialValues: {
+      email: "",
+      password: ""
+    },
+    validate: zodResolver(formInputValidation),
+  });
+  const { mutate: login, isLoading: isCreateLoading } = useUserAuth({
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    },
+    onSuccess: () => {
+      navigate(PATH.DASHBOARD);
+    },
+  });
 
-    return showNotification({
-      message: "Sua nova senha foi enviada para o email cadastrado.",
-    })
-  }
+  // Recovery password stuff:
+  const formRecoveryValidation = z.object({
+    email: z.string().email({ message: "Insira um e-mail válido" })
+  });
+  const formRecovery = useForm<UserRecoveryPass>({
+    initialValues: {
+      email: "",
+      password: ""
+    },
+    validate: zodResolver(formRecoveryValidation),
+  });
+  const { mutate: sendPasswordRecovery, isLoading: isSendingPasswordLoading } = useUserPasswordRecovery({
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    },
+    onSuccess: () => {
+      successNotification("Sucesso", "Sua nova senha foi enviada para o email cadastrado.");
+    },
+  });
+
   return (
     <>
       <BackgroundImage src={bg} h="100vh">
@@ -46,18 +90,22 @@ export const Login = () => {
             />
 
             <Group position="center" mt="md" mb={50}>
-              <span style={{ color: "white " }}>Portal Administrativo</span>
+              <Text color="white">Portal Administrativo</Text>
             </Group>
 
-            <form>
-              <RoundedInput
+            <form onSubmit={form.onSubmit((values) => { login(values) })}>
+              <TextInput
                 label="Email"
                 placeholder="Digite o email cadastrado"
+                styles={{ input: { marginBottom: '20px' }, label: { color: '#fff' } }}
+                {...form.getInputProps("email")}
               />
 
-              <RoundedInput
+              <TextInput
                 label="Senha"
                 placeholder="Digite sua senha"
+                styles={{ label: { color: '#fff' } }}
+                {...form.getInputProps("password")}
               />
 
               <Group position="right" mt="md" mb={30}>
@@ -70,7 +118,7 @@ export const Login = () => {
               </Group>
 
               <Group mt="md">
-                <RoundedButton text="Entrar" fullWidth />
+                <Button type="submit" fullWidth>Entrar</Button>
               </Group>
             </form>
           </Box>
@@ -79,14 +127,22 @@ export const Login = () => {
 
       <Modal
         opened={openedForgotPass} onClose={close} title="Esqueci a senha" centered>
-        <TextInput mb={30} label="Email de cadastro" placeholder="Email" />
-        <Button
-          variant="outline"
-          fullWidth
-          onClick={sendPassRecovery}
-        >
-          Enviar
-        </Button>
+
+        <form onSubmit={formRecovery.onSubmit((values) => { sendPasswordRecovery(values) })}>
+          <TextInput
+            label="Email de cadastro"
+            placeholder="Email"
+            {...formRecovery.getInputProps("email")}
+            mb={30}
+          />
+          <Button
+            type="submit"
+            variant="outline"
+            fullWidth
+          >
+            Enviar
+          </Button>
+        </form>
       </Modal>
     </>
   )

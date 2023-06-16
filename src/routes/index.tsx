@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "~/components/Layout";
 import { PATH } from "~/constants/path";
+import { AuthRoutes } from "./Auth";
 import { DashboardRoutes } from "./Dashboard";
 import { SchoolYearRoutes } from "./SchoolYear";
 import { SettingsRoutes } from "./Settings";
@@ -18,6 +19,7 @@ export function AppRoutes() {
       <Routes>
         <Route path="/" Component={Layout}>
           <Route index element={<Navigate to={PATH.DASHBOARD} />} />
+          <Route path={nested(PATH.AUTH)} Component={AuthRoutes} />
           <Route path={nested(PATH.DASHBOARD)} Component={DashboardRoutes} />
           <Route path={nested(PATH.USERS)} Component={UsersRoutes} />
           <Route path={nested(PATH.STUDENTS)} Component={StudentsRoutes} />
