@@ -1,3 +1,4 @@
+import { paginationOptions } from "~/constants";
 import {
     Flex,
     Group,
@@ -5,9 +6,12 @@ import {
     Select,
     Pagination as PaginationMantine
 } from "@mantine/core"
-import { paginationOptions } from "~/constants";
 
-export function Pagination(totalPages: any) {
+type componentProps = {
+    totalPages: any
+}
+
+export function Pagination({ totalPages }: componentProps) {
     return (
         <Group position="apart">
             <div></div>
