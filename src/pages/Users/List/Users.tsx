@@ -1,3 +1,13 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useUserDelete, useUserGetAll, useUserInactivate } from "~/api/user";
+import { PROFILE_SELECT, STATUS_SELECT, USER_PROFILE } from "~/constants";
+import { errorNotification } from "~/utils/errorNotification";
+import { successNotification } from "~/utils/successNotification";
+import { usePagination } from "~/hooks/usePagination";
+import { Pagination } from "~/components/Pagination";
+import { modals } from "@mantine/modals";
+import { PageHeader } from "~/components/PageHeader";
 import {
   ActionIcon,
   Button,
@@ -10,16 +20,7 @@ import {
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
-import { modals } from "@mantine/modals";
 import { IconEdit } from "@tabler/icons-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useUserDelete, useUserGetAll, useUserInactivate } from "~/api/user";
-import { PageHeader } from "~/components/PageHeader";
-import { Pagination } from "~/components/Pagination";
-import { PROFILE_SELECT, STATUS_SELECT, USER_PROFILE } from "~/constants";
-import { errorNotification } from "~/utils/errorNotification";
-import { successNotification } from "~/utils/successNotification";
 
 export function UsersListPage() {
   const [selected, setSelected] = useState<string[]>([]);
@@ -33,7 +34,9 @@ export function UsersListPage() {
     }
   }
 
+  const pagination = usePagination()
   const { data: users } = useUserGetAll({
+    search: { "page-number": pagination.page, "page-size": pagination.pageSize },
     onError: (error) => errorNotification("Erro", error.message),
   });
 
@@ -180,7 +183,7 @@ export function UsersListPage() {
         </tbody>
       </Table>
 
-      <Pagination totalPages={users ? users.pagination.totalPages : ""} />
+      {users && <Pagination paginationApi={users.pagination} paginationHook={pagination} />}
     </>
   );
 }

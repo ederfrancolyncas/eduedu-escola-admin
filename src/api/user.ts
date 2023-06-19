@@ -96,7 +96,7 @@ class UserAPI extends API {
 }
 
 export function useUserGetAll(
-  options?: QueryOptions<Paginated<User>, [string]> & { search?: UserSearch }
+  options?: QueryOptions<Paginated<User>, [string, UserSearch | undefined]> & { search?: UserSearch }
 ) {
   const handler = useCallback(
     function () {
@@ -105,7 +105,7 @@ export function useUserGetAll(
     [options?.search]
   );
 
-  return useQuery([KEY.ALL], handler, options);
+  return useQuery([KEY.ALL, options?.search], handler, options);
 }
 
 export function useUserCreate(options?: MutationOptions<UserInput, User>) {
