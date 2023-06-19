@@ -1,4 +1,4 @@
-import { Button, Card } from '@mantine/core'
+import { Button, Card, useMantineTheme } from '@mantine/core'
 import { HeaderCard, ContentCard } from './commons'
 
 type componentProps = {
@@ -6,6 +6,7 @@ type componentProps = {
 }
 
 export function Finished({ item }: componentProps) {
+    const theme = useMantineTheme()
     return (
         <Card>
             <Card.Section>
@@ -15,7 +16,14 @@ export function Finished({ item }: componentProps) {
                     studentsQuantity={item?.summary.totalStudents}
                     teachersQuantity={item?.summary.totalTeachers}
                 />
-                <Button color="orange.0" fullWidth style={{ color: 'orange' }}>Ver Histórico</Button>
+                <Button
+                    mt={20}
+                    size="xs"
+                    color="blue.0"
+                    fullWidth
+                    style={{ color: theme.colors.blue[6] }}>
+                    Ver Histórico
+                </Button>
             </Card.Section>
         </Card>
     )
