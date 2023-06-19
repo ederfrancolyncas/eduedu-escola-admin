@@ -6,28 +6,41 @@ import {
     Select,
     Pagination as PaginationMantine
 } from "@mantine/core"
-import { useState } from "react";
-
-type componentProps = {
-    totalPages: any
+import { usePaginationOptions } from "~/hooks/usePagination";
+''
+type PaginationOptions = {
+    paginationHook: usePaginationOptions
+    paginationApi: {
+        "totalItems": number,
+        "pageSize": number,
+        "pageNumber": number,
+        "totalPages": number,
+        "previousPage": number,
+        "nextPage": number,
+        "lastPage": number,
+        "hasPreviousPage": boolean,
+        "hasNextPage": boolean
+    }
 }
 
-export function Pagination({ totalPages }: componentProps) {
-    const [activePage, setPage] = useState(1);
+export function Pagination({ paginationHook, paginationApi }: PaginationOptions) {
+
     return (
         <Group position="apart">
             <div></div>
             <Flex align="center" justify="center">
                 <PaginationMantine
-                    value={activePage}
-                    onChange={setPage}
-                    total={totalPages}
+                    onChange={paginationHook.setPage}
+                    value={paginationApi.pageNumber}
+                    total={paginationApi.totalPages}
                     withControls={false}
                 />
             </Flex>
             <Group align="center" spacing={24} noWrap>
                 <Text>Exibir</Text>
                 <Select
+                    value={String(paginationHook.pageSize)}
+                    onChange={(value) => { paginationHook.setPageSize(Number(value)) }}
                     data={paginationOptions}
                     size="xs"
                     style={{ maxWidth: "60px" }}
