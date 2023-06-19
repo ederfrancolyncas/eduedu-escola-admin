@@ -1,49 +1,15 @@
-import { Accordion, Button, Grid, Group, Flex, Select, Text, Title } from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
+import { Accordion, Button, Flex, Select, useMantineTheme, Table, Divider } from "@mantine/core";
+import { IconPlus, } from "@tabler/icons-react";
+import { DetailsHeader } from "~/components/Classes/Details/DetailsHeader";
+import { StudentsPerformance, TestPerformance, TestResultsHistory } from "~/components/Classes/Details/TestsPerformance";
+
 
 export function DetailsPage() {
+    const theme = useMantineTheme()
+
     return (
         <>
-            <Grid columns={6}>
-                <Grid.Col span={1}>
-                    <Group>
-                        <Title order={4}>Turma:</Title>
-                        <Select data={[]} placeholder="Pesquisar" searchable />
-                    </Group>
-                </Grid.Col>
-
-                <Grid.Col span={1}>
-                    <Group>
-                        <Title order={4}>Série:</Title>
-                        <Text>1º Ano Fund. 1</Text>
-                    </Group>
-                </Grid.Col>
-
-                <Grid.Col span={1}>
-                    <Group>
-                        <Title order={4}>Alunos:</Title>
-                        <Text>40</Text>
-                    </Group>
-                </Grid.Col>
-
-                <Grid.Col span={1}>
-                    <Group>
-                        <Title order={4}>Frequência:</Title>
-                        <Text>85%</Text>
-                    </Group>
-                </Grid.Col>
-
-                <Grid.Col span={1}>
-                    <Group>
-                        <Title order={4}>Professor(es):</Title>
-                        <Text>Márcia, Lucas, Pedro</Text>
-                    </Group>
-                </Grid.Col>
-
-                <Grid.Col span={1}>
-                    <Button>Gerar relatório</Button>
-                </Grid.Col>
-            </Grid>
+            <DetailsHeader />
 
             <Accordion
                 variant="separated"
@@ -57,35 +23,99 @@ export function DetailsPage() {
                     }
                 }}
             >
-                <Accordion.Item value="customization">
-                    <Accordion.Control>
-                        Desempenho em Provas
+                <Accordion.Item value="testPerformance">
+                    <Accordion.Control
+                        style={{
+                            color: theme.colors.indigo[9]
+                        }}
+                    >
+                        <Flex justify="space-between">
+                            Desempenho em Provas
+                            <Button
+                                size="xs"
+                                style={{
+                                    color: theme.colors.blue[6],
+                                    backgroundColor: theme.colors.blue[0]
+                                }}>
+                                Alunos que não precisam de reforço
+                            </Button>
+                        </Flex>
                     </Accordion.Control>
                     <Accordion.Panel>
-                        Lorem ipsum
+                        <Flex justify="space-between">
+                            <TestPerformance examType="Consciência Fonológica" />
+                            <Divider orientation="vertical" />
+                            <TestPerformance examType="Sistema de Escrita Alfabética" />
+                            <Divider orientation="vertical" />
+                            <TestPerformance examType="Leitura e Compreensão de Texto" />
+                        </Flex>
                     </Accordion.Panel>
                 </Accordion.Item>
 
-                <Accordion.Item value="customization">
+                <Accordion.Item value="planetsPerformance">
                     <Accordion.Control>
                         Desempenho em Planetas
                     </Accordion.Control>
                     <Accordion.Panel>
-                        Lorem ipsum
+                        <Table horizontalSpacing="sm" verticalSpacing="md">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Planetas Oferecidos</th>
+                                    <th>Planetas Realizados</th>
+                                    <th>Média Estrelas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style={{ color: theme.colors.blue[6] }}>Consciência Fonológica</td>
+                                    <td>30</td>
+                                    <td>30</td>
+                                    <td>
+                                        {/* TODO: estrelinhas aqui */}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style={{ color: theme.colors.blue[6] }}>Sistema de Escrita Alfabética</td>
+                                    <td>25</td>
+                                    <td>20</td>
+                                    <td>
+                                        {/* TODO: estrelinhas aqui */}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style={{ color: theme.colors.blue[6] }}>Leitura e Compreensão de Texto</td>
+                                    <td>18</td>
+                                    <td>17</td>
+                                    <td>
+                                        {/* TODO: estrelinhas aqui */}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </Table>
                     </Accordion.Panel>
                 </Accordion.Item>
 
-                <Accordion.Item value="customization">
+                <Accordion.Item value="testResultsHistory">
+                    <Accordion.Control>
+                        Histórico de Resultado de Provas
+                    </Accordion.Control>
+                    <Accordion.Panel>
+                        <TestResultsHistory />
+                    </Accordion.Panel>
+                </Accordion.Item>
+
+                <Accordion.Item value="studentsPerformance">
                     <Accordion.Control>
                         <Flex>
-                            Desempenho de Alunos por
+                            Desempenho de Alunos por &nbsp;
                             <Select
-                                style={{ width: '50px' }}
+                                style={{ width: '100px' }}
                                 data={[]} />
                         </Flex>
                     </Accordion.Control>
                     <Accordion.Panel>
-                        Lorem ipsum
+                        <StudentsPerformance />
                     </Accordion.Panel>
                 </Accordion.Item>
             </Accordion>

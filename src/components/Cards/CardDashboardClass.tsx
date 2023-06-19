@@ -1,4 +1,4 @@
-import { Card, Flex, Stack, Group, Title, Accordion, Text, useMantineTheme } from "@mantine/core";
+import { Card, Flex, Stack, Group, Title, Accordion, Text, useMantineTheme, rem } from "@mantine/core";
 import { IconFileDescription, IconPlus, IconUsers } from '@tabler/icons-react';
 
 type componentProps = {
@@ -25,7 +25,7 @@ export function CardDashboardClass({ classNumber, className, classesQuantity, st
                     {className}
                 </Title>
 
-                <Flex justify={'space-between'}>
+                <Flex justify={'space-between'} mb={20}>
                     <Stack>
                         <Text size="sm" color="dimmed">Turmas</Text>
                         <Text weight={600}>{classesQuantity}</Text>
@@ -46,6 +46,16 @@ export function CardDashboardClass({ classNumber, className, classesQuantity, st
                     chevron={<IconPlus size="1rem" />}
                     chevronPosition="left"
                     styles={{
+                        control: {
+                            backgroundColor: `${theme.colors.blue[0]}`,
+                            color: theme.colors.blue[6],
+                            border: 'none',
+                            borderRadius: '12px',
+                            '&[data-active]': {
+                                backgroundColor: theme.colors.blue[6],
+                                color: "#fff"
+                            },
+                        },
                         chevron: {
                             '&[data-rotate]': {
                                 transform: 'rotate(45deg)',
@@ -65,7 +75,7 @@ export function CardDashboardClass({ classNumber, className, classesQuantity, st
                             </Flex>
                         </Accordion.Control>
                         <Accordion.Panel>
-                            <Group>
+                            <Group mt={20}>
                                 <Text fz="sm" fw={700}>Desempenho em Provas (%)</Text>
                                 <Text fz="sm" c="dimmed">
                                     Consc. Fonológica

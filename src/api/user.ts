@@ -45,6 +45,8 @@ const URL = {
   ALL: "/user/all",
   CREATE: "/user",
   UPDATE: (id: string) => `/user/${id}`,
+  UPDATE_ACCESS_KEY: (id: string) => `/user/${id}/access-key`,
+  GET_ACCESS_KEY: (id: string) => `/user/${id}/access-key`,
   DELETE: "/user",
   INACTIVATE: "/user/inactivate",
 };
@@ -65,6 +67,16 @@ class UserAPI extends API {
   static async update(userId: string, input?: Partial<UserInput>) {
     const { data } = await this.api.patch<User>(URL.UPDATE(userId), input);
     return data;
+  }
+
+  static async updateAccessKey(id: string) {
+    const { data } = await this.api.put<{ success: boolean }>(URL.UPDATE_ACCESS_KEY(id))
+    return data
+  }
+
+  static async getAccessKey(id: string) {
+    const { data } = await this.api.get<{ accessKey: string }>(URL.GET_ACCESS_KEY(id))
+    return data
   }
 
   static async inactivate(userIds: string[]) {
@@ -113,9 +125,33 @@ export function useUserUpdate(
   }) {
     return UserAPI.update(data.userId, data.input);
   },
-  []);
+    []);
 
   return useMutation(handler, options);
+}
+
+export function useGetAccessKey(
+  options?: MutationOptions<string, { accessKey: string }>
+) {
+  const queryClient = useQueryClient();
+
+  const handler = useCallback(function (id: string) {
+    return UserAPI.getAccessKey(id);
+  }, []);
+
+  return useMutation(handler, options)
+}
+
+export function useUpdateAccessKey(
+  options?: MutationOptions<string, { accessKey: string }>
+) {
+  const queryClient = useQueryClient();
+
+  const handler = useCallback(function (id: string) {
+    return UserAPI.updateAccessKey(id);
+  }, []);
+
+  return useMutation(handler, options)
 }
 
 export function useUserDelete(

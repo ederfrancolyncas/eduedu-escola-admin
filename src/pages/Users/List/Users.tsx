@@ -119,7 +119,7 @@ export function UsersListPage() {
         <Space h="xs" />
       )}
 
-      <Table horizontalSpacing="xl" verticalSpacing="md">
+      <Table horizontalSpacing="sm" verticalSpacing="md">
         <thead>
           <tr>
             <th>
