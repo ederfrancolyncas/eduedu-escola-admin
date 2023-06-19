@@ -1,3 +1,11 @@
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { User, UserInput, useGetAccessKey, useUpdateAccessKey, useUserCreate, useUserUpdate } from "~/api/user";
+import { PATH } from "~/constants/path";
+import { PROFILE_SELECT, STATUS_SELECT } from "~/constants";
+import { errorNotification } from "~/utils/errorNotification";
+import { successNotification } from "~/utils/successNotification";
 import {
   Button,
   Grid,
@@ -8,21 +16,13 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { IconRefresh } from "@tabler/icons-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { z } from "zod";
-import { User, UserInput, useUserCreate, useUserUpdate } from "~/api/user";
 import { PageHeader } from "~/components/PageHeader";
-import { PROFILE_SELECT, STATUS_SELECT } from "~/constants";
-import { PATH } from "~/constants/path";
-import { errorNotification } from "~/utils/errorNotification";
-import { successNotification } from "~/utils/successNotification";
 
 const userInputValidation = z.object({
   name: z
     .string()
     .min(3, { message: "Nome deve ter no mínimo 3 caracteres" })
     .max(255, { message: "Nome deve ter no máximo 255 caracteres" }),
-
   document: z
     .string()
     .length(11, { message: "CPF deve ter 11 caracteres" })
@@ -56,6 +56,30 @@ export function UserPage() {
       successNotification("Sucesso", "Usuário atualizado com sucesso!");
     },
   });
+
+  const [accessKey, setAccessKey] = useState<string>();
+
+  // TODO: solve here the "commponent is changing an uncontrolled input to be controlled"
+  const { mutate: getAccessKey, isLoading: isGetAccessKey } = useGetAccessKey({
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    },
+    onSuccess: (data) => {
+      setAccessKey(data?.accessKey)
+      successNotification("Sucesso", "Código de acesso atualizado com sucesso!");
+    },
+  })
+  // getAccessKey(editingUser?.id)
+
+  const { mutate: updateAccessKey, isLoading: isUpdateAccessKey } = useUpdateAccessKey({
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    },
+    onSuccess: (data) => {
+      setAccessKey(data?.accessKey)
+      successNotification("Sucesso", "Código de acesso atualizado com sucesso!");
+    },
+  })
 
   const form = useForm<UserInput>({
     initialValues: {
@@ -143,7 +167,7 @@ export function UserPage() {
                 <div style={{ position: "relative" }}>
                   <TextInput
                     label="Código de Acesso"
-                    value="AHDE2874"
+                    value={accessKey}
                     disabled
                   />
                   <IconRefresh
@@ -154,9 +178,7 @@ export function UserPage() {
                       width: "20px",
                     }}
                     color={theme.colors.blue[9]}
-                    onClick={() => {
-                      console.log("novo código de acesso! :D");
-                    }}
+                    onClick={() => { updateAccessKey(editingUser?.id) }}
                   />
                 </div>
               </Grid.Col>
