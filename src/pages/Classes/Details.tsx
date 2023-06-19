@@ -1,9 +1,7 @@
-import { Accordion, Button, Grid, Group, Flex, Select, Text, Title, useMantineTheme, Table, Divider } from "@mantine/core";
+import { Accordion, Button, Flex, Select, useMantineTheme, Table, Divider } from "@mantine/core";
 import { IconPlus, } from "@tabler/icons-react";
-import { StudentsPerformance } from "~/components/Classes/StudentsPerformance";
-
-import { TestPerformance } from "~/components/Classes/TestPerformance";
-import { TestResultsHistory } from "~/components/Classes/TestResultsHistory";
+import { DetailsHeader } from "~/components/Classes/Details/DetailsHeader";
+import { StudentsPerformance, TestPerformance, TestResultsHistory } from "~/components/Classes/Details/TestsPerformance";
 
 
 export function DetailsPage() {
@@ -11,46 +9,7 @@ export function DetailsPage() {
 
     return (
         <>
-            <Grid columns={6}>
-                <Grid.Col span={1}>
-                    <Group>
-                        <Title order={4}>Turma:</Title>
-                        <Select data={[]} placeholder="Pesquisar" searchable />
-                    </Group>
-                </Grid.Col>
-
-                <Grid.Col span={1}>
-                    <Group>
-                        <Title order={4}>Série:</Title>
-                        <Text>1º Ano Fund. 1</Text>
-                    </Group>
-                </Grid.Col>
-
-                <Grid.Col span={1}>
-                    <Group>
-                        <Title order={4}>Alunos:</Title>
-                        <Text>40</Text>
-                    </Group>
-                </Grid.Col>
-
-                <Grid.Col span={1}>
-                    <Group>
-                        <Title order={4}>Frequência:</Title>
-                        <Text>85%</Text>
-                    </Group>
-                </Grid.Col>
-
-                <Grid.Col span={1}>
-                    <Group>
-                        <Title order={4}>Professor(es):</Title>
-                        <Text>Márcia, Lucas, Pedro</Text>
-                    </Group>
-                </Grid.Col>
-
-                <Grid.Col span={1}>
-                    <Button>Gerar relatório</Button>
-                </Grid.Col>
-            </Grid>
+            <DetailsHeader />
 
             <Accordion
                 variant="separated"
@@ -64,9 +23,23 @@ export function DetailsPage() {
                     }
                 }}
             >
-                <Accordion.Item value="customization">
-                    <Accordion.Control>
-                        Desempenho em Provas
+                <Accordion.Item value="testPerformance">
+                    <Accordion.Control
+                        style={{
+                            color: theme.colors.indigo[9]
+                        }}
+                    >
+                        <Flex justify="space-between">
+                            Desempenho em Provas
+                            <Button
+                                size="xs"
+                                style={{
+                                    color: theme.colors.blue[6],
+                                    backgroundColor: theme.colors.blue[0]
+                                }}>
+                                Alunos que não precisam de reforço
+                            </Button>
+                        </Flex>
                     </Accordion.Control>
                     <Accordion.Panel>
                         <Flex justify="space-between">
@@ -79,7 +52,7 @@ export function DetailsPage() {
                     </Accordion.Panel>
                 </Accordion.Item>
 
-                <Accordion.Item value="customization">
+                <Accordion.Item value="planetsPerformance">
                     <Accordion.Control>
                         Desempenho em Planetas
                     </Accordion.Control>
@@ -123,7 +96,7 @@ export function DetailsPage() {
                     </Accordion.Panel>
                 </Accordion.Item>
 
-                <Accordion.Item value="customization">
+                <Accordion.Item value="testResultsHistory">
                     <Accordion.Control>
                         Histórico de Resultado de Provas
                     </Accordion.Control>
@@ -132,12 +105,12 @@ export function DetailsPage() {
                     </Accordion.Panel>
                 </Accordion.Item>
 
-                <Accordion.Item value="customization">
+                <Accordion.Item value="studentsPerformance">
                     <Accordion.Control>
                         <Flex>
-                            Desempenho de Alunos por
+                            Desempenho de Alunos por &nbsp;
                             <Select
-                                style={{ width: '50px' }}
+                                style={{ width: '100px' }}
                                 data={[]} />
                         </Flex>
                     </Accordion.Control>
