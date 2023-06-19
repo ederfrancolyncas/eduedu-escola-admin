@@ -4,7 +4,7 @@ import { IconUsers } from "@tabler/icons-react";
 type componentProps = {
     examType: string
 }
-export function ExamPerformance({ examType }: componentProps) {
+export function TestPerformance({ examType }: componentProps) {
     const theme = useMantineTheme()
     return (
         <Stack>

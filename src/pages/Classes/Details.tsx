@@ -1,7 +1,7 @@
 import { Accordion, Button, Grid, Group, Flex, Select, Text, Title, useMantineTheme, Table, Divider } from "@mantine/core";
 import { IconPlus, } from "@tabler/icons-react";
 
-import { ExamPerformance } from "~/components/Classes/ExamPerformance";
+import { TestPerformance } from "~/components/Classes/TestPerformance";
 import { TestResultsHistory } from "~/components/Classes/TestResultsHistory";
 
 
@@ -69,11 +69,11 @@ export function DetailsPage() {
                     </Accordion.Control>
                     <Accordion.Panel>
                         <Flex justify="space-between">
-                            <ExamPerformance examType="Consciência Fonológica" />
+                            <TestPerformance examType="Consciência Fonológica" />
                             <Divider orientation="vertical" />
-                            <ExamPerformance examType="Sistema de Escrita Alfabética" />
+                            <TestPerformance examType="Sistema de Escrita Alfabética" />
                             <Divider orientation="vertical" />
-                            <ExamPerformance examType="Leitura e Compreensão de Texto" />
+                            <TestPerformance examType="Leitura e Compreensão de Texto" />
                         </Flex>
                     </Accordion.Panel>
                 </Accordion.Item>
