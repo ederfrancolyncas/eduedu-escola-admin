@@ -1,5 +1,6 @@
 import { Accordion, Button, Grid, Group, Flex, Select, Text, Title, useMantineTheme, Table, Divider } from "@mantine/core";
 import { IconPlus, } from "@tabler/icons-react";
+import { StudentsPerformance } from "~/components/Classes/StudentsPerformance";
 
 import { TestPerformance } from "~/components/Classes/TestPerformance";
 import { TestResultsHistory } from "~/components/Classes/TestResultsHistory";
@@ -83,7 +84,7 @@ export function DetailsPage() {
                         Desempenho em Planetas
                     </Accordion.Control>
                     <Accordion.Panel>
-                        <Table horizontalSpacing="xl" verticalSpacing="md">
+                        <Table horizontalSpacing="sm" verticalSpacing="md">
                             <thead>
                                 <tr>
                                     <th>Nome</th>
@@ -141,7 +142,7 @@ export function DetailsPage() {
                         </Flex>
                     </Accordion.Control>
                     <Accordion.Panel>
-                        Lorem ipsum
+                        <StudentsPerformance />
                     </Accordion.Panel>
                 </Accordion.Item>
             </Accordion>

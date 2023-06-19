@@ -87,7 +87,7 @@ export function StudentsPage() {
         <Button>Novo aluno</Button>
       </PageHeader>
 
-      <Table horizontalSpacing="xl" verticalSpacing="md">
+      <Table horizontalSpacing="sm" verticalSpacing="md">
         <thead>
           <tr>
             <th>
