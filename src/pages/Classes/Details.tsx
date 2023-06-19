@@ -1,5 +1,5 @@
-import { Accordion, Button, Grid, Group, Flex, Select, Text, Title, useMantineTheme } from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
+import { Accordion, Button, Grid, Group, Flex, Select, Text, Title, useMantineTheme, Table, Stack, Divider } from "@mantine/core";
+import { IconPlus, } from "@tabler/icons-react";
 import { useState } from "react";
 import {
     Chart as ChartJS,
@@ -12,6 +12,7 @@ import {
 } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import { monthsAbbreviation } from "~/constants";
+import { ExamPerformance } from "~/components/Classes/ExamPerformance";
 
 
 export function DetailsPage() {
@@ -283,7 +284,13 @@ export function DetailsPage() {
                         Desempenho em Provas
                     </Accordion.Control>
                     <Accordion.Panel>
-                        Lorem ipsum
+                        <Flex justify="space-between">
+                            <ExamPerformance examType="Consciência Fonológica" />
+                            <Divider orientation="vertical" />
+                            <ExamPerformance examType="Sistema de Escrita Alfabética" />
+                            <Divider orientation="vertical" />
+                            <ExamPerformance examType="Leitura e Compreensão de Texto" />
+                        </Flex>
                     </Accordion.Panel>
                 </Accordion.Item>
 
@@ -292,7 +299,42 @@ export function DetailsPage() {
                         Desempenho em Planetas
                     </Accordion.Control>
                     <Accordion.Panel>
-                        Lorem ipsum
+                        <Table horizontalSpacing="xl" verticalSpacing="md">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Planetas Oferecidos</th>
+                                    <th>Planetas Realizados</th>
+                                    <th>Média Estrelas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style={{ color: theme.colors.blue[6] }}>Consciência Fonológica</td>
+                                    <td>30</td>
+                                    <td>30</td>
+                                    <td>
+                                        {/* TODO: estrelinhas aqui */}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style={{ color: theme.colors.blue[6] }}>Sistema de Escrita Alfabética</td>
+                                    <td>25</td>
+                                    <td>20</td>
+                                    <td>
+                                        {/* TODO: estrelinhas aqui */}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style={{ color: theme.colors.blue[6] }}>Leitura e Compreensão de Texto</td>
+                                    <td>18</td>
+                                    <td>17</td>
+                                    <td>
+                                        {/* TODO: estrelinhas aqui */}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </Table>
                     </Accordion.Panel>
                 </Accordion.Item>
 
