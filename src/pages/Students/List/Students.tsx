@@ -49,8 +49,9 @@ export function StudentsListPage() {
               Selecione o arquivo do template de Cadastro de Aluno.
             </Text>
             <FileInput
+              style={{ width: '100%' }}
               placeholder="Selecione o arquivo"
-              icon={<IconPaperclip size={rem(14)} />}
+              rightSection={<IconPaperclip size={rem(14)} />}
             />
           </Group>
 
