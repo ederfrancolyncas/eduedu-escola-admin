@@ -11,23 +11,34 @@ import {
   Menu,
   Text,
   TextInput,
+  ActionIcon,
 } from "@mantine/core";
-import { IconChevronDown } from "@tabler/icons-react";
+import { IconChevronDown, IconRefresh } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
 import { useUserStore } from "~/stores/user";
-import { PROFILE_SELECT, USER_PROFILE } from "~/constants";
+import { USER_PROFILE } from "~/constants";
+import { useUpdateAccessKey } from "~/api/user";
 
 export function UserDropdown() {
-  const { name: userName, profile } = useUserStore();
+  const { name: userName, profile, id } = useUserStore();
 
   const { mutate: changePassword } = useUserChangePassword({
-    onError: (error) => {
-      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
-    },
     onSuccess: () => {
       successNotification("Sucesso", "Usuário deletado com sucesso!");
     },
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    }
   });
+
+  const { mutate: changeAccessKey } = useUpdateAccessKey({
+    onSuccess: () => {
+      successNotification("Sucesso", "Código de acesso alterado!");
+    },
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    }
+  })
 
   const formChangePasswordValidation = z.object({
     passwordConfirmation: z.string().min(1, { message: "Insira uma senha" }),
@@ -84,7 +95,20 @@ export function UserDropdown() {
       <Menu.Dropdown p="md">
         <Stack spacing="md">
           <Text weight={700}>{userName}</Text>
-          <TextInput label="Código de acesso" value="AHDE29813" readOnly />
+          <TextInput
+            label="Código de acesso"
+            value="AHDE29813"
+            readOnly
+            rightSection={
+              <ActionIcon
+                variant="transparent"
+                color="blue.9"
+                onClick={() => changeAccessKey(id)}
+              >
+                <IconRefresh />
+              </ActionIcon>
+            }
+          />
           <Group style={{ marginTop: "10px" }}>
             <Button
               size="xs"
