@@ -1,3 +1,7 @@
+import { Link } from "react-router-dom";
+import { PATH } from "~/constants/path";
+
+// Components:
 import {
   ActionIcon,
   Button,
@@ -10,28 +14,37 @@ import {
   Text,
   TextInput,
   rem,
+  useMantineTheme,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { IconEdit, IconEye, IconPaperclip } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import { HorizontalRule } from "~/components/HorizontalRule";
 import { PageHeader } from "~/components/PageHeader";
-import { PATH } from "~/constants/path";
+import { InfoTooltip } from "~/components/Tooltips/Info";
 
-export function StudentsPage() {
+// Icons
+import { IconEdit, IconEye, IconFileDownload, IconPaperclip } from "@tabler/icons-react";
+
+export function StudentsListPage() {
+  const theme = useMantineTheme();
+
+  // Modals
   const openModalUploadStudent = () =>
     modals.openConfirmModal({
       title: "Upload de Aluno",
       children: (
         <>
-          <Group>
+          <Group mb={10}>
             <Text size="sm">
               Para fazer upload de aluno em lote é necessário seguir o template
               de cadastro de aluno.
             </Text>
-            <Text c="blue.6">Fazer download do template</Text>
+            <Text c="blue.6" size="sm">
+              Fazer download do template &#32;
+              <IconFileDownload size={rem(18)} />
+            </Text>
           </Group>
 
-          <Group>
+          <Group mb={10}>
             <Text size="sm">
               Selecione o arquivo do template de Cadastro de Aluno.
             </Text>
@@ -51,12 +64,40 @@ export function StudentsPage() {
               style={{ width: "100%" }}
             />
           </Group>
+          <HorizontalRule />
+        </>
+      ),
+      labels: { confirm: "Sim", cancel: "Não" }
+    });
+
+  const openModalAuthorizeNewTest = () => {
+    modals.openConfirmModal({
+      title: "Autorizar Nova Prova",
+      children: (
+        <>
+          <Text size="sm">
+            Deseja que o sistema permita o(s) aluno(s)
+            selecionado(s) à realizarem uma nova prova?
+          </Text>
+          <HorizontalRule />
+        </>
+      ),
+      labels: { confirm: "Sim", cancel: "Não" }
+    })
+  }
+  const openModalDeleteStudent = () =>
+    modals.openConfirmModal({
+      title: 'Excluir',
+      children: (
+        <>
+          <Text size="sm">
+            Deseja excluir o(s) alunos(s) selecionado(s)?
+          </Text>
+          <HorizontalRule />
         </>
       ),
       labels: { confirm: "Sim", cancel: "Não" },
-      onCancel: () => console.log("Noooo"),
-      onConfirm: () => console.log("Yasss :D"),
-    });
+    })
 
   // TODO: get real data:
   const students = {
@@ -81,11 +122,35 @@ export function StudentsPage() {
   return (
     <>
       <PageHeader title="Alunos">
-        <Button onClick={openModalUploadStudent} variant="outline">
+        <Button
+          variant="outline"
+          onClick={openModalUploadStudent}
+        >
           Upload aluno
         </Button>
-        <Button>Novo aluno</Button>
+        <Link to={`${PATH.STUDENTS}/novo-aluno`}>
+          <Button>Novo aluno</Button>
+        </Link>
       </PageHeader>
+
+      <Group>
+        <Button
+          size="xs"
+          variant="outline"
+          color="red"
+          onClick={openModalDeleteStudent}
+        >
+          Excluir
+        </Button>
+        <Button
+          size="xs"
+          color="blue.0"
+          style={{ color: theme.colors.blue[6] }}
+          onClick={openModalAuthorizeNewTest}
+        >
+          Autorizar Nova Prova
+        </Button>
+      </Group>
 
       <Table horizontalSpacing="sm" verticalSpacing="md">
         <thead>
@@ -110,15 +175,15 @@ export function StudentsPage() {
               <Select data={[]} placeholder="Pesquisar" />
             </th>
             <th>
-              CFO
+              <InfoTooltip text="CFO" tooltipText="Consciência Fonológica" />
               <Select data={[]} placeholder="Pesquisar" />
             </th>
             <th>
-              SEA
+              <InfoTooltip text="SEA" tooltipText="Sistema de Escrita Alfabética" />
               <Select data={[]} placeholder="Pesquisar" />
             </th>
             <th>
-              LCT
+              <InfoTooltip text="LCT" tooltipText="Leitura e Compreensão de Texto" />
               <Select data={[]} placeholder="Pesquisar" />
             </th>
             <th>
@@ -166,7 +231,8 @@ export function StudentsPage() {
         </tbody>
       </Table>
 
-      <Pagination total={students.pagination.totalPages ?? 0} />
+      {/* TODO: commented while backend is not ready */}
+      {/* {students && <Pagination paginationApi={users.pagination} paginationHook={pagination} /> } */}
     </>
   );
 }
