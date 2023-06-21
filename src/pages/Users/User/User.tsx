@@ -169,6 +169,7 @@ export function UserPage() {
                     label="Código de Acesso"
                     value={accessKey}
                     disabled
+                    onClick={() => updateAccessKey(editingUser.id)}
                   />
                   <IconRefresh
                     style={{
