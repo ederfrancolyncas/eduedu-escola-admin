@@ -3,6 +3,10 @@ import { errorNotification } from "~/utils/errorNotification";
 import { successNotification } from "~/utils/successNotification";
 import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
+import { useUserStore } from "~/stores/user";
+import { USER_PROFILE } from "~/constants";
+import { useGetAccessKey, useUpdateAccessKey } from "~/api/user";
+import { useState } from "react";
 import {
   Button,
   Stack,
@@ -11,29 +15,38 @@ import {
   Menu,
   Text,
   TextInput,
+  ActionIcon,
+  useMantineTheme,
 } from "@mantine/core";
-import { IconChevronDown } from "@tabler/icons-react";
+import { IconChevronDown, IconRefresh } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
-import { useUserStore } from "~/stores/user";
-import { PROFILE_SELECT, USER_PROFILE } from "~/constants";
 
 export function UserDropdown() {
-  const { name: userName, profile } = useUserStore();
+  const theme = useMantineTheme()
 
-  const { mutate: changePassword } = useUserChangePassword({
+  const { name: userName, profile, id } = useUserStore();
+
+  // Access key stuff:
+  const { data, isLoading: isGetAccessKey } = useGetAccessKey(id)
+  const { mutate: changeAccessKey } = useUpdateAccessKey({
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
-    },
+    }
+  })
+
+  // Password stuff:
+  const { mutate: changePassword } = useUserChangePassword({
     onSuccess: () => {
       successNotification("Sucesso", "Usuário deletado com sucesso!");
     },
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    }
   });
-
   const formChangePasswordValidation = z.object({
     passwordConfirmation: z.string().min(1, { message: "Insira uma senha" }),
     password: z.string().min(1, { message: "Insira uma senha" }),
   });
-
   const formChangePassword = useForm<UserChangePassword>({
     initialValues: {
       password: "",
@@ -86,7 +99,25 @@ export function UserDropdown() {
       <Menu.Dropdown p="md">
         <Stack spacing="md">
           <Text weight={700}>{userName}</Text>
-          <TextInput label="Código de acesso" value="AHDE29813" readOnly />
+          <TextInput
+            label="Código de acesso"
+            value={data?.accessKey}
+            readOnly
+            styles={{
+              input: {
+                backgroundColor: theme.colors.gray[3]
+              }
+            }}
+            rightSection={
+              <ActionIcon
+                variant="transparent"
+                color="blue.9"
+                onClick={() => changeAccessKey(id)}
+              >
+                <IconRefresh />
+              </ActionIcon>
+            }
+          />
           <Stack spacing={12} mt={12}>
             <Button
               size="xs"

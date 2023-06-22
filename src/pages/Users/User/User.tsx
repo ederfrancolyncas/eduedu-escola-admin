@@ -57,28 +57,11 @@ export function UserPage() {
     },
   });
 
-  const [accessKey, setAccessKey] = useState<string>();
-
-  // TODO: solve here the "commponent is changing an uncontrolled input to be controlled"
-  const { mutate: getAccessKey, isLoading: isGetAccessKey } = useGetAccessKey({
+  const { data, isLoading: isGetAccessKey } = useGetAccessKey(editingUser?.id ?? '')
+  const { mutate: changeAccessKey } = useUpdateAccessKey({
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
-    },
-    onSuccess: (data) => {
-      setAccessKey(data?.accessKey)
-      successNotification("Sucesso", "Código de acesso atualizado com sucesso!");
-    },
-  })
-  // getAccessKey(editingUser?.id)
-
-  const { mutate: updateAccessKey, isLoading: isUpdateAccessKey } = useUpdateAccessKey({
-    onError: (error) => {
-      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
-    },
-    onSuccess: (data) => {
-      setAccessKey(data?.accessKey)
-      successNotification("Sucesso", "Código de acesso atualizado com sucesso!");
-    },
+    }
   })
 
   const form = useForm<UserInput>({
@@ -167,8 +150,9 @@ export function UserPage() {
                 <div style={{ position: "relative" }}>
                   <TextInput
                     label="Código de Acesso"
-                    value={accessKey}
+                    value={data?.accessKey ?? ''}
                     disabled
+                    onClick={() => changeAccessKey(editingUser.id)}
                   />
                   <IconRefresh
                     style={{
@@ -178,7 +162,7 @@ export function UserPage() {
                       width: "20px",
                     }}
                     color={theme.colors.blue[9]}
-                    onClick={() => { updateAccessKey(editingUser?.id) }}
+                    onClick={() => { changeAccessKey(editingUser?.id) }}
                   />
                 </div>
               </Grid.Col>
