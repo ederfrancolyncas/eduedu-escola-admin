@@ -55,6 +55,8 @@ export function UserDropdown() {
     validate: zodResolver(formChangePasswordValidation),
   });
 
+  const logout = useUserStore((u) => u.signOut);
+
   const openModalChangePassword = () =>
     modals.openConfirmModal({
       title: "Redefinir Senha",
@@ -81,7 +83,7 @@ export function UserDropdown() {
     <Menu position="bottom-end">
       <Menu.Target>
         <Button compact variant="white" color="dark">
-          <Group noWrap>
+          <Group noWrap align="baseline">
             <Group spacing={2} noWrap>
               <Text size="sm" weight={600}>
                 {userName}&nbsp;
@@ -116,16 +118,18 @@ export function UserDropdown() {
               </ActionIcon>
             }
           />
-          <Group style={{ marginTop: "10px" }}>
+          <Stack spacing={12} mt={12}>
             <Button
               size="xs"
               variant="outline"
-              style={{ width: "100%" }}
               onClick={openModalChangePassword}
             >
               Alterar senha
             </Button>
-          </Group>
+            <Button size="xs" variant="outline" onClick={logout}>
+              Sair
+            </Button>
+          </Stack>
         </Stack>
       </Menu.Dropdown>
     </Menu>
