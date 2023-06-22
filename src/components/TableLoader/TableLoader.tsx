@@ -14,6 +14,8 @@ export function TableLoader({
   title = "Sem dados para exibir",
   link,
 }: TableLoaderProps) {
+  if (!loading && !empty) return null;
+
   return (
     <Center h={350}>
       {loading && <Loader />}
