@@ -3,6 +3,10 @@ import { errorNotification } from "~/utils/errorNotification";
 import { successNotification } from "~/utils/successNotification";
 import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
+import { useUserStore } from "~/stores/user";
+import { USER_PROFILE } from "~/constants";
+import { useGetAccessKey, useUpdateAccessKey } from "~/api/user";
+import { useState } from "react";
 import {
   Button,
   Stack,
@@ -12,16 +16,25 @@ import {
   Text,
   TextInput,
   ActionIcon,
+  useMantineTheme,
 } from "@mantine/core";
 import { IconChevronDown, IconRefresh } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
-import { useUserStore } from "~/stores/user";
-import { USER_PROFILE } from "~/constants";
-import { useUpdateAccessKey } from "~/api/user";
 
 export function UserDropdown() {
+  const theme = useMantineTheme()
+
   const { name: userName, profile, id } = useUserStore();
 
+  // Access key stuff:
+  const { data, isLoading: isGetAccessKey } = useGetAccessKey(id)
+  const { mutate: changeAccessKey } = useUpdateAccessKey({
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    }
+  })
+
+  // Password stuff:
   const { mutate: changePassword } = useUserChangePassword({
     onSuccess: () => {
       successNotification("Sucesso", "Usuário deletado com sucesso!");
@@ -30,21 +43,10 @@ export function UserDropdown() {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
     }
   });
-
-  const { mutate: changeAccessKey } = useUpdateAccessKey({
-    onSuccess: () => {
-      successNotification("Sucesso", "Código de acesso alterado!");
-    },
-    onError: (error) => {
-      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
-    }
-  })
-
   const formChangePasswordValidation = z.object({
     passwordConfirmation: z.string().min(1, { message: "Insira uma senha" }),
     password: z.string().min(1, { message: "Insira uma senha" }),
   });
-
   const formChangePassword = useForm<UserChangePassword>({
     initialValues: {
       password: "",
@@ -97,8 +99,13 @@ export function UserDropdown() {
           <Text weight={700}>{userName}</Text>
           <TextInput
             label="Código de acesso"
-            value="AHDE29813"
+            value={data?.accessKey}
             readOnly
+            styles={{
+              input: {
+                backgroundColor: theme.colors.gray[3]
+              }
+            }}
             rightSection={
               <ActionIcon
                 variant="transparent"
