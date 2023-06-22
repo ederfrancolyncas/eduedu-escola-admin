@@ -1,22 +1,14 @@
-import { useState } from "react";
+import { Button, Grid, Group, Select, TextInput } from "@mantine/core";
+import { useForm, zodResolver } from "@mantine/form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { User, UserInput, useGetAccessKey, useUpdateAccessKey, useUserCreate, useUserUpdate } from "~/api/user";
-import { PATH } from "~/constants/path";
+import { User, UserInput, useUserCreate, useUserUpdate } from "~/api/user";
+import { AccessKeyInput } from "~/components/AccessKeyInput";
+import { PageHeader } from "~/components/PageHeader";
 import { PROFILE_SELECT, STATUS_SELECT } from "~/constants";
+import { PATH } from "~/constants/path";
 import { errorNotification } from "~/utils/errorNotification";
 import { successNotification } from "~/utils/successNotification";
-import {
-  Button,
-  Grid,
-  Group,
-  Select,
-  TextInput,
-  useMantineTheme,
-} from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
-import { IconRefresh } from "@tabler/icons-react";
-import { PageHeader } from "~/components/PageHeader";
 
 const userInputValidation = z.object({
   name: z
@@ -34,7 +26,6 @@ const userInputValidation = z.object({
 });
 
 export function UserPage() {
-  const theme = useMantineTheme();
   const navigate = useNavigate();
   const editingUser = useLocation().state?.user as User | undefined;
 
@@ -56,13 +47,6 @@ export function UserPage() {
       successNotification("Sucesso", "Usuário atualizado com sucesso!");
     },
   });
-
-  const { data, isLoading: isGetAccessKey } = useGetAccessKey(editingUser?.id ?? '')
-  const { mutate: changeAccessKey } = useUpdateAccessKey({
-    onError: (error) => {
-      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
-    }
-  })
 
   const form = useForm<UserInput>({
     initialValues: {
@@ -147,24 +131,7 @@ export function UserPage() {
                 </Grid.Col>
               )}
               <Grid.Col span={1}>
-                <div style={{ position: "relative" }}>
-                  <TextInput
-                    label="Código de Acesso"
-                    value={data?.accessKey ?? ''}
-                    disabled
-                    onClick={() => changeAccessKey(editingUser.id)}
-                  />
-                  <IconRefresh
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      right: "3%",
-                      width: "20px",
-                    }}
-                    color={theme.colors.blue[9]}
-                    onClick={() => { changeAccessKey(editingUser?.id) }}
-                  />
-                </div>
+                <AccessKeyInput userId={editingUser?.id ?? ""} />
               </Grid.Col>
             </>
           )}

@@ -20,19 +20,12 @@ import {
 } from "@mantine/core";
 import { IconChevronDown, IconRefresh } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
+import { AccessKeyInput } from "../AccessKeyInput";
 
 export function UserDropdown() {
-  const theme = useMantineTheme()
+  const theme = useMantineTheme();
 
   const { name: userName, profile, id } = useUserStore();
-
-  // Access key stuff:
-  const { data, isLoading: isGetAccessKey } = useGetAccessKey(id)
-  const { mutate: changeAccessKey } = useUpdateAccessKey({
-    onError: (error) => {
-      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
-    }
-  })
 
   // Password stuff:
   const { mutate: changePassword } = useUserChangePassword({
@@ -41,7 +34,7 @@ export function UserDropdown() {
     },
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
-    }
+    },
   });
   const formChangePasswordValidation = z.object({
     passwordConfirmation: z.string().min(1, { message: "Insira uma senha" }),
@@ -99,25 +92,7 @@ export function UserDropdown() {
       <Menu.Dropdown p="md">
         <Stack spacing="md">
           <Text weight={700}>{userName}</Text>
-          <TextInput
-            label="Código de acesso"
-            value={data?.accessKey}
-            readOnly
-            styles={{
-              input: {
-                backgroundColor: theme.colors.gray[3]
-              }
-            }}
-            rightSection={
-              <ActionIcon
-                variant="transparent"
-                color="blue.9"
-                onClick={() => changeAccessKey(id)}
-              >
-                <IconRefresh />
-              </ActionIcon>
-            }
-          />
+          <AccessKeyInput styled />
           <Stack spacing={12} mt={12}>
             <Button
               size="xs"
