@@ -15,7 +15,7 @@ import {
   TestResultsHistory,
 } from "~/components/Classes/Details/TestsPerformance";
 
-export function DetailsPage() {
+export function ClassDetailPage() {
   const theme = useMantineTheme();
 
   return (

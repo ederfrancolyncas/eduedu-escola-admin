@@ -2,17 +2,25 @@ import { useCallback } from "react";
 import { API } from "./base";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MutationOptions, Paginated, QueryOptions } from "./api-types";
+import { User } from "./user";
+import { SchoolYear } from "./school-year";
 
 type SchoolClass = {
   id: string;
   name: string;
   schoolGrade: string;
   schoolPeriod: string;
-  schoolYearId: string;
-  teacherIds: any;
+  teachers: User[];
+  schoolYear: SchoolYear;
 };
 
-export type SchoolClassInput = Pick<SchoolClass, "name" | "schoolGrade" | "schoolPeriod" | "schoolYearId" | "teacherIds">;
+export type SchoolClassInput = Pick<
+  SchoolClass,
+  "name" | "schoolGrade" | "schoolPeriod"
+> & {
+  schoolYearId: string;
+  teacherIds: string[];
+};
 
 type SchoolClassSearch = {
   "page-number"?: number;
@@ -26,7 +34,8 @@ type SchoolClassSearch = {
 
 const KEY = {
   ALL: "SCHOOL_CLASS_ALL",
-};
+  BY_ID: "SCHOOL_CLASS_BY_ID",
+} as const;
 
 const URL = {
   ALL: "/schoolClass/all",
@@ -57,19 +66,28 @@ class SchoolClassAPI extends API {
     return data;
   }
 
-  static async get(schoolClassId: string) {
-    const { data } = await this.api.patch<SchoolClass>(URL.GET(schoolClassId));
+  static async get(id: string) {
+    const { data } = await this.api.get<SchoolClass>(URL.GET(id));
     return data;
   }
 
-  static async update(schoolClassId: string, input?: Partial<SchoolClassInput>) {
-    const { data } = await this.api.patch<SchoolClass>(URL.UPDATE(schoolClassId), input);
+  static async update(
+    schoolClassId: string,
+    input?: Partial<SchoolClassInput>
+  ) {
+    const { data } = await this.api.patch<SchoolClass>(
+      URL.UPDATE(schoolClassId),
+      input
+    );
     return data;
   }
 }
 
 export function useSchoolClassGetAll(
-  options?: QueryOptions<Paginated<SchoolClass>, [string, SchoolClassSearch | undefined]> & { search?: SchoolClassSearch }
+  options?: QueryOptions<
+    Paginated<SchoolClass>,
+    [string, SchoolClassSearch | undefined]
+  > & { search?: SchoolClassSearch }
 ) {
   const handler = useCallback(
     function () {
@@ -81,7 +99,9 @@ export function useSchoolClassGetAll(
   return useQuery([KEY.ALL, options?.search], handler, options);
 }
 
-export function useSchoolClassCreate(options?: MutationOptions<SchoolClassInput, SchoolClass>) {
+export function useSchoolClassCreate(
+  options?: MutationOptions<SchoolClassInput, SchoolClass>
+) {
   const handler = useCallback(function (input: SchoolClassInput) {
     return SchoolClassAPI.create(input);
   }, []);
@@ -108,19 +128,24 @@ export function useSchoolClassDelete(
 }
 
 export function useGetSchoolClass(
-  options?: MutationOptions<string, { id: string }>
+  classId: string,
+  options?: QueryOptions<SchoolClass, [typeof KEY.BY_ID, string]>
 ) {
-  const queryClient = useQueryClient();
+  const handler = useCallback(
+    function () {
+      return SchoolClassAPI.get(classId);
+    },
+    [classId]
+  );
 
-  const handler = useCallback(function (id: string) {
-    return SchoolClassAPI.get(id);
-  }, []);
-
-  return useMutation(handler, options)
+  return useQuery([KEY.BY_ID, classId], handler, options);
 }
 
 export function useSchoolClassUpdate(
-  options?: MutationOptions<{ input: SchoolClassInput; schoolClassId: string }, SchoolClass>
+  options?: MutationOptions<
+    { input: Partial<SchoolClassInput>; schoolClassId: string },
+    SchoolClass
+  >
 ) {
   const handler = useCallback(function (data: {
     schoolClassId: string;
@@ -128,7 +153,7 @@ export function useSchoolClassUpdate(
   }) {
     return SchoolClassAPI.update(data.schoolClassId, data.input);
   },
-    []);
+  []);
 
   return useMutation(handler, options);
 }

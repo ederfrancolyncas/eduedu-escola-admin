@@ -43,7 +43,7 @@ type UserTeacherSearch = {
   name?: string;
   email?: string;
   document?: string;
-  profile: 'TEACHER';
+  profile: "TEACHER";
 };
 
 const KEY = {
@@ -68,13 +68,6 @@ class UserAPI extends API {
     return data;
   }
 
-  static async getTeacherAll(params?: UserTeacherSearch) {
-    const { data } = await this.api.get<Paginated<User>>(URL.ALL, {
-      params,
-    });
-    return data;
-  }
-
   static async create(input?: UserInput) {
     const { data } = await this.api.post<User>(URL.CREATE, input);
     return data;
@@ -86,13 +79,17 @@ class UserAPI extends API {
   }
 
   static async updateAccessKey(id: string) {
-    const { data } = await this.api.put<{ accessKey: string }>(URL.UPDATE_ACCESS_KEY(id))
-    return data
+    const { data } = await this.api.put<{ accessKey: string }>(
+      URL.UPDATE_ACCESS_KEY(id)
+    );
+    return data;
   }
 
   static async getAccessKey(id: string) {
-    const { data } = await this.api.get<{ accessKey: string }>(URL.GET_ACCESS_KEY(id))
-    return data
+    const { data } = await this.api.get<{ accessKey: string }>(
+      URL.GET_ACCESS_KEY(id)
+    );
+    return data;
   }
 
   static async inactivate(userIds: string[]) {
@@ -112,24 +109,13 @@ class UserAPI extends API {
 }
 
 export function useUserGetAll(
-  options?: QueryOptions<Paginated<User>, [string, UserSearch | undefined]> & { search?: UserSearch }
+  options?: QueryOptions<Paginated<User>, [string, UserSearch | undefined]> & {
+    search?: UserSearch;
+  }
 ) {
   const handler = useCallback(
     function () {
       return UserAPI.getAll(options?.search);
-    },
-    [options?.search]
-  );
-
-  return useQuery([KEY.ALL, options?.search], handler, options);
-}
-
-export function useUserTeacherGetAll(
-  options?: QueryOptions<Paginated<User>, [string, UserTeacherSearch | undefined]> & { search?: UserTeacherSearch }
-) {
-  const handler = useCallback(
-    function () {
-      return UserAPI.getTeacherAll(options?.search);
     },
     [options?.search]
   );
@@ -154,7 +140,7 @@ export function useUserUpdate(
   }) {
     return UserAPI.update(data.userId, data.input);
   },
-    []);
+  []);
 
   return useMutation(handler, options);
 }
@@ -163,12 +149,14 @@ export function useGetAccessKey(
   id: string,
   options?: QueryOptions<{ accessKey: string }, [string, string]>
 ) {
+  const handler = useCallback(
+    function () {
+      return UserAPI.getAccessKey(id);
+    },
+    [id]
+  );
 
-  const handler = useCallback(function () {
-    return UserAPI.getAccessKey(id);
-  }, [id]);
-
-  return useQuery(['accessKey', id], handler, options)
+  return useQuery(["accessKey", id], handler, options);
 }
 
 export function useUpdateAccessKey(
@@ -183,10 +171,12 @@ export function useUpdateAccessKey(
   return useMutation(handler, {
     ...options,
     onSuccess: (data, vars, ctx) => {
-      queryClient.setQueryData(['accessKey', vars], { accessKey: data.accessKey })
+      queryClient.setQueryData(["accessKey", vars], {
+        accessKey: data.accessKey,
+      });
       options?.onSuccess?.(data, vars, ctx);
-    }
-  })
+    },
+  });
 }
 
 export function useUserDelete(

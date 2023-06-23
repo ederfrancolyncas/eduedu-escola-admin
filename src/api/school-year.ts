@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { API } from "./base";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { MutationOptions, QueryOptions } from "./api-types";
+import { MutationOptions, PaginationParams, QueryOptions } from "./api-types";
 
 export type SchoolYear = {
   id: string;
@@ -29,8 +29,8 @@ const URL = {
 };
 
 class SchoolYearAPI extends API {
-  static async getAll() {
-    const { data } = await this.api.get<SchoolYear[]>(URL.ALL);
+  static async getAll(params?: PaginationParams) {
+    const { data } = await this.api.get<SchoolYear[]>(URL.ALL, { params });
     return data;
   }
 
@@ -56,9 +56,20 @@ class SchoolYearAPI extends API {
 export function useSchoolYearGetAll(
   options?: QueryOptions<SchoolYear[], [typeof KEY.ALL]>
 ) {
-  const handler = useCallback(function () {
-    return SchoolYearAPI.getAll();
-  }, []);
+  const handler = useCallback(
+    function () {
+      const params =
+        options?.page || options?.pageSize
+          ? {
+              "page-number": options.page,
+              "page-size": options.pageSize,
+            }
+          : undefined;
+
+      return SchoolYearAPI.getAll(params);
+    },
+    [options?.page, options?.pageSize]
+  );
 
   return useQuery([KEY.ALL], handler, options);
 }

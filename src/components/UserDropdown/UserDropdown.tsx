@@ -14,10 +14,10 @@ import {
   Text,
   Modal,
   PasswordInput,
+  Divider,
 } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons-react";
 import { AccessKeyInput } from "../AccessKeyInput";
-import { HorizontalRule } from "../HorizontalRule";
 
 export function UserDropdown() {
   const { name: userName, profile } = useUserStore();
@@ -68,11 +68,7 @@ export function UserDropdown() {
             <Text weight={700}>{userName}</Text>
             <AccessKeyInput styled />
             <Stack spacing={12} mt={12}>
-              <Button
-                size="xs"
-                variant="outline"
-                onClick={open}
-              >
+              <Button size="xs" variant="outline" onClick={open}>
                 Alterar senha
               </Button>
               <Button size="xs" variant="outline" onClick={logout}>
@@ -83,9 +79,15 @@ export function UserDropdown() {
         </Menu.Dropdown>
       </Menu>
 
-      <Modal opened={openModalChangePassword} onClose={close} title="Redefinir Senha">
+      <Modal
+        opened={openModalChangePassword}
+        onClose={close}
+        title="Redefinir Senha"
+      >
         <form
-          onSubmit={formChangePassword.onSubmit((values) => { changePassword(values) })}
+          onSubmit={formChangePassword.onSubmit((values) => {
+            changePassword(values);
+          })}
         >
           <PasswordInput
             label="Senha Atual"
@@ -98,13 +100,15 @@ export function UserDropdown() {
             placeholder="Senha"
             {...formChangePassword.getInputProps("passwordConfirmation")}
           />
-          <HorizontalRule />
+          <Divider />
           <Group position="right" mt={30}>
-            <Button variant="outline" onClick={close}>Cancelar</Button>
+            <Button variant="outline" onClick={close}>
+              Cancelar
+            </Button>
             <Button type="submit">Salvar</Button>
           </Group>
         </form>
-      </Modal >
+      </Modal>
     </>
   );
 }
