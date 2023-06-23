@@ -1,6 +1,13 @@
-import { Button, Grid, Group, MultiSelect, Select, TextInput } from "@mantine/core";
+import {
+  Button,
+  Divider,
+  Grid,
+  Group,
+  MultiSelect,
+  Select,
+  TextInput,
+} from "@mantine/core";
 import { Link } from "react-router-dom";
-import { HorizontalRule } from "~/components/HorizontalRule";
 import { PageHeader } from "~/components/PageHeader";
 import { PATH } from "~/constants/path";
 
@@ -54,7 +61,7 @@ export function FormPage() {
         </Grid.Col>
       </Grid>
 
-      <HorizontalRule />
+      <Divider />
 
       <Group position="right">
         <Button variant="outline">Cancelar</Button>

@@ -6,9 +6,9 @@ import {
   ActionIcon,
   Button,
   Checkbox,
+  Divider,
   FileInput,
   Group,
-  Pagination,
   Select,
   Table,
   Text,
@@ -17,12 +17,16 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { HorizontalRule } from "~/components/HorizontalRule";
 import { PageHeader } from "~/components/PageHeader";
 import { InfoTooltip } from "~/components/Tooltips/Info";
 
 // Icons
-import { IconEdit, IconEye, IconFileDownload, IconPaperclip } from "@tabler/icons-react";
+import {
+  IconEdit,
+  IconEye,
+  IconFileDownload,
+  IconPaperclip,
+} from "@tabler/icons-react";
 
 export function StudentsListPage() {
   const theme = useMantineTheme();
@@ -49,7 +53,7 @@ export function StudentsListPage() {
               Selecione o arquivo do template de Cadastro de Aluno.
             </Text>
             <FileInput
-              style={{ width: '100%' }}
+              style={{ width: "100%" }}
               placeholder="Selecione o arquivo"
               rightSection={<IconPaperclip size={rem(14)} />}
             />
@@ -65,10 +69,10 @@ export function StudentsListPage() {
               style={{ width: "100%" }}
             />
           </Group>
-          <HorizontalRule />
+          <Divider />
         </>
       ),
-      labels: { confirm: "Sim", cancel: "Não" }
+      labels: { confirm: "Sim", cancel: "Não" },
     });
 
   const openModalAuthorizeNewTest = () => {
@@ -77,28 +81,26 @@ export function StudentsListPage() {
       children: (
         <>
           <Text size="sm">
-            Deseja que o sistema permita o(s) aluno(s)
-            selecionado(s) à realizarem uma nova prova?
+            Deseja que o sistema permita o(s) aluno(s) selecionado(s) à
+            realizarem uma nova prova?
           </Text>
-          <HorizontalRule />
-        </>
-      ),
-      labels: { confirm: "Sim", cancel: "Não" }
-    })
-  }
-  const openModalDeleteStudent = () =>
-    modals.openConfirmModal({
-      title: 'Excluir',
-      children: (
-        <>
-          <Text size="sm">
-            Deseja excluir o(s) alunos(s) selecionado(s)?
-          </Text>
-          <HorizontalRule />
+          <Divider />
         </>
       ),
       labels: { confirm: "Sim", cancel: "Não" },
-    })
+    });
+  };
+  const openModalDeleteStudent = () =>
+    modals.openConfirmModal({
+      title: "Excluir",
+      children: (
+        <>
+          <Text size="sm">Deseja excluir o(s) alunos(s) selecionado(s)?</Text>
+          <Divider />
+        </>
+      ),
+      labels: { confirm: "Sim", cancel: "Não" },
+    });
 
   // TODO: get real data:
   const students = {
@@ -123,10 +125,7 @@ export function StudentsListPage() {
   return (
     <>
       <PageHeader title="Alunos">
-        <Button
-          variant="outline"
-          onClick={openModalUploadStudent}
-        >
+        <Button variant="outline" onClick={openModalUploadStudent}>
           Upload aluno
         </Button>
         <Link to={`${PATH.STUDENTS}/novo-aluno`}>
@@ -180,11 +179,17 @@ export function StudentsListPage() {
               <Select data={[]} placeholder="Pesquisar" />
             </th>
             <th>
-              <InfoTooltip text="SEA" tooltipText="Sistema de Escrita Alfabética" />
+              <InfoTooltip
+                text="SEA"
+                tooltipText="Sistema de Escrita Alfabética"
+              />
               <Select data={[]} placeholder="Pesquisar" />
             </th>
             <th>
-              <InfoTooltip text="LCT" tooltipText="Leitura e Compreensão de Texto" />
+              <InfoTooltip
+                text="LCT"
+                tooltipText="Leitura e Compreensão de Texto"
+              />
               <Select data={[]} placeholder="Pesquisar" />
             </th>
             <th>
