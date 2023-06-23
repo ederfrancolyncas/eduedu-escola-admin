@@ -1,6 +1,7 @@
 // General:
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { PATH } from "~/constants/path";
+import { schoolGrade, schoolPeriod } from "~/constants";
 import { successNotification } from "~/utils/successNotification";
 import { errorNotification } from "~/utils/errorNotification";
 
@@ -57,20 +58,6 @@ export function FormPage() {
   // Get data:
   const { data, isLoading: fetching } = useSchoolYearGetAll();
   const schoolYears = data ?? [];
-
-  const schoolGrade = [
-    {
-      value: '1ª série',
-      label: '1ª série'
-    }
-  ]
-
-  const schoolPeriod = [
-    {
-      value: 'manhã',
-      label: 'manhã'
-    }
-  ]
 
   const { data: dataTeachers, isLoading: featching } = useUserTeacherGetAll()
   const teachers = dataTeachers?.items ?? [];
