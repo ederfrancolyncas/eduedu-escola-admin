@@ -37,6 +37,15 @@ type UserSearch = {
   profile?: string;
 };
 
+type UserTeacherSearch = {
+  "page-number"?: number;
+  "page-size"?: number;
+  name?: string;
+  email?: string;
+  document?: string;
+  profile: 'TEACHER';
+};
+
 const KEY = {
   ALL: "USER_ALL",
 };
@@ -56,6 +65,14 @@ class UserAPI extends API {
     const { data } = await this.api.get<Paginated<User>>(URL.ALL, {
       params,
     });
+    return data;
+  }
+
+  static async getTeacherAll(params?: UserTeacherSearch) {
+    const { data } = await this.api.get<Paginated<User>>(URL.ALL, {
+      params,
+    });
+    console.log(data)
     return data;
   }
 
@@ -101,6 +118,19 @@ export function useUserGetAll(
   const handler = useCallback(
     function () {
       return UserAPI.getAll(options?.search);
+    },
+    [options?.search]
+  );
+
+  return useQuery([KEY.ALL, options?.search], handler, options);
+}
+
+export function useUserTeacherGetAll(
+  options?: QueryOptions<Paginated<User>, [string, UserTeacherSearch | undefined]> & { search?: UserTeacherSearch }
+) {
+  const handler = useCallback(
+    function () {
+      return UserAPI.getTeacherAll(options?.search);
     },
     [options?.search]
   );

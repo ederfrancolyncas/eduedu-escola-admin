@@ -5,17 +5,19 @@ import { MutationOptions, Paginated, QueryOptions } from "./api-types";
 
 type SchoolClass = {
   id: string;
+  name: string;
   schoolGrade: string;
   schoolPeriod: string;
   schoolYearId: string;
   teacherIds: any;
 };
 
-export type SchoolClassInput = Pick<SchoolClass, "schoolGrade" | "schoolPeriod" | "schoolYearId" | "teacherIds">;
+export type SchoolClassInput = Pick<SchoolClass, "name" | "schoolGrade" | "schoolPeriod" | "schoolYearId" | "teacherIds">;
 
 type SchoolClassSearch = {
   "page-number"?: number;
   "page-size"?: number;
+  name?: string;
   schoolGrade?: string;
   schoolPeriod?: string;
   schoolYearId?: string;
