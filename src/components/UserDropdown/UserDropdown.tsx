@@ -5,27 +5,22 @@ import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
 import { useUserStore } from "~/stores/user";
 import { USER_PROFILE } from "~/constants";
-import { useGetAccessKey, useUpdateAccessKey } from "~/api/user";
-import { useState } from "react";
+import { useDisclosure } from "@mantine/hooks";
 import {
   Button,
   Stack,
-  Box,
   Group,
   Menu,
   Text,
-  TextInput,
-  ActionIcon,
-  useMantineTheme,
+  Modal,
+  PasswordInput,
 } from "@mantine/core";
-import { IconChevronDown, IconRefresh } from "@tabler/icons-react";
-import { modals } from "@mantine/modals";
+import { IconChevronDown } from "@tabler/icons-react";
 import { AccessKeyInput } from "../AccessKeyInput";
+import { HorizontalRule } from "../HorizontalRule";
 
 export function UserDropdown() {
-  const theme = useMantineTheme();
-
-  const { name: userName, profile, id } = useUserStore();
+  const { name: userName, profile } = useUserStore();
 
   // Password stuff:
   const { mutate: changePassword } = useUserChangePassword({
@@ -49,64 +44,67 @@ export function UserDropdown() {
   });
 
   const logout = useUserStore((u) => u.signOut);
+  const [openModalChangePassword, { open, close }] = useDisclosure(false);
+  return (
+    <>
+      <Menu position="bottom-end">
+        <Menu.Target>
+          <Button compact variant="white" color="dark">
+            <Group noWrap align="baseline">
+              <Group spacing={2} noWrap>
+                <Text size="sm" weight={600}>
+                  {userName}&nbsp;
+                </Text>
+                <Text size="xs" weight={500}>
+                  ({USER_PROFILE[profile]})
+                </Text>
+              </Group>
+              <IconChevronDown width={20} height={20} />
+            </Group>
+          </Button>
+        </Menu.Target>
+        <Menu.Dropdown p="md">
+          <Stack spacing="md">
+            <Text weight={700}>{userName}</Text>
+            <AccessKeyInput styled />
+            <Stack spacing={12} mt={12}>
+              <Button
+                size="xs"
+                variant="outline"
+                onClick={open}
+              >
+                Alterar senha
+              </Button>
+              <Button size="xs" variant="outline" onClick={logout}>
+                Sair
+              </Button>
+            </Stack>
+          </Stack>
+        </Menu.Dropdown>
+      </Menu>
 
-  const openModalChangePassword = () =>
-    modals.openConfirmModal({
-      title: "Redefinir Senha",
-      children: (
-        <Box>
-          <TextInput
+      <Modal opened={openModalChangePassword} onClose={close} title="Redefinir Senha">
+        <form
+          onSubmit={formChangePassword.onSubmit((values) => { changePassword(values) })}
+        >
+          <PasswordInput
             label="Senha Atual"
             placeholder="Senha"
             {...formChangePassword.getInputProps("password")}
             style={{ marginBottom: "20px" }}
           />
-          <TextInput
+          <PasswordInput
             label="Nova Senha"
             placeholder="Senha"
             {...formChangePassword.getInputProps("passwordConfirmation")}
           />
-        </Box>
-      ),
-      labels: { confirm: "Sim", cancel: "Cancelar" },
-      onConfirm: () => changePassword(formChangePassword.values),
-    });
-
-  return (
-    <Menu position="bottom-end">
-      <Menu.Target>
-        <Button compact variant="white" color="dark">
-          <Group noWrap align="baseline">
-            <Group spacing={2} noWrap>
-              <Text size="sm" weight={600}>
-                {userName}&nbsp;
-              </Text>
-              <Text size="xs" weight={500}>
-                ({USER_PROFILE[profile]})
-              </Text>
-            </Group>
-            <IconChevronDown width={20} height={20} />
+          <HorizontalRule />
+          <Group position="right" mt={30}>
+            <Button variant="outline" onClick={close}>Cancelar</Button>
+            <Button type="submit">Salvar</Button>
           </Group>
-        </Button>
-      </Menu.Target>
-      <Menu.Dropdown p="md">
-        <Stack spacing="md">
-          <Text weight={700}>{userName}</Text>
-          <AccessKeyInput styled />
-          <Stack spacing={12} mt={12}>
-            <Button
-              size="xs"
-              variant="outline"
-              onClick={openModalChangePassword}
-            >
-              Alterar senha
-            </Button>
-            <Button size="xs" variant="outline" onClick={logout}>
-              Sair
-            </Button>
-          </Stack>
-        </Stack>
-      </Menu.Dropdown>
-    </Menu>
+        </form>
+      </Modal >
+    </>
   );
 }
