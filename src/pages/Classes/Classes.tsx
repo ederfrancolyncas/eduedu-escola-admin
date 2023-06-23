@@ -69,7 +69,12 @@ export function ClassesPage() {
 
       {selected.length > 0 ? (
         <Group>
-          <Button size="xs" variant="outline" color="red" onClick={openModalDeleteClass}>
+          <Button
+            size="xs"
+            variant="outline"
+            color="red"
+            onClick={openModalDeleteClass}
+          >
             Excluir
           </Button>
         </Group>
