@@ -1,4 +1,5 @@
 export const PATH = {
+  CHANGEPASSWORD: '/recuperar-senha',
   LOGIN: "/login",
   DASHBOARD: "/dashboard",
   USERS: "/usuarios",
