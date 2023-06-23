@@ -191,7 +191,7 @@ export function UsersListPage() {
       <TableLoader
         loading={loadingUsers}
         empty={!users || users.items.length === 0}
-        link={PATH.NEW_USER}
+        link={{ to: PATH.NEW_USER, label: "Cadastrar novo usuário" }}
       />
 
       {users && (
