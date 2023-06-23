@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PATH } from "~/constants/path";
 import { successNotification } from "~/utils/successNotification";
+import { usePagination } from "~/hooks/usePagination";
 
 // Components:
 import {
@@ -22,6 +23,8 @@ import { Pagination } from "~/components/Pagination";
 
 // Icons:
 import { IconEdit, IconEye } from "@tabler/icons-react";
+import { useSchoolClassGetAll } from "~/api/school-class";
+import { errorNotification } from "~/utils/errorNotification";
 
 export function ClassesPage() {
   // checkbox stuff:
@@ -34,22 +37,11 @@ export function ClassesPage() {
     }
   }
 
-  // TODO: get real data here :)
-  const data = {
-    items: [
-      {
-        id: "1",
-        schoolPeriod: "Manhã",
-        class: "Infantil",
-        schoolYear: "2023",
-        name: "1º A",
-        teachers: "Alice, Carlos, Fernanda",
-      },
-    ],
-    pagination: {
-      totalPages: "1",
-    },
-  };
+  const pagination = usePagination()
+  const { data: schoolClasses } = useSchoolClassGetAll({
+    search: { "page-number": pagination.page, "page-size": pagination.pageSize },
+    onError: (error) => errorNotification("Erro", error.message),
+  });
 
   // Modals
   const openModalDeleteClass = () =>
@@ -95,7 +87,9 @@ export function ClassesPage() {
           <tr>
             <th>
               <Checkbox
-                onChange={() => setSelected(data?.items.map((u) => u.id) ?? [])}
+                onChange={() =>
+                  setSelected(schoolClasses?.items.map((u) => u.id) ?? [])
+                }
               />
             </th>
             <th>
@@ -122,7 +116,7 @@ export function ClassesPage() {
           </tr>
         </thead>
         <tbody>
-          {data?.items.map((item) => (
+          {schoolClasses?.items.map((item) => (
             <tr key={item.id}>
               <td>
                 <Checkbox
@@ -131,8 +125,8 @@ export function ClassesPage() {
                 />
               </td>
               <td>{item.schoolPeriod}</td>
-              <td>{item.class}</td>
-              <td>{item.schoolYear}</td>
+              <td>{item.schoolGrade}</td>
+              <td>{item.schoolYear.name}</td>
               <td>{item.name}</td>
               <td>
                 <Group noWrap spacing="xs">
@@ -154,7 +148,7 @@ export function ClassesPage() {
         </tbody>
       </Table>
 
-      {/* <Pagination paginationApi={} paginationHook={} /> */}
+      {schoolClasses && <Pagination paginationApi={schoolClasses.pagination} paginationHook={pagination} />}
     </>
   );
 }
