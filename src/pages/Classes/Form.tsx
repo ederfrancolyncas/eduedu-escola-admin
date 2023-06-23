@@ -1,5 +1,5 @@
 // General:
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { PATH } from "~/constants/path";
 import { successNotification } from "~/utils/successNotification";
 import { errorNotification } from "~/utils/errorNotification";
@@ -11,7 +11,7 @@ import { useForm, zodResolver } from "@mantine/form";
 // API:
 import { useUserTeacherGetAll } from "~/api/user";
 import { useSchoolYearGetAll } from "~/api/school-year";
-import { SchoolClassInput, useSchoolClassCreate } from "~/api/school-class";
+import { SchoolClassInput, useGetSchoolClass, useSchoolClassCreate, useSchoolClassUpdate } from "~/api/school-class";
 
 // Components:
 import { PageHeader } from "~/components/PageHeader";
@@ -20,6 +20,10 @@ import { Button, Grid, Group, MultiSelect, Select, TextInput } from "@mantine/co
 
 export function FormPage() {
   const navigate = useNavigate();
+
+  const schoolClassId = useParams().id
+  if (schoolClassId) { useGetSchoolClass(schoolClassId) }
+  const editingSchoolClass = undefined
 
   const schoolClassInputValidation = z.object({
     name: z
@@ -41,11 +45,11 @@ export function FormPage() {
   });
   const form = useForm<SchoolClassInput>({
     initialValues: {
-      name: "",
-      schoolGrade: "",
-      schoolPeriod: "",
-      schoolYearId: "",
-      teacherIds: []
+      name: editingSchoolClass?.name ?? "",
+      schoolGrade: editingSchoolClass?.schoolGrade ?? "",
+      schoolPeriod: editingSchoolClass?.schoolPeriod ?? "",
+      schoolYearId: editingSchoolClass?.schoolYearId ?? "",
+      teacherIds: editingSchoolClass?.teacherIds ?? []
     },
     validate: zodResolver(schoolClassInputValidation),
   });
@@ -72,6 +76,15 @@ export function FormPage() {
   const teachers = dataTeachers?.items ?? [];
 
   // CRUD:
+  const { mutate: getSchoolClass, isLoading: isGetLoading } = useGetSchoolClass({
+    onSuccess: () => {
+      // TODO: resolve error of maximum update depth exceeded
+      // editingSchoolClass = data
+    },
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+    },
+  });
   const { mutate: createSchoolClass, isLoading: isCreateLoading } = useSchoolClassCreate({
     onSuccess: () => {
       successNotification("Sucesso", "Turma criada com sucesso!");
@@ -81,14 +94,27 @@ export function FormPage() {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
     },
   });
+  const { mutate: updateSchoolClass, isLoading: isUpdateLoading } = useSchoolClassUpdate({
+    onSuccess: () => {
+      successNotification("Sucesso", "Turma editada com sucesso!")
+    },
+    onError: (error) => {
+      errorNotification("Erro", `${error.message} (cod: ${error.code})`)
+    }
+  })
 
   return (
     <>
-      <PageHeader title="Nova Turma">
+      <PageHeader title={editingSchoolClass ? editingSchoolClass.name : "Nova Turma"}>
         <Link to={PATH.CLASSES}>Retornar a página de turmas</Link>
       </PageHeader>
 
-      <form onSubmit={form.onSubmit((values) => { createSchoolClass(values) })}>
+      <form onSubmit={form.onSubmit((values) => {
+        editingSchoolClass ?
+          updateSchoolClass({ schoolClassId: editingSchoolClass.id, input: values })
+          :
+          createSchoolClass(values)
+      })}>
         <Grid columns={5}>
           <Grid.Col span={1}>
             <TextInput
