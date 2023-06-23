@@ -126,7 +126,7 @@ export function ClassesPage() {
               </td>
               <td>{item.schoolPeriod}</td>
               <td>{item.schoolGrade}</td>
-              <td>{item.schoolYear}</td>
+              <td>{item.schoolYear.name}</td>
               <td>{item.name}</td>
               <td>
                 <Group noWrap spacing="xs">
