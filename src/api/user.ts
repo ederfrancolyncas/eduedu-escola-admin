@@ -72,7 +72,6 @@ class UserAPI extends API {
     const { data } = await this.api.get<Paginated<User>>(URL.ALL, {
       params,
     });
-    console.log(data)
     return data;
   }
 
