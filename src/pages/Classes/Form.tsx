@@ -1,5 +1,5 @@
 // General:
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PATH } from "~/constants/path";
 import { successNotification } from "~/utils/successNotification";
 import { errorNotification } from "~/utils/errorNotification";
@@ -19,6 +19,7 @@ import { HorizontalRule } from "~/components/HorizontalRule";
 import { Button, Grid, Group, MultiSelect, Select, TextInput } from "@mantine/core";
 
 export function FormPage() {
+  const navigate = useNavigate();
 
   const schoolClassInputValidation = z.object({
     name: z
@@ -74,6 +75,7 @@ export function FormPage() {
   const { mutate: createSchoolClass, isLoading: isCreateLoading } = useSchoolClassCreate({
     onSuccess: () => {
       successNotification("Sucesso", "Turma criada com sucesso!");
+      navigate(PATH.CLASSES)
     },
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
