@@ -11,7 +11,7 @@ import {
   Box,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconFileDescription, IconPlus, IconUsers } from "@tabler/icons-react";
+import { IconFileDescription, IconMinus, IconPlus, IconUsers } from "@tabler/icons-react";
 
 type componentProps = {
   className?: string;
@@ -67,8 +67,8 @@ export function CardDashboardClass({
                 paddingLeft: "0.5rem",
                 paddingRight: "0.5rem",
                 fontSize: "14px",
-                color: theme.colors.blue[6],
-                backgroundColor: theme.colors.blue[0],
+                color: opened ? theme.colors.blue[0] : theme.colors.blue[6],
+                backgroundColor: opened ? theme.colors.blue[6] : theme.colors.blue[0],
                 '&:hover': {
                   color: theme.colors.blue[0],
                 }
@@ -80,7 +80,7 @@ export function CardDashboardClass({
             }}
           >
             <Flex align="center">
-              <IconPlus size="0.9rem" />&nbsp;
+              {opened ? <IconMinus size="0.9rem" /> : <IconPlus size="0.9rem" />}&nbsp;
               {classNumber}
             </Flex>
 
