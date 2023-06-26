@@ -60,6 +60,7 @@ export function SchoolYearCard({ data }: SchoolYearCardProps) {
         {/* Header */}
         <Group position="apart" noWrap>
           <Group spacing={10} noWrap>
+            {/* TODO: dynamic icon */}
             <IconCalendarPause size={20} color={colorByStatus[data.status]} />
             <Text
               size="sm"
@@ -84,6 +85,7 @@ export function SchoolYearCard({ data }: SchoolYearCardProps) {
                 size="xs"
                 variant="light"
                 onClick={() => activate(data.id)}
+                disabled={!data.summary.buttonEnabled}
               >
                 Ativar
               </Button>
