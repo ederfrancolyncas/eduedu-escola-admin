@@ -4,10 +4,13 @@ import {
   Stack,
   Group,
   Title,
-  Accordion,
   Text,
   useMantineTheme,
+  Button,
+  Collapse,
+  Box,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconFileDescription, IconPlus, IconUsers } from "@tabler/icons-react";
 
 type componentProps = {
@@ -16,7 +19,6 @@ type componentProps = {
   classesQuantity?: string;
   studentsQuantity?: string;
   teachersQuantity?: string;
-  children?: any;
 };
 
 export function CardDashboardClass({
@@ -25,114 +27,124 @@ export function CardDashboardClass({
   classesQuantity,
   studentsQuantity,
   teachersQuantity,
-  children,
 }: componentProps) {
   const theme = useMantineTheme();
-
+  const [opened, { toggle }] = useDisclosure(false);
   return (
-    <Card p={40} h="100%">
+    <Card h="100%" pb={40}>
       <Card.Section>
-        <Title order={4} weight={400} mb={20} color={theme.colors.blue[9]}>
-          {className}
-        </Title>
+        <Box p={20} pb={0}>
+          <Title order={4} weight={400} mb={20} color={theme.colors.blue[9]}>
+            {className}
+          </Title>
 
-        <Flex justify={"space-between"} mb={20}>
-          <Stack spacing={3} align="center">
-            <Text size="sm" color="dimmed">
-              Turmas
-            </Text>
-            <Text weight={600}>{classesQuantity}</Text>
-          </Stack>
-          <Stack spacing={3} align="center">
-            <Text size="sm" color="dimmed">
-              Alunos
-            </Text>
-            <Text weight={600}>{studentsQuantity}</Text>
-          </Stack>
-          <Stack spacing={3} align="center">
-            <Text size="sm" color="dimmed">
-              Professores
-            </Text>
-            <Text weight={600}>{teachersQuantity}</Text>
-          </Stack>
-        </Flex>
+          <Flex justify={"space-between"} mb={20}>
+            <Stack spacing={3} align="center">
+              <Text size="sm" color="dimmed">
+                Turmas
+              </Text>
+              <Text weight={600}>{classesQuantity}</Text>
+            </Stack>
+            <Stack spacing={3} align="center">
+              <Text size="sm" color="dimmed">
+                Alunos
+              </Text>
+              <Text weight={600}>{studentsQuantity}</Text>
+            </Stack>
+            <Stack spacing={3} align="center">
+              <Text size="sm" color="dimmed">
+                Professores
+              </Text>
+              <Text weight={600}>{teachersQuantity}</Text>
+            </Stack>
+          </Flex>
 
-        <Accordion
-          chevron={<IconPlus size="1rem" />}
-          chevronPosition="left"
-          disableChevronRotation
-          styles={{
-            control: {
-              backgroundColor: `${theme.colors.blue[0]}`,
-              color: theme.colors.blue[6],
-              border: "none",
-              borderRadius: "12px",
-              "&[data-active]": {
-                backgroundColor: theme.colors.blue[6],
-                color: "#fff",
+          <Button
+            fullWidth
+            onClick={toggle}
+            styles={{
+              root: {
+                paddingLeft: "0.5rem",
+                paddingRight: "0.5rem",
+                fontSize: "14px",
+                color: theme.colors.blue[6],
+                backgroundColor: theme.colors.blue[0],
+                '&:hover': {
+                  color: theme.colors.blue[0],
+                }
               },
-            },
-            item: {
-              borderBottom: 'none',
-              '&[data-active]': {
-                backgroundColor: `${theme.colors.gray[0]}`,
-              },
-            }
-          }}
-        >
-          <Accordion.Item value="customization">
-            <Accordion.Control>
-              <Flex justify={"space-between"}>
-                <small>{classNumber}</small>
-                <Flex>
-                  {studentsQuantity}&nbsp;
-                  <IconUsers size="1rem" />
-                </Flex>
-              </Flex>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <Group mt={20}>
-                <Text fz={13} fw={700}>
-                  Desempenho em Provas (%)
-                </Text>
-                <Text fz={13} c="dimmed">
-                  Consc. Fonológica
-                  <span style={{ color: theme.colors.orange[4] }}> 85%</span>
-                </Text>
-                <Text fz={13} c="dimmed">
-                  Sistema de Escrita Alfab.
-                  <span style={{ color: theme.colors.green[9] }}> 90%</span>
-                </Text>
-                <Text fz={13} c="dimmed">
-                  Leitura e Comp. de Texto
-                  <span style={{ color: theme.colors.red[9] }}> 63%</span>
-                </Text>
-              </Group>
-              <Group style={{ marginTop: "20px" }}>
-                <Text fz={13} fw={700}>
-                  Desempenho em Planetas (%)
-                </Text>
-                <Text fz={13} c="dimmed">
-                  Consc. Fonológica
-                  <span style={{ color: theme.colors.orange[4] }}> 85%</span>
-                </Text>
-                <Text fz={13} c="dimmed">
-                  Sistema de Escrita Alfab.
-                  <span style={{ color: theme.colors.green[9] }}> 90%</span>
-                </Text>
-                <Text fz={13} c="dimmed">
-                  Leitura e Comp. de Texto
-                  <span style={{ color: theme.colors.red[9] }}> 63%</span>
-                </Text>
-              </Group>
+              label: {
+                justifyContent: "space-between",
+                width: "-webkit-fill-available"
+              }
+            }}
+          >
+            <Flex align="center">
+              <IconPlus size="0.9rem" />&nbsp;
+              {classNumber}
+            </Flex>
 
-              <Flex style={{ marginTop: "20px" }}>
-                <Text fz={14} c="blue.6">Mais Detalhes da Turma&nbsp;</Text>
-                <IconFileDescription size="1.2rem" style={{ color: theme.colors.blue[6] }} />
-              </Flex>
-            </Accordion.Panel>
-          </Accordion.Item>
-        </Accordion>
+            <Flex align="center">
+              {studentsQuantity}&nbsp;
+              <IconUsers size="0.9rem" />
+            </Flex>
+          </Button>
+        </Box>
+
+        <Collapse in={opened} pt={10}>
+          <Box
+            pt={10}
+            px={20}
+            style={{ backgroundColor: `${theme.colors.gray[0]}` }}
+          >
+            <Group>
+              <Text size="sm" fw={700}>
+                Desempenho em Provas (%)
+              </Text>
+              <Text size="sm" c="dimmed">
+                Consc. Fonológica&nbsp;
+                <span style={{ color: theme.colors.orange[4] }}>85%</span>
+              </Text>
+              <Text size="sm" c="dimmed">
+                Sistema de Escrita Alfab.&nbsp;
+                <span style={{ color: theme.colors.green[9] }}>90%</span>
+              </Text>
+              <Text size="sm" c="dimmed">
+                Leitura e Comp. de Texto&nbsp;
+                <span style={{ color: theme.colors.red[9] }}>63%</span>
+              </Text>
+            </Group>
+            <Group style={{ marginTop: "20px" }}>
+              <Text size="sm" fw={700}>
+                Desempenho em Planetas (%)
+              </Text>
+              <Text size="sm" c="dimmed">
+                Consc. Fonológica&nbsp;
+                <span style={{ color: theme.colors.orange[4] }}>85%</span>
+              </Text>
+              <Text size="sm" c="dimmed">
+                Sistema de Escrita Alfab.&nbsp;
+                <span style={{ color: theme.colors.green[9] }}>90%</span>
+              </Text>
+              <Text size="sm" c="dimmed">
+                Leitura e Comp. de Texto&nbsp;
+                <span style={{ color: theme.colors.red[9] }}>63%</span>
+              </Text>
+            </Group>
+
+            <Flex my={20}>
+              <Text
+                mb={20}
+                size="sm"
+                fw={600}
+                c="blue.6"
+              >
+                Mais Detalhes da Turma&nbsp;
+              </Text>
+              <IconFileDescription size="1.2rem" style={{ color: theme.colors.blue[6] }} />
+            </Flex>
+          </Box>
+        </Collapse>
       </Card.Section>
     </Card>
   );
