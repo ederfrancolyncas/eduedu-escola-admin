@@ -7,7 +7,6 @@ import {
   Accordion,
   Text,
   useMantineTheme,
-  rem,
 } from "@mantine/core";
 import { IconFileDescription, IconPlus, IconUsers } from "@tabler/icons-react";
 
@@ -38,21 +37,19 @@ export function CardDashboardClass({
         </Title>
 
         <Flex justify={"space-between"} mb={20}>
-          <Stack>
+          <Stack spacing={3} align="center">
             <Text size="sm" color="dimmed">
               Turmas
             </Text>
             <Text weight={600}>{classesQuantity}</Text>
           </Stack>
-
-          <Stack>
+          <Stack spacing={3} align="center">
             <Text size="sm" color="dimmed">
               Alunos
             </Text>
             <Text weight={600}>{studentsQuantity}</Text>
           </Stack>
-
-          <Stack>
+          <Stack spacing={3} align="center">
             <Text size="sm" color="dimmed">
               Professores
             </Text>
@@ -63,6 +60,7 @@ export function CardDashboardClass({
         <Accordion
           chevron={<IconPlus size="1rem" />}
           chevronPosition="left"
+          disableChevronRotation
           styles={{
             control: {
               backgroundColor: `${theme.colors.blue[0]}`,
@@ -74,64 +72,63 @@ export function CardDashboardClass({
                 color: "#fff",
               },
             },
-            chevron: {
-              "&[data-rotate]": {
-                transform: "rotate(45deg)",
+            item: {
+              borderBottom: 'none',
+              '&[data-active]': {
+                backgroundColor: `${theme.colors.gray[0]}`,
               },
-            },
+            }
           }}
         >
           <Accordion.Item value="customization">
             <Accordion.Control>
               <Flex justify={"space-between"}>
                 <small>{classNumber}</small>
-
                 <Flex>
-                  {studentsQuantity}
+                  {studentsQuantity}&nbsp;
                   <IconUsers size="1rem" />
                 </Flex>
               </Flex>
             </Accordion.Control>
             <Accordion.Panel>
               <Group mt={20}>
-                <Text fz="sm" fw={700}>
+                <Text fz={13} fw={700}>
                   Desempenho em Provas (%)
                 </Text>
-                <Text fz="sm" c="dimmed">
+                <Text fz={13} c="dimmed">
                   Consc. Fonológica
                   <span style={{ color: theme.colors.orange[4] }}> 85%</span>
                 </Text>
-                <Text fz="sm" c="dimmed">
+                <Text fz={13} c="dimmed">
                   Sistema de Escrita Alfab.
                   <span style={{ color: theme.colors.green[9] }}> 90%</span>
                 </Text>
-                <Text fz="sm" c="dimmed">
+                <Text fz={13} c="dimmed">
                   Leitura e Comp. de Texto
                   <span style={{ color: theme.colors.red[9] }}> 63%</span>
                 </Text>
               </Group>
-
               <Group style={{ marginTop: "20px" }}>
-                <Text fz="sm" fw={700}>
+                <Text fz={13} fw={700}>
                   Desempenho em Planetas (%)
                 </Text>
-                <Text fz="sm" c="dimmed">
+                <Text fz={13} c="dimmed">
                   Consc. Fonológica
                   <span style={{ color: theme.colors.orange[4] }}> 85%</span>
                 </Text>
-                <Text fz="sm" c="dimmed">
+                <Text fz={13} c="dimmed">
                   Sistema de Escrita Alfab.
                   <span style={{ color: theme.colors.green[9] }}> 90%</span>
                 </Text>
-                <Text fz="sm" c="dimmed">
+                <Text fz={13} c="dimmed">
                   Leitura e Comp. de Texto
                   <span style={{ color: theme.colors.red[9] }}> 63%</span>
                 </Text>
               </Group>
 
               <Flex style={{ marginTop: "20px" }}>
-                <Text c="blue.6">Mais Detalhes da Turma</Text>
-                <IconFileDescription style={{ color: theme.colors.blue[6] }} />
+                <Text fz={14} c="blue.6">Mais Detalhes da Turma&nbsp;</Text>
+                <IconFileDescription size="1.2rem" style={{ color: theme.colors.blue[6] }} />
               </Flex>
             </Accordion.Panel>
           </Accordion.Item>
