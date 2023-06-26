@@ -79,7 +79,7 @@ export function LoginPage() {
     onSuccess: () => {
       successNotification(
         "Sucesso",
-        "Sua nova senha foi enviada para o email cadastrado."
+        "Enviamos um e-mail com as instruções para redefinir sua senha!"
       );
     },
   });
