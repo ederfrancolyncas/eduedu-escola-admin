@@ -27,6 +27,7 @@ export function ChangePasswordModal({ opened, onClose, token }: Props) {
     onSuccess: () => {
       successNotification("Sucesso", "Senha alterada com sucesso!");
       navigate(PATH.LOGIN);
+      onClose()
     },
     onError: (error) => {
       errorNotification("Erro", `${error.message} (cod: ${error.code})`);
@@ -52,7 +53,7 @@ export function ChangePasswordModal({ opened, onClose, token }: Props) {
   return (
     <Modal
       opened={opened}
-      onClose={isLoading ? () => {} : onClose}
+      onClose={isLoading ? () => { } : onClose}
       title="Redefinir Senha"
     >
       <form
