@@ -3,6 +3,10 @@ import { API } from "./base";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MutationOptions, Paginated, QueryOptions } from "./api-types";
 import { UserProfile, UserStatus } from "~/constants";
+import { LoginResponse } from "./auth";
+import { useUserStore } from "~/stores/user";
+import { decodeJwt } from "~/utils/decodeJwt";
+import { z } from "zod";
 
 export type UserRole = "MASTER" | "ADMIN" | "USER";
 
@@ -37,13 +41,9 @@ type UserSearch = {
   profile?: string;
 };
 
-type UserTeacherSearch = {
-  "page-number"?: number;
-  "page-size"?: number;
-  name?: string;
-  email?: string;
-  document?: string;
-  profile: "TEACHER";
+export type UpdatePasswordInput = {
+  oldPassword: string;
+  newPassword: string;
 };
 
 const KEY = {
@@ -58,6 +58,7 @@ const URL = {
   GET_ACCESS_KEY: (id: string) => `/user/${id}/access-key`,
   DELETE: "/user",
   INACTIVATE: "/user/inactivate",
+  UPDATE_PASSWORD: "/user/password",
 };
 
 class UserAPI extends API {
@@ -104,6 +105,14 @@ class UserAPI extends API {
       data: { ids: userIds },
     });
 
+    return data;
+  }
+
+  static async updatePassword(input: UpdatePasswordInput) {
+    const { data } = await this.api.put<LoginResponse>(
+      URL.UPDATE_PASSWORD,
+      input
+    );
     return data;
   }
 }
@@ -210,6 +219,35 @@ export function useUserInactivate(
     ...options,
     onSuccess: async (data, vars, ctx) => {
       await queryClient.invalidateQueries([KEY.ALL]);
+      options?.onSuccess?.(data, vars, ctx);
+    },
+  });
+}
+
+export function useUserUpdatePassword(
+  options?: MutationOptions<UpdatePasswordInput, LoginResponse>
+) {
+  const handler = useCallback(function (input: UpdatePasswordInput) {
+    return UserAPI.updatePassword(input);
+  }, []);
+
+  return useMutation(handler, {
+    ...options,
+
+    onSuccess: (data, vars, ctx) => {
+      const tokenValidation = z.object({
+        email: z.string().email(),
+        profile: z.enum(["DIRECTOR", "TEACHER"]),
+        iat: z.number(),
+      });
+
+      const token = decodeJwt(data.accessToken) as z.infer<
+        typeof tokenValidation
+      >;
+
+      tokenValidation.parse(token);
+
+      useUserStore.setState({ ...data, profile: token.profile });
       options?.onSuccess?.(data, vars, ctx);
     },
   });

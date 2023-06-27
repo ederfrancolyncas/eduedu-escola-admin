@@ -1,15 +1,51 @@
-import { Button, Group, Menu, Stack, Text } from "@mantine/core";
+import {
+  Button,
+  Divider,
+  Group,
+  LoadingOverlay,
+  Menu,
+  Modal,
+  PasswordInput,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
 import { USER_PROFILE } from "~/constants";
 import { useUserStore } from "~/stores/user";
 import { AccessKeyInput } from "../AccessKeyInput";
-import { ChangePasswordModal } from "../ChangePasswordModal";
+import { useForm, zodResolver } from "@mantine/form";
+import { UpdatePasswordInput, useUserUpdatePassword } from "~/api/user";
+import { z } from "zod";
+import { successNotification } from "~/utils/successNotification";
 
 export function UserDropdown() {
   const { name: userName, profile } = useUserStore();
   const logout = useUserStore((u) => u.signOut);
-  const [changePwModalOpen, changePwModalHandlers] = useDisclosure(false);
+  const [updatePwModalOpen, updatePwModalHandlers] = useDisclosure(false);
+
+  const { mutate: updatePassword, isLoading } = useUserUpdatePassword({
+    onSuccess: () => {
+      updatePwModalHandlers.close();
+      successNotification("Sucesso", "Senha alterada com sucesso!");
+    },
+  });
+
+  const updatePwForm = useForm<UpdatePasswordInput>({
+    initialValues: {
+      newPassword: "",
+      oldPassword: "",
+    },
+
+    validate: zodResolver(
+      z.object({
+        newPassword: z
+          .string()
+          .min(5, { message: "Senha deve ter ao menos 5 caracteres" }),
+        oldPassword: z.string().min(1, { message: "Insira a senha" }),
+      })
+    ),
+  });
 
   return (
     <Menu position="bottom-end">
@@ -36,7 +72,7 @@ export function UserDropdown() {
             <Button
               size="xs"
               variant="outline"
-              onClick={changePwModalHandlers.open}
+              onClick={updatePwModalHandlers.open}
             >
               Alterar senha
             </Button>
@@ -46,11 +82,38 @@ export function UserDropdown() {
           </Stack>
         </Stack>
       </Menu.Dropdown>
-      <ChangePasswordModal
-        opened={changePwModalOpen}
-        onClose={changePwModalHandlers.close}
-        token=""
-      />
+
+      <Modal
+        opened={updatePwModalOpen}
+        onClose={isLoading ? () => {} : updatePwModalHandlers.close}
+        title="Alterar senha"
+      >
+        <form
+          onSubmit={updatePwForm.onSubmit((values) => {
+            updatePassword(values);
+          })}
+        >
+          <LoadingOverlay visible={isLoading} m={5} />
+          <PasswordInput
+            label="Senha atual"
+            placeholder="Senha"
+            {...updatePwForm.getInputProps("oldPassword")}
+            style={{ marginBottom: "20px" }}
+          />
+          <PasswordInput
+            label="Nova senha"
+            placeholder="Senha"
+            {...updatePwForm.getInputProps("newPassword")}
+          />
+          <Divider my="xl" />
+          <Group position="right">
+            <Button variant="outline" onClick={updatePwModalHandlers.close}>
+              Cancelar
+            </Button>
+            <Button type="submit">Salvar</Button>
+          </Group>
+        </form>
+      </Modal>
     </Menu>
   );
 }
