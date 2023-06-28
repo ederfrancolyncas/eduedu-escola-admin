@@ -19,14 +19,14 @@ type Props = {
 export function DeleteStudentModal({ opened, onClose, studentIds }: Props) {
   const { mutate, isLoading } = useStudentDelete({
     onSuccess: onClose,
-    onError: (error) => errorNotification("Erro", error.message),
+    onError: (error) => errorNotification("Erro durante a operação", error.message),
   });
 
   return (
     <Modal
       opened={opened}
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onClose={isLoading ? () => {} : onClose}
+      onClose={isLoading ? () => { } : onClose}
       title="Excluir"
     >
       <Stack spacing={0}>

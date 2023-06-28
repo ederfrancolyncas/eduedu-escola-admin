@@ -77,21 +77,21 @@ export function NewClassPage() {
   const { mutate: createSchoolClass, isLoading: isCreateLoading } =
     useSchoolClassCreate({
       onSuccess: () => {
-        successNotification("Sucesso", "Turma criada com sucesso!");
+        successNotification("Operação realizada com sucesso", "Turma criada com sucesso!");
         navigate(PATH.CLASSES);
       },
       onError: (error) => {
-        errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+        errorNotification("Erro durante a operação", `${error.message} (cod: ${error.code})`);
       },
     });
 
   const { mutate: updateSchoolClass, isLoading: isUpdateLoading } =
     useSchoolClassUpdate({
       onSuccess: () => {
-        successNotification("Sucesso", "Turma editada com sucesso!");
+        successNotification("Operação realizada com sucesso", "Turma alterada com sucesso!");
       },
       onError: (error) => {
-        errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+        errorNotification("Erro durante a operação", `${error.message} (cod: ${error.code})`);
       },
     });
 
@@ -108,9 +108,7 @@ export function NewClassPage() {
 
   return (
     <Stack>
-      <PageHeader title={schoolClass?.name ?? "Nova turma"}>
-        <Link to={PATH.CLASSES}>Voltar</Link>
-      </PageHeader>
+      <PageHeader title={schoolClass?.name ?? "Nova turma"} />
       <LoadingOverlay visible={isUpdateLoading || isCreateLoading} />
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -131,15 +129,15 @@ export function NewClassPage() {
                 data={
                   isLoadingYears
                     ? [
-                        {
-                          value: form.values.schoolYearId,
-                          label: "Carregando...",
-                        },
-                      ]
+                      {
+                        value: form.values.schoolYearId,
+                        label: "Carregando...",
+                      },
+                    ]
                     : years?.map(({ name, id }) => ({
-                        label: name.toString(), // TODO: request property change to string type
-                        value: id,
-                      })) ?? []
+                      label: name.toString(), // TODO: request property change to string type
+                      value: id,
+                    })) ?? []
                 }
                 nothingFound="Nada encontrado"
                 {...form.getInputProps("schoolYearId")}
@@ -180,9 +178,10 @@ export function NewClassPage() {
               />
             </Grid.Col>
           </Grid>
-          <Divider />
+          <Divider mt={20} />
           <Group position="right">
             <Button variant="outline">Cancelar</Button>
+            {/* TODO: set the "saveBtn" as disabled while empty inputs */}
             <Button type="submit">Salvar</Button>
           </Group>
         </Stack>

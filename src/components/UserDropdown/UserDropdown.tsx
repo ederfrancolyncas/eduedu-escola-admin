@@ -1,3 +1,12 @@
+import { useDisclosure } from "@mantine/hooks";
+import { IconChevronDown } from "@tabler/icons-react";
+import { USER_PROFILE } from "~/constants";
+import { useUserStore } from "~/stores/user";
+import { AccessKeyInput } from "../AccessKeyInput";
+import { useForm, zodResolver } from "@mantine/form";
+import { UpdatePasswordInput, useUserUpdatePassword } from "~/api/user";
+import { z } from "zod";
+import { successNotification } from "~/utils/successNotification";
 import {
   Button,
   Divider,
@@ -9,15 +18,6 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconChevronDown } from "@tabler/icons-react";
-import { USER_PROFILE } from "~/constants";
-import { useUserStore } from "~/stores/user";
-import { AccessKeyInput } from "../AccessKeyInput";
-import { useForm, zodResolver } from "@mantine/form";
-import { UpdatePasswordInput, useUserUpdatePassword } from "~/api/user";
-import { z } from "zod";
-import { successNotification } from "~/utils/successNotification";
 
 export function UserDropdown() {
   const { name: userName, profile } = useUserStore();
@@ -27,7 +27,7 @@ export function UserDropdown() {
   const { mutate: updatePassword, isLoading } = useUserUpdatePassword({
     onSuccess: () => {
       updatePwModalHandlers.close();
-      successNotification("Sucesso", "Senha alterada com sucesso!");
+      successNotification("Operação realizada com sucesso", "Senha alterada com sucesso!");
     },
   });
 
@@ -42,7 +42,7 @@ export function UserDropdown() {
         newPassword: z
           .string()
           .min(5, { message: "Senha deve ter ao menos 5 caracteres" }),
-        oldPassword: z.string().min(1, { message: "Insira a senha" }),
+        oldPassword: z.string().min(1, { message: "Nova senha não pode ser igual a senha anterior" }),
       })
     ),
   });
@@ -74,7 +74,7 @@ export function UserDropdown() {
               variant="outline"
               onClick={updatePwModalHandlers.open}
             >
-              Alterar senha
+              Redefinir Senha
             </Button>
             <Button size="xs" variant="outline" onClick={logout}>
               Sair
@@ -85,8 +85,9 @@ export function UserDropdown() {
 
       <Modal
         opened={updatePwModalOpen}
-        onClose={isLoading ? () => {} : updatePwModalHandlers.close}
+        onClose={isLoading ? () => { } : updatePwModalHandlers.close}
         title="Alterar senha"
+        size="sm"
       >
         <form
           onSubmit={updatePwForm.onSubmit((values) => {
@@ -95,13 +96,13 @@ export function UserDropdown() {
         >
           <LoadingOverlay visible={isLoading} m={5} />
           <PasswordInput
-            label="Senha atual"
+            label="Senha Atual"
             placeholder="Senha"
             {...updatePwForm.getInputProps("oldPassword")}
             style={{ marginBottom: "20px" }}
           />
           <PasswordInput
-            label="Nova senha"
+            label="Nova Senha"
             placeholder="Senha"
             {...updatePwForm.getInputProps("newPassword")}
           />

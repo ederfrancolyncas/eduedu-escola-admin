@@ -1,3 +1,11 @@
+
+import { useForm, zodResolver } from "@mantine/form";
+import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { UserChangePassword, useUserChangePassword } from "~/api/auth";
+import { PATH } from "~/constants/path";
+import { errorNotification } from "~/utils/errorNotification";
+import { successNotification } from "~/utils/successNotification";
 import {
   Button,
   Divider,
@@ -6,13 +14,6 @@ import {
   Modal,
   PasswordInput,
 } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
-import { useNavigate } from "react-router-dom";
-import { z } from "zod";
-import { UserChangePassword, useUserChangePassword } from "~/api/auth";
-import { PATH } from "~/constants/path";
-import { errorNotification } from "~/utils/errorNotification";
-import { successNotification } from "~/utils/successNotification";
 
 type Props = {
   opened: boolean;
@@ -20,7 +21,7 @@ type Props = {
   token: string;
 };
 
-export function ChangePasswordModal({ opened, onClose, token }: Props) {
+export function ChangePasswordLoggedModal({ opened, onClose, token }: Props) {
   const navigate = useNavigate();
 
   const { mutate: changePassword, isLoading } = useUserChangePassword({
@@ -44,8 +45,8 @@ export function ChangePasswordModal({ opened, onClose, token }: Props) {
       z.object({
         passwordConfirmation: z
           .string()
-          .min(1, { message: "Insira uma senha" }),
-        password: z.string().min(1, { message: "Insira uma senha" }),
+          .min(1, { message: "Senha Inválida" }),
+        password: z.string().min(1, { message: "Senha Inválida" }),
       })
     ),
   });
@@ -64,13 +65,13 @@ export function ChangePasswordModal({ opened, onClose, token }: Props) {
       >
         <LoadingOverlay visible={isLoading} m={5} />
         <PasswordInput
-          label="Nova senha"
+          label="Senha Atual"
           placeholder="Senha"
           {...formChangePassword.getInputProps("password")}
           style={{ marginBottom: "20px" }}
         />
         <PasswordInput
-          label="Repita a senha"
+          label="Nova Senha"
           placeholder="Senha"
           {...formChangePassword.getInputProps("passwordConfirmation")}
         />
@@ -79,6 +80,7 @@ export function ChangePasswordModal({ opened, onClose, token }: Props) {
           <Button variant="outline" onClick={onClose}>
             Cancelar
           </Button>
+          {/* TODO: set the "saveBtn" as disabled while empty inputs */}
           <Button type="submit">Salvar</Button>
         </Group>
       </form>

@@ -10,7 +10,7 @@ import { SchoolYearCard } from "~/components/SchoolYearCard";
 
 export function SchoolYearPage() {
   const { data: schoolYears, isLoading } = useSchoolYearGetAll({
-    onError: (error) => errorNotification("Erro", error.message),
+    onError: (error) => errorNotification("Erro durante a operação", error.message),
   });
 
   const [createModalVisible, createModalHandlers] = useDisclosure(false);
@@ -40,7 +40,7 @@ export function SchoolYearPage() {
                   onClick={createModalHandlers.open}
                   rightIcon={<IconPlus size={14} />}
                 >
-                  Adc. Novo Ano Letivo
+                  Adicionar Novo Ano Letivo
                 </Button>
               </Stack>
             </Card>
