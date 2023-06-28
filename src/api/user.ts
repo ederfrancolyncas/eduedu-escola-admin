@@ -26,6 +26,7 @@ export type User = {
   profile: UserProfile;
   role: UserRole;
   school: School;
+  owner: boolean;
   createdAt: string;
   updatedAt: string;
 };
