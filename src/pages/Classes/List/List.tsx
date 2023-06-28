@@ -38,7 +38,7 @@ export function ClassesListPage() {
       "page-number": pagination.page,
       "page-size": pagination.pageSize,
     },
-    onError: (error) => errorNotification("Erro", error.message),
+    onError: (error) => errorNotification("Erro durante a operação", error.message),
   });
 
   const [deleteModalOpen, deleteModalHandlers] = useDisclosure(false);

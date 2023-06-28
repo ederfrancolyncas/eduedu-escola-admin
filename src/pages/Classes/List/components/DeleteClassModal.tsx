@@ -39,7 +39,7 @@ export function DeleteClassModal({ opened, onClose, classIds }: Props) {
     <Modal
       opened={opened}
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onClose={isLoading ? () => {} : onClose}
+      onClose={isLoading ? () => { } : onClose}
       title="Excluir"
       radius="md"
     >
