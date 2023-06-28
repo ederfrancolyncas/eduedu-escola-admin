@@ -27,21 +27,20 @@ export function CreateSchoolYearModal({ opened, onClose }: ModalProps) {
     <Modal
       opened={opened}
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onClose={isLoading ? () => {} : onClose}
+      onClose={isLoading ? () => { } : onClose}
       size={589}
       px={24}
       py={12}
-      title="Novo ano letivo"
+      title="Novo Ano Letivo"
     >
       <Stack spacing={12}>
         <LoadingOverlay visible={isLoading} />
         <Text size="sm" mb={12}>
-          Ao adicionar um novo ano letivo, o ano letivo atual terá todas as
-          turmas clonadas. Caso seu novo ano letivo tenha mais ou menos turmas,
-          edite-as no menu <strong>Turmas</strong>.
+          Ao adicionar um novo ano letivo, o ano letivo atual terá todas as turmas clonadas.
+          Caso seu novo ano letivo tenha mais ou menos turmas, edite-as no menu turmas.
         </Text>
         <Text size="sm">Deseja continuar e adicionar um novo ano letivo?</Text>
-        <Divider variant="dashed" color="gray.3" />
+        <Divider mt={20} />
         <Group position="right">
           <Button size="sm" variant="outline" onClick={onClose}>
             Não

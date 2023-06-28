@@ -40,7 +40,7 @@ export function SchoolYearPage() {
                   onClick={createModalHandlers.open}
                   rightIcon={<IconPlus size={14} />}
                 >
-                  Adc. Novo Ano Letivo
+                  Adicionar Novo Ano Letivo
                 </Button>
               </Stack>
             </Card>
