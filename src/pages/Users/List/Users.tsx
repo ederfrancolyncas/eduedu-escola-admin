@@ -12,6 +12,7 @@ import {
   ActionIcon,
   Button,
   Checkbox,
+  Divider,
   Group,
   Select,
   Space,
@@ -46,36 +47,41 @@ export function UsersListPage() {
   });
 
   const { mutate: deleteUser, isLoading: isDeleting } = useUserDelete({
-    onError: (error) => {
-      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
-    },
     onSuccess: () => {
       successNotification(
-        "Sucesso",
-        `${selected.length} Usuário(s) inativado(s) com sucesso!`
+        "Operação realizada com sucesso",
+        `${selected.length} Usuário(s) excluído(s)com sucesso!`
       );
       setSelected([]);
+    },
+    onError: (error) => {
+      errorNotification("Erro durante a operação", `${error.message} (cod: ${error.code})`);
     },
   });
 
   const { mutate: inactivateUser, isLoading: isInactivating } =
     useUserInactivate({
-      onError: (error) => {
-        errorNotification("Erro", `${error.message} (cod: ${error.code})`);
-      },
       onSuccess: () => {
         successNotification(
-          "Sucesso",
+          "Operação realizada com sucesso",
           `${selected.length} Usuário(s) inativado(s) com sucesso!`
         );
         setSelected([]);
+      },
+      onError: (error) => {
+        errorNotification("Erro durante a operação", `${error.message} (cod: ${error.code})`);
       },
     });
 
   const openModalDeleteUser = () =>
     modals.openConfirmModal({
       title: "Excluir",
-      children: <Text>Deseja excluir o(s) usuários(s) selecionado(s)?</Text>,
+      children: (
+        <>
+          <Text mb={20}>Deseja excluir o(s) usuários(s) selecionado(s)?</Text>
+          <Divider />
+        </>
+      ),
       labels: { confirm: "Sim", cancel: "Não" },
       onConfirm: () => {
         deleteUser(selected);
@@ -85,7 +91,12 @@ export function UsersListPage() {
   const openModalInactivateteUser = () =>
     modals.openConfirmModal({
       title: "Inativar",
-      children: <Text>Deseja Inativar o(s) usuários(s) selecionado(s)?</Text>,
+      children: (
+        <>
+          <Text mb={20}>Deseja Inativar o(s) usuários(s) selecionado(s)?</Text>
+          <Divider />
+        </>
+      ),
       labels: { confirm: "Sim", cancel: "Não" },
       onConfirm: () => inactivateUser(selected),
     });
