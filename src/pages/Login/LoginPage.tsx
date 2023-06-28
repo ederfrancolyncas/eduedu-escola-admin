@@ -40,8 +40,8 @@ export function LoginPage() {
     useDisclosure(false);
 
   const formInputValidation = z.object({
-    email: z.string().email({ message: "Insira um e-mail válido" }),
-    password: z.string().min(1, { message: "Insira uma senha" }),
+    email: z.string().email({ message: "Email inválido" }),
+    password: z.string().min(1, { message: "Senha inválida" }),
   });
 
   const form = useForm<UserLogin>({
@@ -78,7 +78,7 @@ export function LoginPage() {
     },
     onSuccess: () => {
       successNotification(
-        "Sucesso",
+        "Operação realizada com sucesso",
         "Enviamos um e-mail com as instruções para redefinir sua senha!"
       );
     },
@@ -162,13 +162,17 @@ export function LoginPage() {
             sendPasswordRecovery(values)
           )}
         >
-          <Stack px={24} py={12} spacing="xl">
+          <Stack py={12} spacing="xl">
             <TextInput
               label="Email de cadastro"
               placeholder="Email"
               {...formRecovery.getInputProps("email")}
             />
-            <Button type="submit" variant="outline" fullWidth>
+            <Button
+              type="submit"
+              variant="outline"
+              fullWidth
+            >
               Enviar
             </Button>
           </Stack>
