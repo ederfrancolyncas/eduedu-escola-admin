@@ -3,6 +3,10 @@ import { API } from "./base";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MutationOptions, QueryOptions } from "./api-types";
 import { User, UserInput } from "./user";
+import { LoginResponse } from "./auth";
+import { useUserStore } from "~/stores/user";
+import { decodeJwt } from "~/utils/decodeJwt";
+import { z } from "zod";
 
 type Settings = {
   id: string;
@@ -57,7 +61,7 @@ class SettingsAPI extends API {
   }
 
   static async createOwner(input: UserInput) {
-    const { data } = await this.api.post<User>(URL.OWNER, input);
+    const { data } = await this.api.post<LoginResponse>(URL.OWNER, input);
     return data;
   }
 
@@ -109,7 +113,7 @@ export function useSettingsGetStatus(
 }
 
 export function useSettingsCreateOwner(
-  options?: MutationOptions<UserInput, User>
+  options?: MutationOptions<UserInput, LoginResponse>
 ) {
   const queryClient = useQueryClient();
 
@@ -121,6 +125,19 @@ export function useSettingsCreateOwner(
     ...options,
     onSuccess: async (data, vars, ctx) => {
       await queryClient.invalidateQueries([KEY.STATUS]);
+      const tokenValidation = z.object({
+        email: z.string().email(),
+        profile: z.enum(["DIRECTOR", "TEACHER"]),
+        iat: z.number(),
+      });
+
+      const token = decodeJwt(data.accessToken) as z.infer<
+        typeof tokenValidation
+      >;
+
+      tokenValidation.parse(token);
+
+      useUserStore.setState({ ...data, profile: token.profile });
       options?.onSuccess?.(data, vars, ctx);
     },
   });
