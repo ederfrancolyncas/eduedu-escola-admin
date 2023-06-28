@@ -4,7 +4,7 @@ import { IconChevronDown } from "@tabler/icons-react";
 import { USER_PROFILE } from "~/constants";
 import { useUserStore } from "~/stores/user";
 import { AccessKeyInput } from "../AccessKeyInput";
-import { ChangePasswordModal } from "../ChangePasswordModal";
+import { ChangePasswordLoggedModal } from "../ChangePasswordLoggedModal";
 
 export function UserDropdown() {
   const { name: userName, profile } = useUserStore();
@@ -46,7 +46,7 @@ export function UserDropdown() {
           </Stack>
         </Stack>
       </Menu.Dropdown>
-      <ChangePasswordModal
+      <ChangePasswordLoggedModal
         opened={changePwModalOpen}
         onClose={changePwModalHandlers.close}
         token=""
