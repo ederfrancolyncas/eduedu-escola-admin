@@ -54,7 +54,7 @@ export function LoginPage() {
 
   const { mutate: login, isLoading: isAuthenticating } = useAuthLogin({
     onError: (error) => {
-      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+      errorNotification("Erro durante a operação", `${error.message} (cod: ${error.code})`);
     },
     onSuccess: () => {
       navigate(PATH.DASHBOARD);
@@ -73,14 +73,14 @@ export function LoginPage() {
   });
 
   const { mutate: sendPasswordRecovery } = useRequestPasswordReset({
-    onError: (error) => {
-      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
-    },
     onSuccess: () => {
       successNotification(
         "Operação realizada com sucesso",
         "Enviamos um e-mail com as instruções para redefinir sua senha!"
       );
+    },
+    onError: (error) => {
+      errorNotification("Erro durante a operação", `${error.message} (cod: ${error.code})`);
     },
   });
 

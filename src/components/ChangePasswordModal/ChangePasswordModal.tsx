@@ -25,12 +25,12 @@ export function ChangePasswordModal({ opened, onClose, token }: Props) {
 
   const { mutate: changePassword, isLoading } = useUserChangePassword({
     onSuccess: () => {
-      successNotification("Sucesso", "Senha alterada com sucesso!");
+      successNotification("Operação realizada com sucesso", "Senha alterada com sucesso!");
       navigate(PATH.LOGIN);
       onClose()
     },
     onError: (error) => {
-      errorNotification("Erro", `${error.message} (cod: ${error.code})`);
+      errorNotification("Erro durante a operação", `${error.message} (cod: ${error.code})`);
     },
   });
 

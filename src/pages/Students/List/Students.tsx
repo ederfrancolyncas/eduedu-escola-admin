@@ -85,7 +85,7 @@ export function StudentsListPage() {
               style={{ width: "100%" }}
             />
           </Group>
-          <Divider />
+          <Divider mt={20} />
         </>
       ),
       labels: { confirm: "Sim", cancel: "Não" },
@@ -100,7 +100,7 @@ export function StudentsListPage() {
             Deseja que o sistema permita o(s) aluno(s) selecionado(s) à
             realizarem uma nova prova?
           </Text>
-          <Divider />
+          <Divider mt={20} />
         </>
       ),
       labels: { confirm: "Sim", cancel: "Não" },

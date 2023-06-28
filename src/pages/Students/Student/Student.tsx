@@ -54,10 +54,8 @@ export function StudentPage() {
           "Operação realizada com sucesso",
           "Aluno criado com sucesso!"
         );
-
         navigate(PATH.STUDENTS);
       },
-
       onError: (error) => {
         errorNotification("Erro durante a operação", error.message);
       },
@@ -67,7 +65,7 @@ export function StudentPage() {
     onSuccess: () => {
       successNotification(
         "Operação realizada com sucesso",
-        "Aluno editado com sucesso!"
+        "Aluno alterado com sucesso!"
       );
 
       navigate(PATH.STUDENTS);

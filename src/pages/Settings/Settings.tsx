@@ -26,13 +26,13 @@ import { successNotification } from "~/utils/successNotification";
 
 export function SettingsPage() {
   const { data, isLoading } = useSettingsGet({
-    onError: (error) => errorNotification("Erro", error.message),
+    onError: (error) => errorNotification("Erro durante a operação", error.message),
     onSuccess: (data) => form.setValues(data),
   });
 
   const { mutate, isLoading: isMutating } = useSettingsUpdate({
     onSuccess: () =>
-      successNotification("Sucesso", "Configurações atualizadas"),
+      successNotification("Operação realizada com sucesso", "Configurações atualizadas"),
   });
 
   const form = useForm<SettingsUpdateInput>({

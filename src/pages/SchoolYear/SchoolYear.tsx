@@ -10,7 +10,7 @@ import { SchoolYearCard } from "~/components/SchoolYearCard";
 
 export function SchoolYearPage() {
   const { data: schoolYears, isLoading } = useSchoolYearGetAll({
-    onError: (error) => errorNotification("Erro", error.message),
+    onError: (error) => errorNotification("Erro durante a operação", error.message),
   });
 
   const [createModalVisible, createModalHandlers] = useDisclosure(false);
