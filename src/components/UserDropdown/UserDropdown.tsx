@@ -38,7 +38,7 @@ export function UserDropdown() {
               variant="outline"
               onClick={changePwModalHandlers.open}
             >
-              Alterar senha
+              Alterar Senha
             </Button>
             <Button size="xs" variant="outline" onClick={logout}>
               Sair
