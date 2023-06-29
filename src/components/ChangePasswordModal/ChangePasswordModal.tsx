@@ -56,6 +56,8 @@ export function ChangePasswordModal({ opened, onClose, token }: Props) {
       onClose={isLoading ? () => { } : onClose}
       title="Redefinir Senha"
       size="sm"
+      withCloseButton={false}
+      closeOnEscape={false}
     >
       <form
         onSubmit={formChangePassword.onSubmit((values) => {
