@@ -2,7 +2,6 @@
 import { useForm, zodResolver } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { UserChangePassword, useUserChangePassword } from "~/api/auth";
 import { PATH } from "~/constants/path";
 import { errorNotification } from "~/utils/errorNotification";
 import { successNotification } from "~/utils/successNotification";
@@ -14,6 +13,7 @@ import {
   Modal,
   PasswordInput,
 } from "@mantine/core";
+import { UpdatePasswordInput, useUserUpdatePassword } from "~/api/user";
 
 type Props = {
   opened: boolean;
@@ -24,7 +24,7 @@ type Props = {
 export function ChangePasswordLoggedModal({ opened, onClose, token }: Props) {
   const navigate = useNavigate();
 
-  const { mutate: changePassword, isLoading } = useUserChangePassword({
+  const { mutate: changePassword, isLoading } = useUserUpdatePassword({
     onSuccess: () => {
       successNotification("Operação realizada com sucesso", "Senha alterada com sucesso!");
       navigate(PATH.LOGIN);
@@ -35,11 +35,10 @@ export function ChangePasswordLoggedModal({ opened, onClose, token }: Props) {
     },
   });
 
-  const formChangePassword = useForm<UserChangePassword>({
+  const formChangePassword = useForm<UpdatePasswordInput>({
     initialValues: {
-      password: "",
-      passwordConfirmation: "",
-      token,
+      oldPassword: "",
+      newPassword: "",
     },
     validate: zodResolver(
       z.object({
