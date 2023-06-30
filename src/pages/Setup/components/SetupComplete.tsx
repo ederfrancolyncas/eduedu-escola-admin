@@ -26,7 +26,7 @@ export function SetupComplete() {
         </Text>
         <Divider />
         <Group position="right">
-          <Button component={Link} to={PATH.LOGIN}>
+          <Button component={Link} to={PATH.USERS}>
             Começar
           </Button>
         </Group>
