@@ -143,8 +143,10 @@ export function UsersListPage() {
           <tr>
             <th>
               <Checkbox
-                onChange={() =>
-                  setSelected(users?.items.map((u) => u.id) ?? [])
+                onChange={(e) =>
+                  e.currentTarget.checked
+                    ? setSelected(users?.items.filter(u => !u.owner).map((u) => u.id) ?? [])
+                    : setSelected([])
                 }
               />
             </th>
@@ -176,6 +178,7 @@ export function UsersListPage() {
             <tr key={user.id}>
               <td>
                 <Checkbox
+                  disabled={user.owner == true ? true : false}
                   checked={selected.includes(user.id)}
                   onChange={() => toggleSelected(user.id)}
                 />
