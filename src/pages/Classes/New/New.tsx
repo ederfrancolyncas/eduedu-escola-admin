@@ -10,10 +10,12 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
 import {
   SchoolClassInput,
+  SchoolGrade,
+  SchoolPeriod,
   useGetSchoolClass,
   useSchoolClassCreate,
   useSchoolClassUpdate,
@@ -21,7 +23,7 @@ import {
 import { useSchoolYearGetAll } from "~/api/school-year";
 import { useUserGetAll } from "~/api/user";
 import { PageHeader } from "~/components/PageHeader";
-import { USER_PROFILE, schoolGrade, schoolPeriod } from "~/constants";
+import { schoolGrade, schoolPeriod } from "~/constants";
 import { PATH } from "~/constants/path";
 import { errorNotification } from "~/utils/errorNotification";
 import { successNotification } from "~/utils/successNotification";
@@ -54,8 +56,8 @@ export function NewClassPage() {
   const form = useForm<SchoolClassInput>({
     initialValues: {
       name: schoolClass?.name ?? "",
-      schoolGrade: schoolClass?.schoolGrade ?? "",
-      schoolPeriod: schoolClass?.schoolPeriod ?? "",
+      schoolGrade: schoolClass?.schoolGrade ?? ("" as SchoolGrade),
+      schoolPeriod: schoolClass?.schoolPeriod ?? ("" as SchoolPeriod),
       schoolYearId: schoolClass?.schoolYear.id ?? "",
       teacherIds: schoolClass?.teachers.map(({ id }) => id) ?? [],
     },
@@ -70,28 +72,40 @@ export function NewClassPage() {
   const { data: teachers, isLoading: isLoadingTeachers } = useUserGetAll({
     pageSize: 999,
     search: {
-      profile: USER_PROFILE.TEACHER,
+      profile: "TEACHER",
     },
   });
 
   const { mutate: createSchoolClass, isLoading: isCreateLoading } =
     useSchoolClassCreate({
       onSuccess: () => {
-        successNotification("Operação realizada com sucesso", "Turma criada com sucesso!");
+        successNotification(
+          "Operação realizada com sucesso",
+          "Turma criada com sucesso!"
+        );
         navigate(PATH.CLASSES);
       },
       onError: (error) => {
-        errorNotification("Erro durante a operação", `${error.message} (cod: ${error.code})`);
+        errorNotification(
+          "Erro durante a operação",
+          `${error.message} (cod: ${error.code})`
+        );
       },
     });
 
   const { mutate: updateSchoolClass, isLoading: isUpdateLoading } =
     useSchoolClassUpdate({
       onSuccess: () => {
-        successNotification("Operação realizada com sucesso", "Turma alterada com sucesso!");
+        successNotification(
+          "Operação realizada com sucesso",
+          "Turma alterada com sucesso!"
+        );
       },
       onError: (error) => {
-        errorNotification("Erro durante a operação", `${error.message} (cod: ${error.code})`);
+        errorNotification(
+          "Erro durante a operação",
+          `${error.message} (cod: ${error.code})`
+        );
       },
     });
 
@@ -129,15 +143,15 @@ export function NewClassPage() {
                 data={
                   isLoadingYears
                     ? [
-                      {
-                        value: form.values.schoolYearId,
-                        label: "Carregando...",
-                      },
-                    ]
+                        {
+                          value: form.values.schoolYearId,
+                          label: "Carregando...",
+                        },
+                      ]
                     : years?.map(({ name, id }) => ({
-                      label: name.toString(), // TODO: request property change to string type
-                      value: id,
-                    })) ?? []
+                        label: name.toString(), // TODO: request property change to string type
+                        value: id,
+                      })) ?? []
                 }
                 nothingFound="Nada encontrado"
                 {...form.getInputProps("schoolYearId")}

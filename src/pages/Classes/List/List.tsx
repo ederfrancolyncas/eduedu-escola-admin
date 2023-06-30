@@ -21,6 +21,7 @@ import { PATH } from "~/constants/path";
 import { usePagination } from "~/hooks/usePagination";
 import { errorNotification } from "~/utils/errorNotification";
 import { DeleteClassModal } from "./components/DeleteClassModal";
+import { SCHOOL_GRADE, SCHOOL_PERIOD } from "~/constants";
 
 export function ClassesListPage() {
   const [selected, setSelected] = useState<string[]>([]);
@@ -38,7 +39,8 @@ export function ClassesListPage() {
       "page-number": pagination.page,
       "page-size": pagination.pageSize,
     },
-    onError: (error) => errorNotification("Erro durante a operação", error.message),
+    onError: (error) =>
+      errorNotification("Erro durante a operação", error.message),
   });
 
   const [deleteModalOpen, deleteModalHandlers] = useDisclosure(false);
@@ -116,8 +118,8 @@ export function ClassesListPage() {
               </td>
               <td>{schoolClass.name}</td>
               <td>{schoolClass.schoolYear.name}</td>
-              <td>{schoolClass.schoolGrade}</td>
-              <td>{schoolClass.schoolPeriod}</td>
+              <td>{SCHOOL_GRADE[schoolClass.schoolGrade]}</td>
+              <td>{SCHOOL_PERIOD[schoolClass.schoolPeriod]}</td>
               <td>
                 <Group noWrap spacing="xs">
                   <ActionIcon

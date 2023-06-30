@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  Anchor,
   Button,
   Checkbox,
   Divider,
@@ -30,6 +31,7 @@ import { PATH } from "~/constants/path";
 import { usePagination } from "~/hooks/usePagination";
 import { DeleteStudentModal } from "../Student/components/DeleteStudentModal";
 import { useDisclosure } from "@mantine/hooks";
+import { sheetDownloadUrl } from "~/api/school-class";
 
 export function StudentsListPage() {
   const theme = useMantineTheme();
@@ -58,16 +60,19 @@ export function StudentsListPage() {
               Para fazer upload de aluno em lote é necessário seguir o template
               de cadastro de aluno.
             </Text>
-            <Text c="blue.6" size="sm">
-              Fazer download do template &#32;
-              <IconFileDownload size={rem(18)} />
-            </Text>
+            <Group align="center">
+              <Anchor c="blue.6" size="sm" href={sheetDownloadUrl()}>
+                Fazer download do template &#32;
+                <IconFileDownload size={rem(18)} />
+              </Anchor>
+            </Group>
           </Group>
 
           <Group mb={10}>
             <Text size="sm">
               Selecione o arquivo do template de Cadastro de Aluno.
             </Text>
+
             <FileInput
               style={{ width: "100%" }}
               placeholder="Selecione o arquivo"

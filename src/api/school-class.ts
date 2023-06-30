@@ -5,11 +5,18 @@ import { MutationOptions, Paginated, QueryOptions } from "./api-types";
 import { User } from "./user";
 import { SchoolYear } from "./school-year";
 
+export type SchoolGrade =
+  | "CHILDREN"
+  | "FIRST_GRADE"
+  | "SECOND_GRADE"
+  | "THIRD_GRADE";
+export type SchoolPeriod = "MORNING" | "AFTERNOON" | "FULL";
+
 type SchoolClass = {
   id: string;
   name: string;
-  schoolGrade: string;
-  schoolPeriod: string;
+  schoolGrade: SchoolGrade;
+  schoolPeriod: SchoolPeriod;
   teachers: User[];
   schoolYear: SchoolYear;
 };
@@ -43,6 +50,7 @@ const URL = {
   DELETE: "/schoolClass",
   GET: (id: string) => `/schoolClass/${id}`,
   UPDATE: (id: string) => `/schoolClass/${id}`,
+  SHEET: "/schoolClass/students/spreadsheet-template",
 };
 
 class SchoolClassAPI extends API {
@@ -156,4 +164,8 @@ export function useSchoolClassUpdate(
   []);
 
   return useMutation(handler, options);
+}
+
+export function sheetDownloadUrl() {
+  return SchoolClassAPI.api.defaults.baseURL + URL.SHEET;
 }

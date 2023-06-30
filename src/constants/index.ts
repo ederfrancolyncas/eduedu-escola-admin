@@ -1,3 +1,5 @@
+import { SchoolGrade, SchoolPeriod } from "~/api/school-class";
+
 export const USER_PROFILE = {
   DIRECTOR: "Direção/Coordenação",
   TEACHER: "Professor",
@@ -49,36 +51,52 @@ export const monthsAbbreviation = [
   "Dez",
 ];
 
-export const schoolPeriod = [
+export const schoolPeriod: {
+  value: SchoolPeriod;
+  label: string;
+}[] = [
   {
-    value: "manha",
+    value: "MORNING",
     label: "Manhã",
   },
   {
-    value: "tarde",
+    value: "AFTERNOON",
     label: "Tarde",
   },
   {
-    value: "integral",
+    value: "FULL",
     label: "Integral",
   },
 ];
 
-export const schoolGrade = [
+export const SCHOOL_PERIOD: Record<SchoolPeriod, string> = {
+  MORNING: "Manhã",
+  AFTERNOON: "Tarde",
+  FULL: "Integral",
+};
+
+export const schoolGrade: { value: SchoolGrade; label: string }[] = [
   {
-    value: "infantil",
+    value: "CHILDREN",
     label: "Infantil",
   },
   {
-    value: "1º Ano Fundamental",
+    value: "FIRST_GRADE",
     label: "1º Ano Fundamental",
   },
   {
-    value: "2º Ano Fundamental",
+    value: "SECOND_GRADE",
     label: "2º Ano Fundamental",
   },
   {
-    value: "3º Ano Fundamental",
+    value: "THIRD_GRADE",
     label: "3º Ano Fundamental",
   },
 ];
+
+export const SCHOOL_GRADE: Record<SchoolGrade, string> = {
+  CHILDREN: "Infantil",
+  FIRST_GRADE: "1º Ano Fundamental",
+  SECOND_GRADE: "2º Ano Fundamental",
+  THIRD_GRADE: "3º Ano Fundamental",
+} as const;
