@@ -5,9 +5,4 @@ export const ButtonStyles: MantineTheme["components"]["Button"] = {
     size: "md",
     radius: "md",
   },
-  styles: {
-    root: {
-      fontWeight: 100
-    }
-  }
 };

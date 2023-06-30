@@ -1,11 +1,4 @@
-import {
-  Box,
-  Flex,
-  Group,
-  Title as MantineTitle,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Group, Title as MantineTitle, Stack, Text } from "@mantine/core";
 
 type ComponentProps = {
   title: string;
