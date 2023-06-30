@@ -176,6 +176,7 @@ export function UsersListPage() {
             <tr key={user.id}>
               <td>
                 <Checkbox
+                  disabled={user.owner == true ? true : false}
                   checked={selected.includes(user.id)}
                   onChange={() => toggleSelected(user.id)}
                 />
