@@ -33,16 +33,14 @@ export function UploadStudentsSheet({ opened, onClose }: Props) {
   const formUploadSheet = useForm({
     initialValues: {
       id: "",
-      sheet: "",
+      sheet: {},
     },
     validate: zodResolver(
       z.object({
         id: z
           .string()
           .min(1, { message: "Selecione uma turma" }),
-        sheet: z
-          .string()
-          .min(1, { message: "Selecione um arquivo" })
+        sheet: z.instanceof(File, { message: "Selecione um arquivo" })
       })
     ),
   });
