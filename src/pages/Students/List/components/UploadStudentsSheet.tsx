@@ -14,15 +14,24 @@ import {
 import { IconFileDownload, IconPaperclip } from "@tabler/icons-react";
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
-import { sheetDownloadUrl, useSchoolClassGetAll, useUploadStudentsSheet } from "~/api/school-class";
+import { SchoolClassAPI, sheetDownloadUrl, useSchoolClassGetAll } from "~/api/school-class";
 import { errorNotification } from "~/utils/errorNotification";
+import { successNotification } from "~/utils/successNotification";
+import { useState } from "react";
 
 type Props = {
   opened: boolean;
   onClose: () => void;
 };
 
+type FormData = {
+  file: File,
+  id: string
+}
+
 export function UploadStudentsSheet({ opened, onClose }: Props) {
+
+  const [isLoading, setIsLoading] = useState(false)
   const { data: schoolClasses, isLoading: isLoadingSchoolClasses } = useSchoolClassGetAll({
     search: {
       "page-number": 1,
@@ -30,30 +39,33 @@ export function UploadStudentsSheet({ opened, onClose }: Props) {
     },
   })
 
-  const formUploadSheet = useForm({
-    initialValues: {
-      id: "",
-      sheet: {},
-    },
+  const formUploadSheet = useForm<FormData>({
     validate: zodResolver(
       z.object({
         id: z
           .string()
           .min(1, { message: "Selecione uma turma" }),
-        sheet: z.instanceof(File, { message: "Selecione um arquivo" })
+        file: z.instanceof(File, { message: "Selecione um arquivo" })
       })
     ),
   });
 
-  const { uploadSheet, isLoading } = useUploadStudentsSheet({
-    onSuccess: onClose,
-    onError: (error) => errorNotification("Erro durante a operação", error.message),
-  });
+  async function uploadSheet(values: FormData) {
+    setIsLoading(true)
+    try {
+      await SchoolClassAPI.uploadStudentsSheet(values.file, values.id)
+      successNotification("Operação realizada com sucesso", "Aluno(s) adicionado(s) com sucesso!")
+      onClose()
+    } catch (error) {
+      errorNotification("Erro durante a operação", (error as Error).message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <Modal
       opened={opened}
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
       onClose={isLoading ? () => { } : onClose}
       title="Upload de Aluno"
     >
@@ -82,7 +94,7 @@ export function UploadStudentsSheet({ opened, onClose }: Props) {
             </Text>
 
             <FileInput
-              {...formUploadSheet.getInputProps("sheet")}
+              {...formUploadSheet.getInputProps("file")}
               style={{ width: "100%" }}
               placeholder="Selecione o arquivo"
               rightSection={<IconPaperclip size={rem(14)} />}

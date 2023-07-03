@@ -51,10 +51,10 @@ const URL = {
   GET: (id: string) => `/schoolClass/${id}`,
   UPDATE: (id: string) => `/schoolClass/${id}`,
   SHEET: "/schoolClass/students/spreadsheet-template",
-  UPLOAD_SHEET: (id: string) => `/schoolClass/${id}/students/spreadsheet-template`,
+  UPLOAD_SHEET: (id: string) => `/schoolClass/${id}/students/spreadsheet`,
 };
 
-class SchoolClassAPI extends API {
+export class SchoolClassAPI extends API {
   static async getAll(params?: SchoolClassSearch) {
     const { data } = await this.api.get<Paginated<SchoolClass>>(URL.ALL, {
       params,
@@ -91,8 +91,17 @@ class SchoolClassAPI extends API {
     return data;
   }
 
-  static async uploadStudentsSheet(sheet: any, id: string) {
-    const { data } = await this.api.post(URL.UPLOAD_SHEET(id), sheet);
+  static async uploadStudentsSheet(sheet: File, id: string) {
+    const formData = new FormData();
+    formData.append('file', sheet);
+
+    const { data } = await this.api.post(URL.UPLOAD_SHEET(id), formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
+
     return data;
   }
 }
@@ -174,8 +183,4 @@ export function useSchoolClassUpdate(
 
 export function sheetDownloadUrl() {
   return SchoolClassAPI.api.defaults.baseURL + URL.SHEET;
-}
-
-export function useUploadStudentsSheet(data: any) {
-  return SchoolClassAPI.uploadStudentsSheet(data.sheet, data.id)
 }
