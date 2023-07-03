@@ -12,6 +12,8 @@ import {
   rem,
 } from "@mantine/core";
 import { IconFileDownload, IconPaperclip } from "@tabler/icons-react";
+import { useForm, zodResolver } from "@mantine/form";
+import { z } from "zod";
 import { sheetDownloadUrl, useSchoolClassGetAll, useUploadStudentsSheet } from "~/api/school-class";
 import { errorNotification } from "~/utils/errorNotification";
 
@@ -28,6 +30,23 @@ export function UploadStudentsSheet({ opened, onClose }: Props) {
     },
   })
 
+  const formUploadSheet = useForm({
+    initialValues: {
+      id: "",
+      sheet: "",
+    },
+    validate: zodResolver(
+      z.object({
+        id: z
+          .string()
+          .min(1, { message: "Selecione uma turma" }),
+        sheet: z
+          .string()
+          .min(1, { message: "Selecione um arquivo" })
+      })
+    ),
+  });
+
   const { uploadSheet, isLoading } = useUploadStudentsSheet({
     onSuccess: onClose,
     onError: (error) => errorNotification("Erro durante a operação", error.message),
@@ -40,7 +59,11 @@ export function UploadStudentsSheet({ opened, onClose }: Props) {
       onClose={isLoading ? () => { } : onClose}
       title="Upload de Aluno"
     >
-      <form onSubmit={uploadSheet}>
+      <form
+        onSubmit={formUploadSheet.onSubmit((values) => {
+          uploadSheet(values);
+        })}
+      >
         <Stack spacing={5}>
           <Group>
             <Text size="sm">
@@ -61,6 +84,7 @@ export function UploadStudentsSheet({ opened, onClose }: Props) {
             </Text>
 
             <FileInput
+              {...formUploadSheet.getInputProps("sheet")}
               style={{ width: "100%" }}
               placeholder="Selecione o arquivo"
               rightSection={<IconPaperclip size={rem(14)} />}
@@ -72,6 +96,7 @@ export function UploadStudentsSheet({ opened, onClose }: Props) {
               Selecione a turma que deseja adicionar os alunos do template.
             </Text>
             <Select
+              {...formUploadSheet.getInputProps("id")}
               placeholder="Selecione a turma"
               disabled={isLoadingSchoolClasses}
               data={
