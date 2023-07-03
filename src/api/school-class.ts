@@ -51,6 +51,7 @@ const URL = {
   GET: (id: string) => `/schoolClass/${id}`,
   UPDATE: (id: string) => `/schoolClass/${id}`,
   SHEET: "/schoolClass/students/spreadsheet-template",
+  UPLOAD_SHEET: (id: string) => `/schoolClass/${id}/students/spreadsheet-template`,
 };
 
 class SchoolClassAPI extends API {
@@ -87,6 +88,11 @@ class SchoolClassAPI extends API {
       URL.UPDATE(schoolClassId),
       input
     );
+    return data;
+  }
+
+  static async uploadStudentsSheet(sheet: any, id: string) {
+    const { data } = await this.api.post(URL.UPLOAD_SHEET(id), sheet);
     return data;
   }
 }
@@ -161,11 +167,15 @@ export function useSchoolClassUpdate(
   }) {
     return SchoolClassAPI.update(data.schoolClassId, data.input);
   },
-  []);
+    []);
 
   return useMutation(handler, options);
 }
 
 export function sheetDownloadUrl() {
   return SchoolClassAPI.api.defaults.baseURL + URL.SHEET;
+}
+
+export function useUploadStudentsSheet(data: any) {
+  return SchoolClassAPI.uploadStudentsSheet(data.sheet, data.id)
 }
