@@ -20,11 +20,6 @@ export function Notifications() {
         `${error.message} (cod: ${error.code})`
       );
     },
-
-    onSuccess: (data) => {
-      console.log(data);
-    },
-
     initialData: [],
     refetchOnWindowFocus: true,
     cacheTime: 1000 * 60 * 5,
