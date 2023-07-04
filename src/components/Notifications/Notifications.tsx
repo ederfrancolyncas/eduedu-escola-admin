@@ -59,6 +59,7 @@ export function Notifications() {
               size="sm"
               loading={isLoading}
               onClick={() => mutate()}
+              disabled={data ? data.length < 1 : true}
             >
               Marcar como lido
             </Button>
