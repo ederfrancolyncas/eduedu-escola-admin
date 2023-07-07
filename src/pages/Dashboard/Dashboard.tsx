@@ -7,8 +7,6 @@ export function DashboardPage() {
   const [schoolReport, setSchoolReport] = useState({});
   const getReportData = (schoolReport: string) => {
     setSchoolReport(schoolReport);
-
-    console.log('chegou no pai: ', schoolReport)
   };
 
   return (
@@ -19,7 +17,7 @@ export function DashboardPage() {
         {schoolReport &&
           schoolReport.schoolGrades?.map((item) => (
             <Grid.Col span={1}>
-              <CardDashboardClass schoolClassData={item} />
+              <CardDashboardClass schoolClasses={item} />
             </Grid.Col>
           ))
         }

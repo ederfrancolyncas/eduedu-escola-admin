@@ -15,11 +15,11 @@ import { IconFileDescription, IconMinus, IconPlus, IconUsers } from "@tabler/ico
 import { AXIS_ENUM, SCHOOL_GRADE } from "~/constants";
 
 type componentProps = {
-  schoolClassData: any;
+  schoolClasses: any;
 };
 
 export function CardDashboardClass({
-  schoolClassData
+  schoolClasses
 }: componentProps) {
   const theme = useMantineTheme();
   const [opened, { toggle }] = useDisclosure(false);
@@ -29,7 +29,7 @@ export function CardDashboardClass({
       <Card.Section>
         <Box p={20} pb={0}>
           <Title order={4} weight={400} mb={20} color={theme.colors.blue[9]}>
-            {SCHOOL_GRADE[schoolClassData.name]}
+            {SCHOOL_GRADE[schoolClasses.name]}
           </Title>
 
           <Flex justify={"space-between"} mb={20}>
@@ -37,24 +37,24 @@ export function CardDashboardClass({
               <Text size="sm" color="dimmed">
                 Turmas
               </Text>
-              <Text weight={600}>{schoolClassData.schoolClassesCounter}</Text>
+              <Text weight={600}>{schoolClasses.schoolClassesCounter}</Text>
             </Stack>
             <Stack spacing={3} align="center">
               <Text size="sm" color="dimmed">
                 Alunos
               </Text>
-              <Text weight={600}>{schoolClassData.studentsCounter}</Text>
+              <Text weight={600}>{schoolClasses.studentsCounter}</Text>
             </Stack>
             <Stack spacing={3} align="center">
               <Text size="sm" color="dimmed">
                 Professores
               </Text>
-              <Text weight={600}>{schoolClassData.teachersCounter}</Text>
+              <Text weight={600}>{schoolClasses.teachersCounter}</Text>
             </Stack>
           </Flex>
 
-          {schoolClassData.schoolGrades?.schoolClasses?.map((schoolClass) => (
-            <Box>
+          {schoolClasses.schoolClasses?.map((schoolClass) => (
+            <Box mb={20}>
               <Button
                 fullWidth
                 onClick={toggle}
