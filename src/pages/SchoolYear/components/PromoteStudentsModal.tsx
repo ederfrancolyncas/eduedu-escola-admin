@@ -1,9 +1,10 @@
-import { Button, Divider, Group, Modal, Select, Text } from "@mantine/core";
+import { useState } from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 import { useSchoolClassGetAll } from "~/api/school-class";
-import { MoveStudentsModal } from "./MoveStudentsModal";
 import { useDisclosure } from "@mantine/hooks";
+import { MoveStudentsModal } from "./MoveStudentsModal";
+import { Button, Divider, Group, Modal, Select, Text } from "@mantine/core";
 
 type Props = {
     opened: boolean;
@@ -27,8 +28,10 @@ export function PromoteStudentsModal({ opened, onClose }: Props) {
         validate: zodResolver(promoteStudentForm),
     });
 
+    const [schoolClassId, setSchoolClassIdHandlers] = useState()
     const [MoveStudents, MoveStudentsHandlers] = useDisclosure(false)
-    function openMoveStudents(values) {
+    function openMoveStudents(values: string) {
+        setSchoolClassIdHandlers(values)
         MoveStudentsHandlers.open()
         onClose()
     }
@@ -39,7 +42,7 @@ export function PromoteStudentsModal({ opened, onClose }: Props) {
                 opened={opened}
                 onClose={onClose}
             >
-                <form onSubmit={form.onSubmit((values) => openMoveStudents(values))}>
+                <form onSubmit={form.onSubmit((values) => openMoveStudents(values.schoolClassId))}>
                     <Text size="sm" mb={20}>Para promover os alunos de turma é necessário seguir algumas etapas.</Text>
                     <Text size="sm" mb={20}>Selecione a turma que deseja promover.</Text>
                     <Select
@@ -71,7 +74,7 @@ export function PromoteStudentsModal({ opened, onClose }: Props) {
             <MoveStudentsModal
                 opened={MoveStudents}
                 onClose={MoveStudentsHandlers.close}
-                schoolClassId={form.schoolClassId}
+                originSchoolClassId={schoolClassId}
             />
         </>
     )

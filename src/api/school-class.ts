@@ -42,6 +42,8 @@ type SchoolClassSearch = {
 const KEY = {
   ALL: "SCHOOL_CLASS_ALL",
   BY_ID: "SCHOOL_CLASS_BY_ID",
+  STUDENT_DESTINATION: "SCHOOL_CLASS_STUDENT_DESTINATION",
+  STUDENT_BY_SCHOOLCLASS: "STUDENT_BY_SCHOOLCLASS"
 } as const;
 
 const URL = {
@@ -52,7 +54,8 @@ const URL = {
   UPDATE: (id: string) => `/schoolClass/${id}`,
   SHEET: "/schoolClass/students/spreadsheet-template",
   UPLOAD_SHEET: (id: string) => `/schoolClass/${id}/students/spreadsheet`,
-  DESTINY_STUDENTS: (destinyID: string) => `/schoolClass/${destinyID}/students`
+  DESTINY_STUDENTS: (destinyID: string) => `/schoolClass/${destinyID}/students`,
+  STUDENTS_BY_SCHOOLCLASS: (schoolClassId: string) => `/schoolClass/${schoolClassId}/students`
 };
 
 export class SchoolClassAPI extends API {
@@ -104,6 +107,11 @@ export class SchoolClassAPI extends API {
       });
 
     return data;
+  }
+
+  static async studentsBySchoolclass(schoolClassId: string) {
+    const { data } = await this.api.get(URL.STUDENTS_BY_SCHOOLCLASS(schoolClassId))
+    return data
   }
 
   static async studentsDestiny(destinyID: string) {
@@ -191,4 +199,24 @@ export function sheetDownloadUrl() {
   return SchoolClassAPI.api.defaults.baseURL + URL.SHEET;
 }
 
-export function useStudentsDestiny() { }
+export function useStudentsBySchoolclass(schoolClassId: string) {
+  const handler = useCallback(
+    function () {
+      return SchoolClassAPI.studentsBySchoolclass(schoolClassId)
+    },
+    [schoolClassId]
+  )
+
+  return useQuery([KEY.STUDENT_BY_SCHOOLCLASS, schoolClassId], handler)
+}
+
+export function useStudentsDestiny(destinationId: string, form: object) {
+  const handler = useCallback(
+    function () {
+      return SchoolClassAPI.studentsDestiny(destinationId)
+    },
+    [destinationId, form]
+  )
+
+  return useQuery([KEY.STUDENT_DESTINATION, destinationId, form], handler);
+}

@@ -5,27 +5,16 @@ import { useSchoolClassGetAll } from "~/api/school-class";
 type Props = {
     opened: boolean;
     onClose: () => void;
-    schoolClassId: string;
+    originSchoolClassId: string;
 }
 
-export function MoveStudentsModal({ opened, onClose, schoolClassId }: Props) {
+export function MoveStudentsModal({ opened, onClose, originSchoolClassId }: Props) {
     const { data: schoolClasses, isLoading: isLoadingClasses } =
         useSchoolClassGetAll({
             pageSize: 999,
         });
 
-    const studentsList = [
-        { name: 'Amanda' },
-        { name: 'Amanda II' },
-        { name: 'Amanda III' },
-        { name: 'Amanda IV' },
-        { name: 'Amanda V' },
-        { name: 'Amanda VI' },
-        { name: 'Amanda VII' },
-        { name: 'Amanda VIII' },
-        { name: 'Amanda IX' },
-        { name: 'Amanda X' },
-    ]
+    const studentsList = []
     return (
         <>
             <Modal
@@ -130,7 +119,7 @@ export function MoveStudentsModal({ opened, onClose, schoolClassId }: Props) {
                             Cancelar
                         </Button>
                         <Button type="submit">
-                            Salvvar
+                            Salvar
                         </Button>
                     </Group>
                 </form>
