@@ -6,7 +6,7 @@ import { errorNotification } from "~/utils/errorNotification";
 import { CreateSchoolYearModal } from "./components/CreateSchoolYearModal";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
-import { SchoolYearCard } from "~/components/SchoolYearCard";
+import { SchoolYearCard } from "./components/SchoolYearCard";
 import { PromoteStudentsModal } from "./components/PromoteStudentsModal";
 
 export function SchoolYearPage() {
