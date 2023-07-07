@@ -1,5 +1,6 @@
 import { Grid, Group, Card, Select, TextInput, Title } from "@mantine/core";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { useGetBySchoolYear } from "~/api/dashboard";
 import { useSchoolYearGetAll } from "~/api/school-year";
 import { useUserStore } from "~/stores/user";
@@ -8,8 +9,9 @@ export function CardDashboard({ getReportData }) {
     const userProfile = useUserStore((u) => u.profile)
     const isTeacher = () => { return userProfile === "TEACHER" ? false : true }
 
+    const params = useParams();
     const { data: years, isLoading: isLoadingYears } = useSchoolYearGetAll({ pageSize: 999 });
-    const [schoolYear, setSchoolYear] = useState('')
+    const [schoolYear, setSchoolYear] = useState(params.year ?? '')
     const { data: schoolYearReport } = useGetBySchoolYear(schoolYear);
     getReportData(schoolYearReport)
 
@@ -23,7 +25,7 @@ export function CardDashboard({ getReportData }) {
                                 <Title order={4}>Ano Letivo</Title>
                                 <Select
                                     maw={120}
-                                    placeholder="Selecione"
+                                    placeholder={params.year ?? 'Selecione'}
                                     data={
                                         isLoadingYears
                                             ? [
