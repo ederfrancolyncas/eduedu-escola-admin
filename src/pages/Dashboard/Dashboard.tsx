@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Grid } from "@mantine/core";
-import { CardDashboard, CardDashboardClass } from "~/components/Cards";
+import { CardDashboard, SchoolGradeCard } from "./Cards";
 
 export function DashboardPage() {
 
@@ -17,7 +17,7 @@ export function DashboardPage() {
         {schoolReport &&
           schoolReport.schoolGrades?.map((item) => (
             <Grid.Col span={1}>
-              <CardDashboardClass schoolClasses={item} />
+              <SchoolGradeCard schoolGrade={item} />
             </Grid.Col>
           ))
         }
