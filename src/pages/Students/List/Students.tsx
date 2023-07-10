@@ -27,6 +27,7 @@ import { usePagination } from "~/hooks/usePagination";
 import { DeleteStudentModal } from "../Student/components/DeleteStudentModal";
 import { useDisclosure } from "@mantine/hooks";
 import { UploadStudentsSheet } from "./components/UploadStudentsSheet";
+import { SCHOOL_GRADE, SCHOOL_PERIOD, USER_STATUS } from "~/constants";
 
 export function StudentsListPage() {
   const theme = useMantineTheme();
@@ -162,12 +163,12 @@ export function StudentsListPage() {
               </td>
               <td>{student.name}</td>
               <td>{student.schoolClassName}</td>
-              <td>{student.schoolPeriod}</td>
-              <td>{student.schoolGrade}</td>
+              <td>{SCHOOL_PERIOD[student.schoolPeriod]}</td>
+              <td>{SCHOOL_GRADE[student.schoolGrade]}</td>
               <td>{student.cfo}</td>
               <td>{student.sea}</td>
               <td>{student.lct}</td>
-              <td>{student.status}</td>
+              <td>{USER_STATUS[student.status]}</td>
               <td>
                 <Group noWrap spacing="xs">
                   <ActionIcon
