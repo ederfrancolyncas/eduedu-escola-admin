@@ -3,7 +3,7 @@ import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 import { useSchoolClassGetAll } from "~/api/school-class";
 import { useDisclosure } from "@mantine/hooks";
-import { MoveStudentsModal } from "./MoveStudentsModal";
+import { MoveStudentsModal } from "./Step02";
 import { Button, Divider, Group, Modal, Select, Text } from "@mantine/core";
 
 type Props = {
@@ -28,7 +28,7 @@ export function PromoteStudentsModal({ opened, onClose }: Props) {
         validate: zodResolver(promoteStudentForm),
     });
 
-    const [schoolClassId, setSchoolClassIdHandlers] = useState()
+    const [schoolClassId, setSchoolClassIdHandlers] = useState('')
     const [MoveStudents, MoveStudentsHandlers] = useDisclosure(false)
     function openMoveStudents(values: string) {
         setSchoolClassIdHandlers(values)
