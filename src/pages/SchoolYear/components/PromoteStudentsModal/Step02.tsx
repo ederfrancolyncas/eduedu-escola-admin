@@ -1,5 +1,6 @@
 import { Group, Modal, Text, Divider, Button, Grid } from "@mantine/core";
 import { MoveStudentsBox } from "./MoveStudentsBox";
+import { useSchoolClassGetAll, useStudentsBySchoolclass } from "~/api/school-class";
 
 type Props = {
     opened: boolean;
@@ -8,6 +9,9 @@ type Props = {
 }
 
 export function MoveStudentsModal({ opened, onClose, originSchoolClassId }: Props) {
+
+    const { data: studentsOrigin, isLoading: isLoadingStudentsOrigin } = useStudentsBySchoolclass(originSchoolClassId)
+    const { data: schoolClasses, isLoading: isLoadingClasses } = useSchoolClassGetAll({ pageSize: 999 });
 
     return (
         <>
@@ -18,25 +22,33 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClassId }: Prop
                 size="xl"
             >
                 <form>
-                    <Text size="sm" mb={20}>
-                        1- Selecione os alunos que deseja promover na coluna da esquerda.
-                    </Text>
-                    <Text size="sm" mb={20}>
-                        2- Em seguida, selecione para qual turma deseja promover os alunos selecionados na coluna da direita.
-                    </Text>
-                    <Text size="sm" mb={20}>
-                        3- Após as duas seleções serem feitas, basta pressionar a seta e mover os alunos de uma lista para a outra.
-                    </Text>
-                    <Text size="sm" mb={20}>
-                        Para transferir alunos para diferentes turmas, basta selecionar outra turma na coluna da direita.
-                    </Text>
+                    <>
+                        <Text size="sm" mb={20}>
+                            1- Selecione os alunos que deseja promover na coluna da esquerda.
+                        </Text>
+                        <Text size="sm" mb={20}>
+                            2- Em seguida, selecione para qual turma deseja promover os alunos selecionados na coluna da direita.
+                        </Text>
+                        <Text size="sm" mb={20}>
+                            3- Após as duas seleções serem feitas, basta pressionar a seta e mover os alunos de uma lista para a outra.
+                        </Text>
+                        <Text size="sm" mb={20}>
+                            Para transferir alunos para diferentes turmas, basta selecionar outra turma na coluna da direita.
+                        </Text>
+                    </>
 
                     <Grid columns={2}>
                         <Grid.Col span={1}>
-                            <MoveStudentsBox schoolClassId={originSchoolClassId} />
+                            <MoveStudentsBox
+                                schoolClassOrigin={true}
+                                schoolClasses={schoolClasses}
+                                students={studentsOrigin}
+                            />
                         </Grid.Col>
                         <Grid.Col span={1}>
-                            <MoveStudentsBox />
+                            <MoveStudentsBox
+                                schoolClasses={schoolClasses}
+                            />
                         </Grid.Col>
                     </Grid>
                     <Divider my="xl" />
