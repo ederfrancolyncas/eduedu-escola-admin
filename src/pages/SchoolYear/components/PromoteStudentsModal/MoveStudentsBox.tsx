@@ -3,11 +3,12 @@ import { IconChevronRight, IconChevronsRight } from "@tabler/icons-react";
 import { useState } from "react";
 
 type ComponentProps = {
+    moveStudents: any;
     schoolClasses: Array<[{}]>;
     students?: Array<[{}]>;
     schoolClassOrigin: boolean | false
 }
-export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin }: ComponentProps) {
+export function MoveStudentsBox({ moveStudents, schoolClasses, students, schoolClassOrigin }: ComponentProps) {
 
     const [selected, setSelected] = useState<string[]>([]);
     function toggleSelected(id: string) {
@@ -16,10 +17,6 @@ export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin }: 
         } else {
             setSelected([...selected, id]);
         }
-    }
-
-    function moveStudents() {
-        console.log('moveStudents', selected)
     }
     return (
         <>
@@ -39,7 +36,7 @@ export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin }: 
                         <>
                             <Tooltip label="Mova os alunos para a próxima turma" position="top-end" withArrow>
                                 <div>
-                                    <ActionIcon onClick={() => moveStudents()}>
+                                    <ActionIcon onClick={moveStudents(selected)}>
                                         <IconChevronRight size="1rem" style={{ display: 'block', opacity: 0.5 }} />
                                     </ActionIcon>
                                 </div>

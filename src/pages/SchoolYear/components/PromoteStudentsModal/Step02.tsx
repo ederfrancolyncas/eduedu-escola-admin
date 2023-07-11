@@ -1,6 +1,7 @@
 import { Group, Modal, Text, Divider, Button, Grid } from "@mantine/core";
 import { MoveStudentsBox } from "./MoveStudentsBox";
 import { useSchoolClassGetAll, useStudentsBySchoolclass } from "~/api/school-class";
+import { useState } from "react";
 
 type Props = {
     opened: boolean;
@@ -12,6 +13,10 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClassId }: Prop
 
     const { data: studentsOrigin, isLoading: isLoadingStudentsOrigin } = useStudentsBySchoolclass(originSchoolClassId)
     const { data: schoolClasses, isLoading: isLoadingClasses } = useSchoolClassGetAll({ pageSize: 999 });
+
+
+    const [selectedStudentsOrigin, setSelectedSetStudentsOrigin] = useState([])
+    const [selectedStudentsDestiny, setSelectedSetStudentsDestiny] = useState([])
 
     return (
         <>
@@ -43,11 +48,13 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClassId }: Prop
                                 schoolClassOrigin={true}
                                 schoolClasses={schoolClasses}
                                 students={studentsOrigin}
+                                moveStudents={values => setSelectedSetStudentsOrigin(values)}
                             />
                         </Grid.Col>
                         <Grid.Col span={1}>
                             <MoveStudentsBox
                                 schoolClasses={schoolClasses}
+                                moveStudents={values => setSelectedSetStudentsDestiny(values)}
                             />
                         </Grid.Col>
                     </Grid>
