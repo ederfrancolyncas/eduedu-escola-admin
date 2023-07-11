@@ -14,9 +14,10 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClassId }: Prop
     const { data: studentsOrigin, isLoading: isLoadingStudentsOrigin } = useStudentsBySchoolclass(originSchoolClassId)
     const { data: schoolClasses, isLoading: isLoadingClasses } = useSchoolClassGetAll({ pageSize: 999 });
 
-
+    // getting data from child:
     const [selectedStudentsOrigin, setSelectedSetStudentsOrigin] = useState([])
     const [selectedStudentsDestiny, setSelectedSetStudentsDestiny] = useState([])
+    const [newSchoolClass, setNewSchoolClass] = useState([])
 
     return (
         <>
@@ -54,6 +55,7 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClassId }: Prop
                         <Grid.Col span={1}>
                             <MoveStudentsBox
                                 schoolClasses={schoolClasses}
+                                newSchoolClass={value => setNewSchoolClass(value)}
                                 moveStudents={values => setSelectedSetStudentsDestiny(values)}
                             />
                         </Grid.Col>

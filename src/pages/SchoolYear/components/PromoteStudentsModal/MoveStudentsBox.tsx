@@ -3,12 +3,13 @@ import { IconChevronRight, IconChevronsRight } from "@tabler/icons-react";
 import { useState } from "react";
 
 type ComponentProps = {
-    moveStudents: any;
     schoolClasses: Array<[{}]>;
     students?: Array<[{}]>;
     schoolClassOrigin: boolean | false
+    moveStudents: any;
+    newSchoolClass?: any;
 }
-export function MoveStudentsBox({ moveStudents, schoolClasses, students, schoolClassOrigin }: ComponentProps) {
+export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, newSchoolClass, moveStudents }: ComponentProps) {
 
     const [selected, setSelected] = useState<string[]>([]);
     function toggleSelected(id: string) {
@@ -26,6 +27,7 @@ export function MoveStudentsBox({ moveStudents, schoolClasses, students, schoolC
                     value: id,
                 }))
                 }
+                onChange={(value) => newSchoolClass(value)}
                 placeholder="Selecione"
                 disabled={schoolClassOrigin}
             />
