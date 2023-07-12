@@ -1,7 +1,9 @@
+import { useState } from "react";
+import { useSchoolClassGetAll, useStudentsBySchoolclass, useStudentsDestiny } from "~/api/school-class";
 import { Group, Modal, Text, Divider, Button, Grid } from "@mantine/core";
 import { MoveStudentsBox } from "./MoveStudentsBox";
-import { useSchoolClassGetAll, useStudentsBySchoolclass } from "~/api/school-class";
-import { useState } from "react";
+import { successNotification } from "~/utils/successNotification";
+import { errorNotification } from "~/utils/errorNotification";
 
 type Props = {
     opened: boolean;
@@ -15,9 +17,30 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClassId }: Prop
     const { data: schoolClasses, isLoading: isLoadingClasses } = useSchoolClassGetAll({ pageSize: 999 });
 
     // getting data from child:
-    const [selectedStudentsOrigin, setSelectedSetStudentsOrigin] = useState([])
-    const [selectedStudentsDestiny, setSelectedSetStudentsDestiny] = useState([])
-    const [newSchoolClass, setNewSchoolClass] = useState([])
+    const [destinationId, setDestinationId] = useState('')
+
+    const { mutate: moveStudents, isLoading: isMoveStudentsLoading } = useStudentsDestiny({
+        onSuccess: () => {
+            successNotification(
+                "Operação realizada com sucesso",
+                "Alunos movidos!"
+            );
+        },
+        onError: (error) => {
+            errorNotification(
+                "Erro durante a operação",
+                `${error.message} (cod: ${error.code})`
+            );
+        },
+    });
+
+    function handleCallback(childData: any) {
+        let form: object = {
+            originId: originSchoolClassId,
+            studentIds: childData
+        }
+        moveStudents({ destinationId, form })
+    }
 
     return (
         <>
@@ -49,14 +72,14 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClassId }: Prop
                                 schoolClassOrigin={true}
                                 schoolClasses={schoolClasses}
                                 students={studentsOrigin}
-                                moveStudents={values => setSelectedSetStudentsOrigin(values)}
+                                parentCallback={handleCallback}
                             />
                         </Grid.Col>
                         <Grid.Col span={1}>
                             <MoveStudentsBox
                                 schoolClasses={schoolClasses}
-                                newSchoolClass={value => setNewSchoolClass(value)}
-                                moveStudents={values => setSelectedSetStudentsDestiny(values)}
+                                newSchoolClass={(value: any) => setDestinationId(value)}
+                                parentCallback={handleCallback}
                             />
                         </Grid.Col>
                     </Grid>

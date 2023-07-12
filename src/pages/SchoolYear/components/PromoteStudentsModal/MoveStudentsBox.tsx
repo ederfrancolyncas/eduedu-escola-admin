@@ -6,10 +6,9 @@ type ComponentProps = {
     schoolClasses: Array<[{}]>;
     students?: Array<[{}]>;
     schoolClassOrigin: boolean | false
-    moveStudents: any;
     newSchoolClass?: any;
 }
-export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, newSchoolClass, moveStudents }: ComponentProps) {
+export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, newSchoolClass, parentCallback }: ComponentProps) {
 
     const [selected, setSelected] = useState<string[]>([]);
     function toggleSelected(id: string) {
@@ -19,16 +18,19 @@ export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, ne
             setSelected([...selected, id]);
         }
     }
+
+    function sendToParent() { parentCallback(selected) }
+
     return (
         <>
             <Select
+                placeholder="Selecione"
                 data={schoolClasses?.items.map(({ name, id }) => ({
                     label: name.toString(),
                     value: id,
                 }))
                 }
                 onChange={(value) => newSchoolClass(value)}
-                placeholder="Selecione"
                 disabled={schoolClassOrigin}
             />
             <Stack mt={20}>
@@ -38,7 +40,7 @@ export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, ne
                         <>
                             <Tooltip label="Mova os alunos para a próxima turma" position="top-end" withArrow>
                                 <div>
-                                    <ActionIcon onClick={moveStudents(selected)}>
+                                    <ActionIcon onClick={sendToParent}>
                                         <IconChevronRight size="1rem" style={{ display: 'block', opacity: 0.5 }} />
                                     </ActionIcon>
                                 </div>
@@ -55,6 +57,7 @@ export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, ne
                     {students &&
                         students.map((item) => (
                             <Checkbox
+                                key={item.id}
                                 onChange={() => toggleSelected(item.id)}
                                 label={item.name}
                                 mb={10}

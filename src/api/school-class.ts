@@ -114,8 +114,8 @@ export class SchoolClassAPI extends API {
     return data
   }
 
-  static async studentsDestiny(destinyID: string) {
-    const { data } = await this.api.post(URL.DESTINY_STUDENTS(destinyID))
+  static async studentsDestiny(destinyID: string, form: object) {
+    const { data } = await this.api.post(URL.DESTINY_STUDENTS(destinyID), form)
     return data
   }
 }
@@ -210,13 +210,20 @@ export function useStudentsBySchoolclass(schoolClassId: string) {
   return useQuery([KEY.STUDENT_BY_SCHOOLCLASS, schoolClassId], handler)
 }
 
-export function useStudentsDestiny(destinationId: string, form: object) {
-  const handler = useCallback(
-    function () {
-      return SchoolClassAPI.studentsDestiny(destinationId)
-    },
-    [destinationId, form]
-  )
+export function useStudentsDestiny(
+  options?: MutationOptions<
+    { destinationId: string; form: {}; },
+    {}
+  >
+) {
+  const handler = useCallback(function (data: {
+    destinationId: string;
+    form: {};
+  }) {
+    console.log(data)
+    return SchoolClassAPI.studentsDestiny(data.destinationId, data.form);
+  },
+    []);
 
-  return useQuery([KEY.STUDENT_DESTINATION, destinationId, form], handler);
+  return useMutation(handler, options);
 }
