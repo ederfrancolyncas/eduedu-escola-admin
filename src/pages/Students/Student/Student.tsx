@@ -121,6 +121,7 @@ export function StudentPage() {
           </Grid.Col>
           <Grid.Col span={1}>
             <Select
+              withinPortal
               data={schoolPeriod}
               label="Período"
               placeholder="Selecione"
@@ -128,6 +129,7 @@ export function StudentPage() {
           </Grid.Col>
           <Grid.Col span={1}>
             <Select
+              withinPortal
               data={
                 schoolClasses?.items.map((item) => ({
                   value: item.id,

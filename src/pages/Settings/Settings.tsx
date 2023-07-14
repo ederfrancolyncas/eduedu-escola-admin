@@ -62,6 +62,7 @@ export function SettingsPage() {
           </Grid.Col>
           <Grid.Col span={1}>
             <Select
+              withinPortal
               label="Sincronização de planetas"
               placeholder={isLoading ? "Carregando..." : "Escolha um"}
               data={[
@@ -110,6 +111,7 @@ export function SettingsPage() {
           </Grid.Col>
           <Grid.Col span={1}>
             <Select
+              withinPortal
               label="SSL"
               placeholder="Escolha um"
               data={[

@@ -137,21 +137,22 @@ export function NewClassPage() {
             </Grid.Col>
             <Grid.Col span={1}>
               <Select
+                withinPortal
                 label="Ano Letivo"
                 placeholder="Selecione"
                 disabled={isLoadingYears}
                 data={
                   isLoadingYears
                     ? [
-                        {
-                          value: form.values.schoolYearId,
-                          label: "Carregando...",
-                        },
-                      ]
+                      {
+                        value: form.values.schoolYearId,
+                        label: "Carregando...",
+                      },
+                    ]
                     : years?.map(({ name, id }) => ({
-                        label: name.toString(), // TODO: request property change to string type
-                        value: id,
-                      })) ?? []
+                      label: name.toString(), // TODO: request property change to string type
+                      value: id,
+                    })) ?? []
                 }
                 nothingFound="Nada encontrado"
                 {...form.getInputProps("schoolYearId")}
@@ -159,6 +160,7 @@ export function NewClassPage() {
             </Grid.Col>
             <Grid.Col span={1}>
               <Select
+                withinPortal
                 label="Série"
                 placeholder="Selecione"
                 data={schoolGrade}
@@ -168,6 +170,7 @@ export function NewClassPage() {
             </Grid.Col>
             <Grid.Col span={1}>
               <Select
+                withinPortal
                 label="Período"
                 placeholder="Selecione"
                 data={schoolPeriod}

@@ -110,6 +110,7 @@ export function UploadStudentsSheet({ opened, onClose }: Props) {
               Selecione a turma que deseja adicionar os alunos do template.
             </Text>
             <Select
+              withinPortal
               {...formUploadSheet.getInputProps("id")}
               placeholder="Selecione a turma"
               disabled={isLoadingSchoolClasses}

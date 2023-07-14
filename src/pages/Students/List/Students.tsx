@@ -117,37 +117,37 @@ export function StudentsListPage() {
             </th>
             <th>
               Turma
-              <Select data={[]} placeholder="Pesquisar" />
+              <Select withinPortal data={[]} placeholder="Pesquisar" />
             </th>
             <th>
               Período
-              <Select data={[]} placeholder="Pesquisar" />
+              <Select withinPortal data={[]} placeholder="Pesquisar" />
             </th>
             <th>
               Série
-              <Select data={[]} placeholder="Pesquisar" />
+              <Select withinPortal data={[]} placeholder="Pesquisar" />
             </th>
             <th>
               <InfoTooltip text="CFO" tooltipText="Consciência Fonológica" />
-              <Select data={[]} placeholder="Pesquisar" />
+              <Select withinPortal data={[]} placeholder="Pesquisar" />
             </th>
             <th>
               <InfoTooltip
                 text="SEA"
                 tooltipText="Sistema de Escrita Alfabética"
               />
-              <Select data={[]} placeholder="Pesquisar" />
+              <Select withinPortal data={[]} placeholder="Pesquisar" />
             </th>
             <th>
               <InfoTooltip
                 text="LCT"
                 tooltipText="Leitura e Compreensão de Texto"
               />
-              <Select data={[]} placeholder="Pesquisar" />
+              <Select withinPortal data={[]} placeholder="Pesquisar" />
             </th>
             <th>
               Status
-              <Select data={[]} placeholder="Pesquisar" />
+              <Select withinPortal data={[]} placeholder="Pesquisar" />
             </th>
             <th></th>
           </tr>
