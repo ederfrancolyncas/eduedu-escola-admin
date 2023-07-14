@@ -97,6 +97,7 @@ export function CreateSchoolForm() {
             </Grid.Col>
             <Grid.Col span={1}>
               <Select
+                withinPortal
                 label="SSL"
                 placeholder="Escolha um"
                 data={[

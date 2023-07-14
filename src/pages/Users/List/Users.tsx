@@ -164,11 +164,11 @@ export function UsersListPage() {
             </th>
             <th>
               Perfil
-              <Select data={PROFILE_SELECT} placeholder="Pesquisar" />
+              <Select withinPortal data={PROFILE_SELECT} placeholder="Pesquisar" />
             </th>
             <th>
               Status
-              <Select data={STATUS_SELECT} placeholder="Pesquisar" />
+              <Select withinPortal data={STATUS_SELECT} placeholder="Pesquisar" />
             </th>
             <th></th>
           </tr>

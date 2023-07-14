@@ -90,7 +90,7 @@ export function ClassesListPage() {
             </th>
             <th>
               Ano Letivo
-              <Select data={[]} placeholder="Pesquisar" searchable />
+              <Select withinPortal data={[]} placeholder="Pesquisar" searchable />
             </th>
             <th>
               Série
@@ -98,11 +98,11 @@ export function ClassesListPage() {
             </th>
             <th>
               Período
-              <Select data={[]} placeholder="Pesquisar" searchable />
+              <Select withinPortal data={[]} placeholder="Pesquisar" searchable />
             </th>
             <th>
               Professores
-              <Select data={[]} placeholder="Pesquisar" searchable />
+              <Select withinPortal data={[]} placeholder="Pesquisar" searchable />
             </th>
             <th></th>
           </tr>
