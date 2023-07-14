@@ -27,21 +27,21 @@ export function useAuditGet(
   options?: QueryOptions<
     Paginated<Audit>,
     [typeof KEY.BASE, number, AuditFilterOptions | undefined]
-  > & { filter?: AuditFilterOptions }
+  > & { search?: AuditFilterOptions }
 ) {
   const handler = useCallback(
     function () {
       return AuditAPI.get({
         "page-number": options?.page ?? 1,
         "page-size": options?.pageSize ?? 10,
-        ...options?.filter,
+        ...options?.search,
       });
     },
-    [options?.page, options?.pageSize, options?.filter]
+    [options?.page, options?.pageSize, options?.search]
   );
 
   return useQuery(
-    [KEY.BASE, options?.page ?? 1, options?.filter],
+    [KEY.BASE, options?.page ?? 1, options?.search],
     handler,
     options
   );

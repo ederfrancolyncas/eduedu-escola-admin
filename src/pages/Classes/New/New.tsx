@@ -23,7 +23,7 @@ import {
 import { useSchoolYearGetAll } from "~/api/school-year";
 import { useUserGetAll } from "~/api/user";
 import { PageHeader } from "~/components/PageHeader";
-import { schoolGrade, schoolPeriod } from "~/constants";
+import { SCHOOL_GRADE_SELECT, SCHOOL_PERIOD_SELECT } from "~/constants";
 import { PATH } from "~/constants/path";
 import { errorNotification } from "~/utils/errorNotification";
 import { successNotification } from "~/utils/successNotification";
@@ -163,7 +163,7 @@ export function NewClassPage() {
                 withinPortal
                 label="Série"
                 placeholder="Selecione"
-                data={schoolGrade}
+                data={SCHOOL_GRADE_SELECT}
                 nothingFound="Nada encontrado"
                 {...form.getInputProps("schoolGrade")}
               />
@@ -173,7 +173,7 @@ export function NewClassPage() {
                 withinPortal
                 label="Período"
                 placeholder="Selecione"
-                data={schoolPeriod}
+                data={SCHOOL_PERIOD_SELECT}
                 nothingFound="Nada encontrado"
                 {...form.getInputProps("schoolPeriod")}
               />
