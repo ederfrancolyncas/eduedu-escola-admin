@@ -9,6 +9,7 @@ import {
   NumberInput,
   ActionIcon,
 } from "@mantine/core";
+import { DateInput, DateValue } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconX } from "@tabler/icons-react";
 import { useEffect } from "react";
@@ -65,21 +66,36 @@ export function TableHeader({
   function clearField(field: string) {
     form.setFieldValue(field, "");
     form.setDirty({ [field]: false });
-    onValueChange({ ...form.values, [field]: "" });
+
+    const empty: string[] = Object.entries(form.values).map(([key, value]) =>
+      value === "" ? key : ""
+    );
+    const newValues = form.values;
+
+    empty.forEach((key) => {
+      delete newValues[key];
+    });
+
+    delete newValues[field];
+
+    onValueChange(newValues);
   }
 
   function onBlur(field: string) {
-    console.log("blur", field);
     const val = form.values[field];
-    console.log(val);
 
     if (typeof val === "string") {
       if (val.trim()) {
-        console.log("we");
+        onValueChange({ ...form.values, [field]: val });
       }
     }
 
     form.getInputProps(field).onBlur();
+  }
+
+  function onDateChange(field: string, value: DateValue) {
+    form.setFieldValue(field, value);
+    onValueChange({ ...form.values, [field]: value });
   }
 
   return (
@@ -155,6 +171,15 @@ export function TableHeader({
                       </ActionIcon>
                     )
                   }
+                />
+              )}
+              {col.type === "date" && (
+                <DateInput
+                  {...form.getInputProps(col.searchTerm)}
+                  onChange={(value) => onDateChange(col.searchTerm, value)}
+                  placeholder="Pesquisar"
+                  size="sm"
+                  clearable
                 />
               )}
             </Stack>

@@ -11,13 +11,11 @@ type Audit = {
   createdAt: Date;
 };
 
-type AuditFilterOptions = Partial<Pick<Audit, "userId" | "entity" | "action">>;
-
 const URL = { BASE: "/audit" } as const;
 const KEY = { BASE: "AUDIT" } as const;
 
 class AuditAPI extends API {
-  static async get(params?: AuditFilterOptions & PaginationParams) {
+  static async get(params?: Partial<Audit> & PaginationParams) {
     const { data } = await this.api.get<Paginated<Audit>>(URL.BASE, { params });
     return data;
   }
@@ -26,8 +24,8 @@ class AuditAPI extends API {
 export function useAuditGet(
   options?: QueryOptions<
     Paginated<Audit>,
-    [typeof KEY.BASE, number, AuditFilterOptions | undefined]
-  > & { search?: AuditFilterOptions }
+    [typeof KEY.BASE, number, Partial<Audit> | undefined]
+  > & { search?: Partial<Audit> }
 ) {
   const handler = useCallback(
     function () {

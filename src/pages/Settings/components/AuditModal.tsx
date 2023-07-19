@@ -48,7 +48,7 @@ export function AuditModal({ opened, onClose }: ModalProps) {
               { label: "Id Usuário", type: "text", searchTerm: "userId" },
               { label: "Entidade", type: "text", searchTerm: "entity" },
               { label: "Operação", type: "text", searchTerm: "action" },
-              { label: "Data", type: "empty", searchTerm: "" },
+              { label: "Data", type: "date", searchTerm: "createdAt" },
             ]}
             onValueChange={setSearch}
           />
