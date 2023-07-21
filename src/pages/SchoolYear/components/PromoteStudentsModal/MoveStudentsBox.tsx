@@ -4,11 +4,12 @@ import { useState } from "react";
 
 type ComponentProps = {
     schoolClasses: Array<[{}]>;
-    students?: Array<[{}]>;
+    students: Array<[{}]>;
+    studentsAll?: Array<[{}]>;
     schoolClassOrigin?: object
     newSchoolClass?: any;
 }
-export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, newSchoolClass, parentCallback }: ComponentProps) {
+export function MoveStudentsBox({ schoolClasses, students, studentsAll, schoolClassOrigin, newSchoolClass, parentCallback }: ComponentProps) {
 
     const [selected, setSelected] = useState<string[]>([]);
     function toggleSelected(id: string) {
@@ -18,10 +19,8 @@ export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, ne
             setSelected([...selected, id]);
         }
     }
-
     function sendSelectedToParent() { parentCallback(selected) }
     function sendAllToParent() { parentCallback(students?.map((item) => item.id)) }
-
     return (
         <>
             <Select
@@ -53,6 +52,16 @@ export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, ne
                     }
                 />
                 <ScrollArea h={150} type="auto">
+                    {studentsAll && !students.length &&
+                        studentsAll.map((item) => (
+                            <Checkbox
+                                key={item.id}
+                                onChange={() => toggleSelected(item.id)}
+                                label={item.name}
+                                mb={10}
+                            />
+                        ))
+                    }
                     {students &&
                         students.map((item) => (
                             <Checkbox
