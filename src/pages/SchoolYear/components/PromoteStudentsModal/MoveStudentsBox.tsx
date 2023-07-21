@@ -5,7 +5,7 @@ import { useState } from "react";
 type ComponentProps = {
     schoolClasses: Array<[{}]>;
     students?: Array<[{}]>;
-    schoolClassOrigin: boolean | false
+    schoolClassOrigin?: object
     newSchoolClass?: any;
 }
 export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, newSchoolClass, parentCallback }: ComponentProps) {
@@ -24,11 +24,17 @@ export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, ne
     return (
         <>
             <Select
-                placeholder="Selecione"
-                data={schoolClasses?.items.map(({ name, id }) => ({
-                    label: name.toString(),
-                    value: id,
-                }))
+                placeholder={schoolClassOrigin ? schoolClassOrigin.name : "Selecione"}
+                data={schoolClassOrigin ?
+                    [{
+                        label: schoolClassOrigin.name.toString(),
+                        value: schoolClassOrigin.id,
+                    }]
+                    :
+                    schoolClasses?.items.map(({ name, id }) => ({
+                        label: name.toString(),
+                        value: id,
+                    }))
                 }
                 onChange={(value) => newSchoolClass(value)}
                 disabled={schoolClassOrigin}

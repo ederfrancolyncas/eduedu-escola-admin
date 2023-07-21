@@ -8,12 +8,13 @@ import { errorNotification } from "~/utils/errorNotification";
 type Props = {
     opened: boolean;
     onClose: () => void;
-    originSchoolClassId: string;
+    originSchoolClass: object;
 }
 
-export function MoveStudentsModal({ opened, onClose, originSchoolClassId }: Props) {
+export function MoveStudentsModal({ opened, onClose, originSchoolClass }: Props) {
 
-    const { data: studentsOrigin, isLoading: isLoadingStudentsOrigin } = useStudentsBySchoolclass(originSchoolClassId)
+    console.log('originSchoolClass', originSchoolClass)
+    const { data: studentsOrigin, isLoading: isLoadingStudentsOrigin } = useStudentsBySchoolclass(originSchoolClass?.id)
     const { data: schoolClasses, isLoading: isLoadingClasses } = useSchoolClassGetAll({ pageSize: 999 });
 
     // getting data from child:
@@ -36,7 +37,7 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClassId }: Prop
 
     function handleCallback(childData: any) {
         let form: object = {
-            originId: originSchoolClassId,
+            originId: originSchoolClass.id,
             studentIds: childData
         }
         moveStudents({ destinationId, form })
@@ -69,7 +70,7 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClassId }: Prop
                     <Grid columns={2}>
                         <Grid.Col span={1}>
                             <MoveStudentsBox
-                                schoolClassOrigin={true}
+                                schoolClassOrigin={originSchoolClass}
                                 schoolClasses={schoolClasses}
                                 students={studentsOrigin}
                                 parentCallback={handleCallback}
