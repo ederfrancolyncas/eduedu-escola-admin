@@ -25,17 +25,7 @@ export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, ne
         <>
             <Select
                 placeholder={schoolClassOrigin ? schoolClassOrigin.name : "Selecione"}
-                data={schoolClassOrigin ?
-                    [{
-                        label: schoolClassOrigin.name.toString(),
-                        value: schoolClassOrigin.id,
-                    }]
-                    :
-                    schoolClasses?.items.map(({ name, id }) => ({
-                        label: name.toString(),
-                        value: id,
-                    }))
-                }
+                data={schoolClasses}
                 onChange={(value) => newSchoolClass(value)}
                 disabled={schoolClassOrigin}
             />

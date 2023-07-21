@@ -12,11 +12,13 @@ type Props = {
 }
 
 export function MoveStudentsModal({ opened, onClose, originSchoolClass }: Props) {
-
-    console.log('originSchoolClass', originSchoolClass)
     const { data: studentsOrigin, isLoading: isLoadingStudentsOrigin } = useStudentsBySchoolclass(originSchoolClass?.id)
     const { data: schoolClasses, isLoading: isLoadingClasses } = useSchoolClassGetAll({ pageSize: 999 });
 
+    let schoolClassesOptions = schoolClasses?.items.filter((item) => item.id != originSchoolClass.id).map(({ name, id }) => ({
+        label: name.toString(),
+        value: id
+    }))
     // getting data from child:
     const [destinationId, setDestinationId] = useState('')
 
@@ -71,14 +73,14 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClass }: Props)
                         <Grid.Col span={1}>
                             <MoveStudentsBox
                                 schoolClassOrigin={originSchoolClass}
-                                schoolClasses={schoolClasses}
+                                schoolClasses={schoolClassesOptions}
                                 students={studentsOrigin}
                                 parentCallback={handleCallback}
                             />
                         </Grid.Col>
                         <Grid.Col span={1}>
                             <MoveStudentsBox
-                                schoolClasses={schoolClasses}
+                                schoolClasses={schoolClassesOptions}
                                 newSchoolClass={(value: any) => setDestinationId(value)}
                                 parentCallback={handleCallback}
                             />
