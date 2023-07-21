@@ -21,8 +21,6 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClass }: Props)
 
     // getting data from child:
     const [destinationId, setDestinationId] = useState('')
-    const [studentsOrigin, setStudentsOrigin] = useState([])
-    const [studentsDestiny, setStudentsDestiny] = useState([])
 
     const { mutate: moveStudents, isLoading: isMoveStudentsLoading } = useStudentsDestiny({
         onSuccess: () => {
@@ -38,29 +36,18 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClass }: Props)
             );
         },
     });
-    function handleCallbackOrigin(students: object) {
-        let tempListOrigin: any = []
-        let tempListDestiny: any = []
-
-        let filterStudents = students.map((studentId) => {
-            studentsAll.filter((item) => {
-                item.id != studentId ? tempListOrigin.push(item) : tempListDestiny.push(item)
+    const [studentsDestiny, setStudentsDestiny] = useState([])
+    function handleCallback(studentsList: any, selectedStudents: any) {
+        let temp = []
+        for (let index = 0; index < selectedStudents.length; index++) {
+            const element = selectedStudents[index];
+            studentsList.filter((item) => {
+                if (item.id == element) {
+                    temp.push(item)
+                }
             })
-        })
-        setStudentsOrigin(tempListOrigin)
-    }
-    function handleCallbackDestiny(students: object) {
-
-        console.log('destiny: ', students)
-    }
-
-    function sendToBackend() {
-        console.log('fim :)')
-        // let form: object = {
-        //     originId: originSchoolClass.id,
-        //     studentIds: childData
-        // }
-        // moveStudents({ destinationId, form })
+        }
+        setStudentsDestiny(temp)
     }
 
     return (
@@ -71,7 +58,7 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClass }: Props)
                 onClose={onClose}
                 size="xl"
             >
-                <form onSubmit={sendToBackend}>
+                <form>
                     <>
                         <Text size="sm" mb={20}>
                             1- Selecione os alunos que deseja promover na coluna da esquerda.
@@ -92,9 +79,8 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClass }: Props)
                             <MoveStudentsBox
                                 schoolClassOrigin={originSchoolClass}
                                 schoolClasses={schoolClassesOptions}
-                                studentsAll={studentsAll}
-                                students={studentsOrigin}
-                                parentCallback={handleCallbackOrigin}
+                                students={studentsAll}
+                                parentCallback={handleCallback}
                             />
                         </Grid.Col>
                         <Grid.Col span={1}>
@@ -102,7 +88,6 @@ export function MoveStudentsModal({ opened, onClose, originSchoolClass }: Props)
                                 newSchoolClass={(value: any) => setDestinationId(value)}
                                 schoolClasses={schoolClassesOptions}
                                 students={studentsDestiny}
-                                parentCallback={handleCallbackDestiny}
                             />
                         </Grid.Col>
                     </Grid>
