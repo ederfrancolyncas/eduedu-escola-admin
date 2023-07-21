@@ -1,4 +1,4 @@
-import { ActionIcon, Checkbox, Input, ScrollArea, Select, Stack, Tooltip } from "@mantine/core";
+import { ActionIcon, Box, Checkbox, Input, ScrollArea, Select, Stack, Tooltip } from "@mantine/core";
 import { IconChevronRight, IconChevronsRight } from "@tabler/icons-react";
 import { useState } from "react";
 
@@ -19,7 +19,8 @@ export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, ne
         }
     }
 
-    function sendToParent() { parentCallback(selected) }
+    function sendSelectedToParent() { parentCallback(selected) }
+    function sendAllToParent() { parentCallback(students?.map((item) => item.id)) }
 
     return (
         <>
@@ -34,17 +35,19 @@ export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, ne
                     placeholder="Selecione"
                     rightSection={
                         <>
-                            <Tooltip label="Mova os alunos para a próxima turma" position="top-end" withArrow>
-                                <div>
-                                    <ActionIcon onClick={sendToParent}>
+                            <Tooltip label="Mova os alunos selecionados para a próxima turma" position="top-end" withArrow>
+                                <Box>
+                                    <ActionIcon onClick={sendSelectedToParent}>
                                         <IconChevronRight size="1rem" style={{ display: 'block', opacity: 0.5 }} />
                                     </ActionIcon>
-                                </div>
+                                </Box>
                             </Tooltip>
-                            <Tooltip label="Mova os alunos para a próxima turma" position="top-end" withArrow>
-                                <div>
-                                    <IconChevronsRight size="1rem" style={{ display: 'block', opacity: 0.5 }} />
-                                </div>
+                            <Tooltip label="Mova todos os alunos para a próxima turma" position="top-end" withArrow>
+                                <Box>
+                                    <ActionIcon onClick={sendAllToParent}>
+                                        <IconChevronsRight size="1rem" style={{ display: 'block', opacity: 0.5 }} />
+                                    </ActionIcon>
+                                </Box>
                             </Tooltip>
                         </>
                     }
