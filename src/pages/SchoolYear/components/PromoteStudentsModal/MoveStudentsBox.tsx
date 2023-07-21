@@ -1,68 +1,76 @@
-import { ActionIcon, Box, Checkbox, Input, ScrollArea, Select, Stack, Tooltip } from "@mantine/core";
-import { IconChevronRight, IconChevronsRight } from "@tabler/icons-react";
-import { useState } from "react";
+import { Grid, LoadingOverlay, Select, SelectItem, TransferList, TransferListData, TransferListItem } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { SchoolClass, useStudentsBySchoolclass } from "~/api/school-class";
 
 type ComponentProps = {
-    schoolClasses: Array<[{}]>;
-    students: Array<[{}]>;
-    schoolClassOrigin?: object
-    newSchoolClass?: any;
+    schoolClasses: Array<SelectItem>;
+    schoolClassOrigin?: SchoolClass;
+    parentCallback: (destinyId: string, studentsIds: string[]) => void;
 }
-export function MoveStudentsBox({ schoolClasses, students, schoolClassOrigin, newSchoolClass, parentCallback }: ComponentProps) {
+export function MoveStudentsBox({ schoolClasses, schoolClassOrigin, parentCallback }: ComponentProps) {
+    const [destinyId, setDestinyId] = useState('')
 
-    const [selected, setSelected] = useState<string[]>([]);
-    function toggleSelected(id: string) {
-        if (selected.includes(id)) {
-            setSelected(selected.filter((item) => item !== id));
-        } else {
-            setSelected([...selected, id]);
-        }
+    const [origin, setOrigin] = useState<TransferListItem[]>([])
+    const [destiny, setDestiny] = useState<TransferListItem[]>([])
+    const [data, setData] = useState<TransferListData>([origin, destiny])
+
+    useEffect(() => {
+        setData([origin, destiny])
+    }, [origin, destiny])
+
+    const { isFetching: isLoadingStudentsOrigin } = useStudentsBySchoolclass(schoolClassOrigin?.id ?? "",
+        {
+            onSuccess(data) {
+                setOrigin(data.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })))
+            },
+        });
+    const { isFetching: isLoadingStudentsDestiny } = useStudentsBySchoolclass(destinyId, {
+        enabled: destinyId !== "",
+        onSuccess(data) {
+            setDestiny(data.map((item) => ({
+                value: item.id,
+                label: item.name,
+            })))
+        },
+    });
+
+    const isLoading = isLoadingStudentsOrigin || isLoadingStudentsDestiny
+
+    function onChangeSend(value: TransferListData) {
+        if (destinyId == '') return
+        parentCallback(destinyId, data[1].map(item => item.value))
+        setData(value)
     }
-    function sendSelectedToParent() { parentCallback(students, selected) }
-    function sendAllToParent() { parentCallback(students, students?.map((item) => item.id)) }
     return (
-        <>
-            <Select
-                placeholder={schoolClassOrigin ? schoolClassOrigin.name : "Selecione"}
-                data={schoolClasses}
-                onChange={(value) => newSchoolClass(value)}
-                disabled={schoolClassOrigin}
-            />
-            <Stack mt={20}>
-                <Input
-                    placeholder="Selecione"
-                    rightSection={
-                        <>
-                            <Tooltip label="Mova os alunos selecionados para a próxima turma" position="top-end" withArrow>
-                                <Box>
-                                    <ActionIcon onClick={sendSelectedToParent}>
-                                        <IconChevronRight size="1rem" style={{ display: 'block', opacity: 0.5 }} />
-                                    </ActionIcon>
-                                </Box>
-                            </Tooltip>
-                            <Tooltip label="Mova todos os alunos para a próxima turma" position="top-end" withArrow>
-                                <Box>
-                                    <ActionIcon onClick={sendAllToParent}>
-                                        <IconChevronsRight size="1rem" style={{ display: 'block', opacity: 0.5 }} />
-                                    </ActionIcon>
-                                </Box>
-                            </Tooltip>
-                        </>
-                    }
+        <Grid columns={2}>
+            <Grid.Col span={1}>
+                <Select
+                    placeholder={schoolClassOrigin?.name}
+                    data={schoolClassOrigin ? [{ value: schoolClassOrigin.id, label: schoolClassOrigin.name }] : []}
+                    disabled={!!schoolClassOrigin}
                 />
-                <ScrollArea h={150} type="auto">
-                    {students &&
-                        students.map((item) => (
-                            <Checkbox
-                                key={item.id}
-                                onChange={() => toggleSelected(item.id)}
-                                label={item.name}
-                                mb={10}
-                            />
-                        ))
-                    }
-                </ScrollArea>
-            </Stack>
-        </>
+            </Grid.Col>
+            <Grid.Col span={1}>
+                <Select
+                    placeholder={"Selecione"}
+                    data={schoolClasses}
+                    onChange={(value) => value ? setDestinyId(value) : {}}
+                />
+            </Grid.Col>
+            <Grid.Col span={2}>
+                <TransferList
+                    value={data}
+                    onChange={onChangeSend}
+                    searchPlaceholder="Procurar..."
+                    nothingFound="Nenhum aluno na turma"
+                    titles={['Origem', 'Destino']}
+                    breakpoint="sm"
+                />
+                <LoadingOverlay visible={isLoading} />
+            </Grid.Col>
+        </Grid>
     )
 }

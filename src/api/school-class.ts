@@ -1,9 +1,10 @@
 import { useCallback } from "react";
 import { API } from "./base";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MutationOptions, Paginated, QueryOptions } from "./api-types";
 import { User } from "./user";
 import { SchoolYear } from "./school-year";
+import { Student } from "./student";
 
 export type SchoolGrade =
   | "CHILDREN"
@@ -12,7 +13,7 @@ export type SchoolGrade =
   | "THIRD_GRADE";
 export type SchoolPeriod = "MORNING" | "AFTERNOON" | "FULL";
 
-type SchoolClass = {
+export type SchoolClass = {
   id: string;
   name: string;
   schoolGrade: SchoolGrade;
@@ -114,7 +115,7 @@ export class SchoolClassAPI extends API {
     return data
   }
 
-  static async studentsDestiny(destinyID: string, form: object) {
+  static async studentsDestiny(destinyID: string, form: { originId: string, studentIds: string[] }) {
     const { data } = await this.api.post(URL.DESTINY_STUDENTS(destinyID), form)
     return data
   }
@@ -199,7 +200,9 @@ export function sheetDownloadUrl() {
   return SchoolClassAPI.api.defaults.baseURL + URL.SHEET;
 }
 
-export function useStudentsBySchoolclass(schoolClassId: string) {
+export function useStudentsBySchoolclass(
+  schoolClassId: string,
+  options?: QueryOptions<Array<Student>, [typeof KEY.STUDENT_BY_SCHOOLCLASS, string]>) {
   const handler = useCallback(
     function () {
       return SchoolClassAPI.studentsBySchoolclass(schoolClassId)
@@ -207,23 +210,31 @@ export function useStudentsBySchoolclass(schoolClassId: string) {
     [schoolClassId]
   )
 
-  return useQuery([KEY.STUDENT_BY_SCHOOLCLASS, schoolClassId], handler)
+  return useQuery([KEY.STUDENT_BY_SCHOOLCLASS, schoolClassId], handler, options)
 }
 
 export function useStudentsDestiny(
   options?: MutationOptions<
-    { destinationId: string; form: {}; },
+    { destinationId: string; form: { originId: string, studentIds: string[] }; },
     {}
   >
 ) {
+
+  const queryClient = new QueryClient()
+
   const handler = useCallback(function (data: {
     destinationId: string;
-    form: {};
+    form: { originId: string, studentIds: string[] };
   }) {
-    console.log(data)
     return SchoolClassAPI.studentsDestiny(data.destinationId, data.form);
   },
     []);
 
-  return useMutation(handler, options);
+  return useMutation(handler, {
+    ...options,
+    async onSuccess(data, variables, ctx) {
+      await queryClient.invalidateQueries([KEY.STUDENT_BY_SCHOOLCLASS, KEY.STUDENT_DESTINATION])
+      options?.onSuccess?.(data, variables, ctx)
+    }
+  });
 }

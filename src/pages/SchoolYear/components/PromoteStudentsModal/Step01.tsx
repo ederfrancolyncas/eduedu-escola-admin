@@ -3,7 +3,7 @@ import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 import { useSchoolClassGetAll } from "~/api/school-class";
 import { useDisclosure } from "@mantine/hooks";
-import { MoveStudentsModal } from "./Step02";
+import { Step02 } from "./Step02";
 import { Button, Divider, Group, Modal, Select, Text } from "@mantine/core";
 
 type Props = {
@@ -76,7 +76,7 @@ export function PromoteStudentsModal({ opened, onClose }: Props) {
                 </form>
             </Modal>
 
-            <MoveStudentsModal
+            <Step02
                 opened={MoveStudents}
                 onClose={MoveStudentsHandlers.close}
                 originSchoolClass={originSchoolClass}
