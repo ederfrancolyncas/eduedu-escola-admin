@@ -41,7 +41,7 @@ export function MoveStudentsBox({ schoolClasses, schoolClassOrigin, parentCallba
 
     function onChangeSend(value: TransferListData) {
         if (destinyId == '') return
-        parentCallback(destinyId, data[1].map(item => item.value))
+        parentCallback(destinyId, value[1].map((item) => item.value))
         setData(value)
     }
     return (

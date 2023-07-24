@@ -26,6 +26,7 @@ export function Step02({ opened, onClose, originSchoolClass }: Props) {
                 "Operação realizada com sucesso",
                 "Alunos movidos!"
             );
+            onClose()
         },
         onError: (error) => {
             errorNotification(
@@ -49,7 +50,7 @@ export function Step02({ opened, onClose, originSchoolClass }: Props) {
     }
     function save() {
         if (!childData) return
-        moveStudents({ childData })
+        moveStudents(childData)
     }
     return (
         <>
