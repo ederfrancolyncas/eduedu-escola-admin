@@ -30,7 +30,7 @@ export function MoveStudentsBox({ schoolClasses, schoolClassOrigin, parentCallba
     const { isFetching: isLoadingStudentsDestiny } = useStudentsBySchoolclass(destinyId, {
         enabled: destinyId !== "",
         onSuccess(data) {
-            setDestiny(data.map((item) => ({
+            setDestiny(data.items.map((item) => ({
                 value: item.id,
                 label: item.name,
             })))
