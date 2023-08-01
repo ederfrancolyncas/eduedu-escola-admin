@@ -21,7 +21,7 @@ export function MoveStudentsBox({ schoolClasses, schoolClassOrigin, parentCallba
     const { isFetching: isLoadingStudentsOrigin } = useStudentsBySchoolclass(schoolClassOrigin?.id ?? "",
         {
             onSuccess(data) {
-                setOrigin(data.map((item) => ({
+                setOrigin(data?.items.map((item) => ({
                     value: item.id,
                     label: item.name,
                 })))
